@@ -1,0 +1,94 @@
+Seed: 223
+M: 1
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+RHK	1.09	643;509;465;211;450;91;99
+TRH	1.08	662;307;497;378;557;160;153
+NKO	1.12	340;345;300;345;400;104;73
+TRA	1.06	372;323;379;352;199;360;397
+Wards: 4
+RHK	28	28.0	RHK	TRA	11;8;8;8;7;6;5	11.0;8.0;8.0;8.0;7.0;6.0;5.0
+TRH	35	35.0	TRH	RHK	11;8;7;5;4;4;4	11.0;8.0;7.0;5.0;4.0;4.0;4.0
+NKO	15	15.0	NKO	TRH	6;5;3;2;2;2;2	6.0;5.0;3.0;2.0;2.0;2.0;2.0
+TRA	22	22.0	TRA	RHK	7;7;6;6;6;6;6	7.0;7.0;6.0;6.0;6.0;6.0;6.0
+Patients: 77
+patient0	RHK	0	3	4	99	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient1	RHK	0	2	3	28	1.2;1.0;0.8
+patient2	RHK	1	1	6	222	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient3	RHK	1	5	1	270	1.0
+patient4	RHK	1	4	1	149	1.0
+patient5	RHK	2	3	4	127	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient6	RHK	2	2	5	50	1.2;1.1;1.0;0.9;0.8
+patient7	RHK	2	5	1	469	1.0
+patient8	RHK	3	3	2	217	1.2;0.8
+patient9	RHK	3	3	4	134	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient10	RHK	3	5	1	72	1.0
+patient11	RHK	3	4	1	129	1.0
+patient12	RHK	3	3	4	85	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient13	RHK	3	6	1	63	1.0
+patient14	RHK	3	6	1	167	1.0
+patient15	RHK	4	4	3	47	1.2;1.0;0.8
+patient16	RHK	4	4	3	356	1.2;1.0;0.8
+patient17	RHK	5	5	2	368	1.2;0.8
+patient18	RHK	5	5	2	37	1.2;0.8
+patient19	RHK	5	5	2	595	1.2;0.8
+patient20	RHK	6	6	1	106	1.0
+patient21	RHK	6	6	1	264	1.0
+patient22	TRH	0	0	3	94	1.2;1.0;0.8
+patient23	TRH	0	3	3	39	1.2;1.0;0.8
+patient24	TRH	0	1	2	164	1.2;0.8
+patient25	TRH	0	0	1	188	1.0
+patient26	TRH	0	3	1	125	1.0
+patient27	TRH	1	2	1	112	1.0
+patient28	TRH	2	5	1	59	1.0
+patient29	TRH	2	2	5	276	1.2;1.1;1.0;0.9;0.8
+patient30	TRH	2	3	2	162	1.2;0.8
+patient31	TRH	2	5	1	116	1.0
+patient32	TRH	2	3	2	75	1.2;0.8
+patient33	TRH	2	2	5	113	1.2;1.1;1.0;0.9;0.8
+patient34	TRH	2	2	1	84	1.0
+patient35	TRH	2	6	1	69	1.0
+patient36	TRH	2	2	5	135	1.2;1.1;1.0;0.9;0.8
+patient37	TRH	3	6	1	56	1.0
+patient38	TRH	3	5	2	228	1.2;0.8
+patient39	TRH	3	3	4	233	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient40	TRH	3	4	1	47	1.0
+patient41	TRH	3	4	2	325	1.2;0.8
+patient42	TRH	3	3	1	99	1.0
+patient43	TRH	4	5	2	185	1.2;0.8
+patient44	TRH	4	6	1	40	1.0
+patient45	TRH	4	6	1	242	1.0
+patient46	TRH	5	5	1	201	1.0
+patient47	TRH	5	6	1	140	1.0
+patient48	TRH	5	6	1	78	1.0
+patient49	TRH	5	5	2	42	1.2;0.8
+patient50	TRH	5	5	2	106	1.2;0.8
+patient51	TRH	6	6	1	132	1.0
+patient52	TRH	6	6	1	51	1.0
+patient53	TRH	6	6	1	184	1.0
+patient54	TRH	6	6	1	170	1.0
+patient55	TRH	6	6	1	229	1.0
+patient56	TRH	6	6	1	108	1.0
+patient57	TRH	6	6	1	107	1.0
+patient58	TRH	6	6	1	164	1.0
+patient59	NKO	1	5	2	111	1.2;0.8
+patient60	NKO	1	1	1	43	1.0
+patient61	NKO	1	4	1	202	1.0
+patient62	NKO	1	3	1	234	1.0
+patient63	NKO	2	5	1	151	1.0
+patient64	NKO	2	4	1	134	1.0
+patient65	NKO	4	5	2	67	1.2;0.8
+patient66	NKO	5	6	1	352	1.0
+patient67	NKO	6	6	1	199	1.0
+patient68	TRA	0	0	7	158	1.2;1.1333333333333333;1.0666666666666667;1.0;0.9333333333333333;0.8666666666666667;0.8
+patient69	TRA	1	6	1	56	1.0
+patient70	TRA	2	2	5	307	1.2;1.1;1.0;0.9;0.8
+patient71	TRA	4	4	1	359	1.0
+patient72	TRA	4	4	3	221	1.2;1.0;0.8
+patient73	TRA	4	4	3	194	1.2;1.0;0.8
+patient74	TRA	4	4	3	91	1.2;1.0;0.8
+patient75	TRA	5	5	2	567	1.2;0.8
+patient76	TRA	6	6	1	301	1.0

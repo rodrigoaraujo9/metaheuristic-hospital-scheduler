@@ -1,0 +1,130 @@
+Seed: 148
+M: 0
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+NKO	1.06	340;345;300;345;400;104;73
+RHK	1.11	643;509;465;211;450;91;99
+URO	1.06	299;269;428;716;298;66;68
+GYN	1.07	302;348;219;216;473;343;74
+Wards: 4
+NKO	15	15.0	NKO	NONE	6;6;4;2;2;2;1	6.0;6.0;4.0;2.0;2.0;2.0;1.0
+RHK	28	28.0	RHK	NONE	16;14;10;8;7;6;4	16.0;14.0;10.0;8.0;7.0;6.0;4.0
+URO	32	32.0	URO	NONE	19;16;11;7;6;6;5	19.0;16.0;11.0;7.0;6.0;6.0;5.0
+GYN	11	11.0	GYN	NONE	7;5;4;4;3;1;0	7.0;5.0;4.0;4.0;3.0;1.0;0.0
+Patients: 113
+patient0	NKO	0	0	1	101	1.0
+patient1	NKO	0	0	2	170	1.2;0.8
+patient2	NKO	1	4	3	200	1.2;1.0;0.8
+patient3	NKO	1	3	2	75	1.2;0.8
+patient4	NKO	2	4	1	61	1.0
+patient5	NKO	2	4	3	308	1.2;1.0;0.8
+patient6	NKO	2	5	1	186	1.0
+patient7	NKO	2	6	1	102	1.0
+patient8	NKO	2	6	1	255	1.0
+patient9	NKO	3	6	1	193	1.0
+patient10	NKO	4	6	1	244	1.0
+patient11	NKO	4	6	1	203	1.0
+patient12	NKO	4	4	1	253	1.0
+patient13	NKO	5	5	2	136	1.2;0.8
+patient14	NKO	5	5	1	263	1.0
+patient15	NKO	5	5	2	138	1.2;0.8
+patient16	NKO	5	5	2	113	1.2;0.8
+patient17	NKO	6	6	1	354	1.0
+patient18	RHK	0	2	4	86	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient19	RHK	0	0	3	176	1.2;1.0;0.8
+patient20	RHK	0	5	2	219	1.2;0.8
+patient21	RHK	0	3	1	58	1.0
+patient22	RHK	1	2	5	44	1.2;1.1;1.0;0.9;0.8
+patient23	RHK	1	1	3	392	1.2;1.0;0.8
+patient24	RHK	1	5	1	198	1.0
+patient25	RHK	1	1	5	89	1.2;1.1;1.0;0.9;0.8
+patient26	RHK	1	3	1	304	1.0
+patient27	RHK	2	6	1	208	1.0
+patient28	RHK	2	2	5	285	1.2;1.1;1.0;0.9;0.8
+patient29	RHK	2	2	5	224	1.2;1.1;1.0;0.9;0.8
+patient30	RHK	3	3	4	300	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient31	RHK	3	3	4	130	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient32	RHK	3	3	3	317	1.2;1.0;0.8
+patient33	RHK	3	3	4	133	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient34	RHK	3	3	4	102	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient35	RHK	3	3	4	473	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient36	RHK	4	4	1	93	1.0
+patient37	RHK	4	5	2	160	1.2;0.8
+patient38	RHK	4	4	3	85	1.2;1.0;0.8
+patient39	RHK	4	4	3	345	1.2;1.0;0.8
+patient40	RHK	4	4	3	83	1.2;1.0;0.8
+patient41	RHK	6	6	1	246	1.0
+patient42	RHK	6	6	1	306	1.0
+patient43	URO	0	3	1	55	1.0
+patient44	URO	0	1	1	103	1.0
+patient45	URO	0	6	1	125	1.0
+patient46	URO	0	0	1	39	1.0
+patient47	URO	0	6	1	30	1.0
+patient48	URO	0	5	1	210	1.0
+patient49	URO	0	2	1	115	1.0
+patient50	URO	0	5	2	56	1.2;0.8
+patient51	URO	1	2	1	168	1.0
+patient52	URO	1	1	6	120	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient53	URO	1	5	2	159	1.2;0.8
+patient54	URO	1	1	2	128	1.2;0.8
+patient55	URO	1	4	3	166	1.2;1.0;0.8
+patient56	URO	1	4	1	79	1.0
+patient57	URO	1	2	5	174	1.2;1.1;1.0;0.9;0.8
+patient58	URO	2	2	5	80	1.2;1.1;1.0;0.9;0.8
+patient59	URO	2	2	5	63	1.2;1.1;1.0;0.9;0.8
+patient60	URO	2	3	4	249	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient61	URO	2	3	1	58	1.0
+patient62	URO	2	2	1	95	1.0
+patient63	URO	2	3	2	54	1.2;0.8
+patient64	URO	2	2	5	188	1.2;1.1;1.0;0.9;0.8
+patient65	URO	2	2	5	53	1.2;1.1;1.0;0.9;0.8
+patient66	URO	2	2	5	139	1.2;1.1;1.0;0.9;0.8
+patient67	URO	2	2	5	169	1.2;1.1;1.0;0.9;0.8
+patient68	URO	3	3	4	52	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient69	URO	3	3	1	119	1.0
+patient70	URO	3	3	1	78	1.0
+patient71	URO	3	6	1	97	1.0
+patient72	URO	3	3	1	85	1.0
+patient73	URO	3	4	3	81	1.2;1.0;0.8
+patient74	URO	3	3	1	145	1.0
+patient75	URO	3	6	1	105	1.0
+patient76	URO	3	3	2	243	1.2;0.8
+patient77	URO	4	4	3	194	1.2;1.0;0.8
+patient78	URO	4	4	2	70	1.2;0.8
+patient79	URO	4	6	1	65	1.0
+patient80	URO	4	4	3	272	1.2;1.0;0.8
+patient81	URO	4	6	1	163	1.0
+patient82	URO	4	4	3	152	1.2;1.0;0.8
+patient83	URO	4	4	3	219	1.2;1.0;0.8
+patient84	URO	4	6	1	153	1.0
+patient85	URO	5	5	2	93	1.2;0.8
+patient86	URO	5	5	1	51	1.0
+patient87	URO	5	5	2	85	1.2;0.8
+patient88	URO	5	5	2	135	1.2;0.8
+patient89	URO	6	6	1	57	1.0
+patient90	URO	6	6	1	48	1.0
+patient91	URO	6	6	1	147	1.0
+patient92	URO	6	6	1	124	1.0
+patient93	URO	6	6	1	74	1.0
+patient94	GYN	0	2	1	113	1.0
+patient95	GYN	1	4	3	187	1.2;1.0;0.8
+patient96	GYN	1	1	2	218	1.2;0.8
+patient97	GYN	2	5	2	85	1.2;0.8
+patient98	GYN	2	4	2	70	1.2;0.8
+patient99	GYN	3	4	3	330	1.2;1.0;0.8
+patient100	GYN	3	6	1	203	1.0
+patient101	GYN	3	4	3	115	1.2;1.0;0.8
+patient102	GYN	3	3	1	275	1.0
+patient103	GYN	4	4	3	210	1.2;1.0;0.8
+patient104	GYN	4	4	2	263	1.2;0.8
+patient105	GYN	4	5	2	221	1.2;0.8
+patient106	GYN	4	4	3	273	1.2;1.0;0.8
+patient107	GYN	4	4	3	151	1.2;1.0;0.8
+patient108	GYN	5	6	1	284	1.0
+patient109	GYN	5	6	1	153	1.0
+patient110	GYN	5	5	2	127	1.2;0.8
+patient111	GYN	6	6	1	377	1.0
+patient112	GYN	6	6	1	119	1.0

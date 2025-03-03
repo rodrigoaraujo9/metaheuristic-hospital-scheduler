@@ -1,0 +1,109 @@
+Seed: 118
+M: 1
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+TRH	1.08	662;307;497;378;557;160;153
+MKA	1.09	241;301;462;336;261;173;88
+GYN	1.12	302;348;219;216;473;343;74
+ONC	1.07	216;126;409;89;263;70;57
+Wards: 4
+TRH	35	35.0	TRH	GYN	7;6;5;4;4;4;4	7.0;6.0;5.0;4.0;4.0;4.0;4.0
+MKA	11	11.0	MKA	ONC	2;2;1;1;1;0;0	2.0;2.0;1.0;1.0;1.0;0.0;0.0
+GYN	11	11.0	GYN	TRH	6;5;3;2;1;1;0	6.0;5.0;3.0;2.0;1.0;1.0;0.0
+ONC	32	32.0	ONC	GYN	10;8;7;6;4;4;4	10.0;8.0;7.0;6.0;4.0;4.0;4.0
+Patients: 92
+patient0	TRH	0	0	1	48	1.0
+patient1	TRH	0	6	1	88	1.0
+patient2	TRH	0	6	1	65	1.0
+patient3	TRH	1	2	1	271	1.0
+patient4	TRH	1	4	1	124	1.0
+patient5	TRH	1	2	2	202	1.2;0.8
+patient6	TRH	1	6	1	134	1.0
+patient7	TRH	2	5	1	255	1.0
+patient8	TRH	2	2	1	123	1.0
+patient9	TRH	3	6	1	79	1.0
+patient10	TRH	3	3	1	139	1.0
+patient11	TRH	3	6	1	71	1.0
+patient12	TRH	3	3	1	124	1.0
+patient13	TRH	3	3	1	139	1.0
+patient14	TRH	3	6	1	97	1.0
+patient15	TRH	4	6	1	61	1.0
+patient16	TRH	4	6	1	161	1.0
+patient17	TRH	5	5	1	130	1.0
+patient18	TRH	5	6	1	122	1.0
+patient19	TRH	5	5	2	191	1.2;0.8
+patient20	TRH	5	6	1	81	1.0
+patient21	TRH	5	6	1	217	1.0
+patient22	TRH	5	6	1	67	1.0
+patient23	TRH	5	6	1	248	1.0
+patient24	TRH	5	5	1	142	1.0
+patient25	TRH	5	6	1	124	1.0
+patient26	TRH	5	6	1	199	1.0
+patient27	TRH	5	6	1	68	1.0
+patient28	TRH	5	6	1	64	1.0
+patient29	TRH	5	6	1	75	1.0
+patient30	TRH	6	6	1	117	1.0
+patient31	TRH	6	6	1	232	1.0
+patient32	TRH	6	6	1	109	1.0
+patient33	TRH	6	6	1	158	1.0
+patient34	MKA	0	3	1	49	1.0
+patient35	MKA	0	6	1	114	1.0
+patient36	MKA	2	5	1	75	1.0
+patient37	MKA	2	4	1	543	1.0
+patient38	MKA	2	2	1	184	1.0
+patient39	MKA	4	6	1	360	1.0
+patient40	MKA	4	6	1	205	1.0
+patient41	MKA	4	5	1	499	1.0
+patient42	MKA	4	4	2	182	1.2;0.8
+patient43	MKA	5	5	1	98	1.0
+patient44	MKA	6	6	1	216	1.0
+patient45	MKA	6	6	1	85	1.0
+patient46	MKA	6	6	1	183	1.0
+patient47	MKA	6	6	1	216	1.0
+patient48	GYN	0	3	2	62	1.2;0.8
+patient49	GYN	0	0	1	116	1.0
+patient50	GYN	1	4	1	85	1.0
+patient51	GYN	3	3	1	369	1.0
+patient52	GYN	3	5	1	165	1.0
+patient53	GYN	3	6	1	272	1.0
+patient54	GYN	4	4	2	179	1.2;0.8
+patient55	GYN	4	6	1	346	1.0
+patient56	GYN	5	6	1	164	1.0
+patient57	GYN	5	6	1	103	1.0
+patient58	GYN	5	6	1	186	1.0
+patient59	GYN	5	5	2	93	1.2;0.8
+patient60	GYN	6	6	1	165	1.0
+patient61	GYN	6	6	1	186	1.0
+patient62	GYN	6	6	1	128	1.0
+patient63	ONC	0	3	1	23	1.0
+patient64	ONC	0	1	1	52	1.0
+patient65	ONC	0	5	1	34	1.0
+patient66	ONC	0	0	1	242	1.0
+patient67	ONC	0	3	1	83	1.0
+patient68	ONC	1	6	1	161	1.0
+patient69	ONC	1	1	1	92	1.0
+patient70	ONC	1	1	1	222	1.0
+patient71	ONC	1	2	1	82	1.0
+patient72	ONC	2	4	1	44	1.0
+patient73	ONC	2	6	1	97	1.0
+patient74	ONC	2	5	1	39	1.0
+patient75	ONC	2	5	2	83	1.2;0.8
+patient76	ONC	2	5	2	97	1.2;0.8
+patient77	ONC	2	3	1	59	1.0
+patient78	ONC	2	6	1	31	1.0
+patient79	ONC	3	5	2	118	1.2;0.8
+patient80	ONC	4	6	1	88	1.0
+patient81	ONC	4	6	1	81	1.0
+patient82	ONC	4	4	1	149	1.0
+patient83	ONC	4	4	3	46	1.2;1.0;0.8
+patient84	ONC	5	5	1	178	1.0
+patient85	ONC	6	6	1	35	1.0
+patient86	ONC	6	6	1	213	1.0
+patient87	ONC	6	6	1	100	1.0
+patient88	ONC	6	6	1	83	1.0
+patient89	ONC	6	6	1	158	1.0
+patient90	ONC	6	6	1	37	1.0
+patient91	ONC	6	6	1	33	1.0

@@ -1,0 +1,104 @@
+Seed: 249
+M: 3
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+VAT	1.09	391;520;411;498;425;187;208
+MKA	1.05	241;301;462;336;261;173;88
+NKO	1.13	340;345;300;345;400;104;73
+ONC	1.11	216;126;409;89;263;70;57
+Wards: 4
+VAT	23	23.0	VAT	NKO;MKA;ONC	4;4;3;3;3;3;3	4.0;4.0;3.0;3.0;3.0;3.0;3.0
+MKA	11	11.0	MKA	NKO;ONC;VAT	3;3;2;2;2;2;1	3.0;3.0;2.0;2.0;2.0;2.0;1.0
+NKO	15	15.0	NKO	ONC;MKA;VAT	2;2;2;2;2;2;2	2.0;2.0;2.0;2.0;2.0;2.0;2.0
+ONC	32	32.0	ONC	MKA;NKO;VAT	10;9;6;5;5;5;5	10.0;9.0;6.0;5.0;5.0;5.0;5.0
+Patients: 87
+patient0	VAT	0	0	1	97	1.0
+patient1	VAT	0	2	4	123	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient2	VAT	0	5	1	34	1.0
+patient3	VAT	0	1	1	55	1.0
+patient4	VAT	1	6	1	131	1.0
+patient5	VAT	1	1	1	67	1.0
+patient6	VAT	2	4	3	43	1.2;1.0;0.8
+patient7	VAT	2	6	1	50	1.0
+patient8	VAT	2	3	1	34	1.0
+patient9	VAT	2	2	1	96	1.0
+patient10	VAT	3	4	3	163	1.2;1.0;0.8
+patient11	VAT	3	6	1	43	1.0
+patient12	VAT	4	4	3	71	1.2;1.0;0.8
+patient13	VAT	4	6	1	152	1.0
+patient14	VAT	4	4	1	76	1.0
+patient15	VAT	4	6	1	82	1.0
+patient16	VAT	4	6	1	73	1.0
+patient17	VAT	4	6	1	235	1.0
+patient18	VAT	5	5	2	72	1.2;0.8
+patient19	VAT	5	6	1	30	1.0
+patient20	VAT	5	6	1	226	1.0
+patient21	VAT	5	5	2	59	1.2;0.8
+patient22	VAT	5	5	1	165	1.0
+patient23	VAT	6	6	1	138	1.0
+patient24	VAT	6	6	1	304	1.0
+patient25	VAT	6	6	1	193	1.0
+patient26	VAT	6	6	1	54	1.0
+patient27	VAT	6	6	1	237	1.0
+patient28	MKA	0	5	1	181	1.0
+patient29	MKA	0	3	1	231	1.0
+patient30	MKA	0	1	1	63	1.0
+patient31	MKA	1	1	2	101	1.2;0.8
+patient32	MKA	1	2	1	246	1.0
+patient33	MKA	1	1	2	126	1.2;0.8
+patient34	MKA	3	5	2	79	1.2;0.8
+patient35	MKA	3	6	1	93	1.0
+patient36	MKA	3	5	1	63	1.0
+patient37	MKA	3	5	2	180	1.2;0.8
+patient38	MKA	4	4	2	307	1.2;0.8
+patient39	MKA	6	6	1	79	1.0
+patient40	MKA	6	6	1	133	1.0
+patient41	NKO	0	2	2	148	1.2;0.8
+patient42	NKO	0	2	2	179	1.2;0.8
+patient43	NKO	0	5	1	65	1.0
+patient44	NKO	0	2	3	94	1.2;1.0;0.8
+patient45	NKO	1	6	1	187	1.0
+patient46	NKO	1	1	2	111	1.2;0.8
+patient47	NKO	2	5	2	78	1.2;0.8
+patient48	NKO	2	2	2	89	1.2;0.8
+patient49	NKO	2	2	1	65	1.0
+patient50	NKO	2	6	1	147	1.0
+patient51	NKO	2	2	5	223	1.2;1.1;1.0;0.9;0.8
+patient52	NKO	3	3	1	78	1.0
+patient53	NKO	3	4	3	116	1.2;1.0;0.8
+patient54	NKO	4	4	3	211	1.2;1.0;0.8
+patient55	NKO	4	4	3	123	1.2;1.0;0.8
+patient56	NKO	4	4	3	129	1.2;1.0;0.8
+patient57	NKO	4	6	1	119	1.0
+patient58	NKO	4	4	1	297	1.0
+patient59	NKO	5	6	1	117	1.0
+patient60	NKO	6	6	1	58	1.0
+patient61	NKO	6	6	1	288	1.0
+patient62	ONC	0	0	3	82	1.2;1.0;0.8
+patient63	ONC	1	3	4	104	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient64	ONC	1	1	3	29	1.2;1.0;0.8
+patient65	ONC	2	3	2	46	1.2;0.8
+patient66	ONC	2	3	3	110	1.2;1.0;0.8
+patient67	ONC	2	5	2	57	1.2;0.8
+patient68	ONC	3	3	4	36	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient69	ONC	3	3	2	42	1.2;0.8
+patient70	ONC	3	3	4	29	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient71	ONC	3	3	4	81	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient72	ONC	3	6	1	138	1.0
+patient73	ONC	3	5	2	36	1.2;0.8
+patient74	ONC	4	4	1	60	1.0
+patient75	ONC	4	4	3	128	1.2;1.0;0.8
+patient76	ONC	4	5	2	64	1.2;0.8
+patient77	ONC	4	4	3	69	1.2;1.0;0.8
+patient78	ONC	4	4	3	62	1.2;1.0;0.8
+patient79	ONC	4	4	3	199	1.2;1.0;0.8
+patient80	ONC	5	5	1	61	1.0
+patient81	ONC	5	5	2	25	1.2;0.8
+patient82	ONC	5	5	2	191	1.2;0.8
+patient83	ONC	5	5	1	50	1.0
+patient84	ONC	6	6	1	139	1.0
+patient85	ONC	6	6	1	117	1.0
+patient86	ONC	6	6	1	258	1.0

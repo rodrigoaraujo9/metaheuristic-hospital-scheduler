@@ -1,0 +1,114 @@
+Seed: 111
+M: 2
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+URO	1.11	299;269;428;716;298;66;68
+ORT	1.12	377;134;117;159;139;114;67
+VAT	1.06	391;520;411;498;425;187;208
+GYN	1.12	302;348;219;216;473;343;74
+Wards: 4
+URO	32	32.0	URO	ORT;GYN	17;13;9;7;6;5;4	17.0;13.0;9.0;7.0;6.0;5.0;4.0
+ORT	23	23.0	ORT	GYN;VAT	8;7;6;6;4;4;4	8.0;7.0;6.0;6.0;4.0;4.0;4.0
+VAT	23	23.0	VAT	GYN;URO	12;9;3;2;2;2;2	12.0;9.0;3.0;2.0;2.0;2.0;2.0
+GYN	11	11.0	GYN	URO;VAT	1;1;0;0;0;0;0	1.0;1.0;0.0;0.0;0.0;0.0;0.0
+Patients: 97
+patient0	URO	0	0	2	76	1.2;0.8
+patient1	URO	0	1	1	144	1.0
+patient2	URO	0	3	1	77	1.0
+patient3	URO	0	3	1	101	1.0
+patient4	URO	0	3	1	46	1.0
+patient5	URO	0	4	1	86	1.0
+patient6	URO	0	1	1	117	1.0
+patient7	URO	0	4	3	119	1.2;1.0;0.8
+patient8	URO	1	6	1	136	1.0
+patient9	URO	1	1	2	103	1.2;0.8
+patient10	URO	1	6	1	347	1.0
+patient11	URO	1	1	3	209	1.2;1.0;0.8
+patient12	URO	1	1	6	41	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient13	URO	1	1	1	85	1.0
+patient14	URO	2	2	5	94	1.2;1.1;1.0;0.9;0.8
+patient15	URO	2	5	2	201	1.2;0.8
+patient16	URO	2	2	1	37	1.0
+patient17	URO	2	3	1	64	1.0
+patient18	URO	2	2	5	127	1.2;1.1;1.0;0.9;0.8
+patient19	URO	2	4	1	171	1.0
+patient20	URO	3	3	4	28	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient21	URO	3	4	3	124	1.2;1.0;0.8
+patient22	URO	3	6	1	120	1.0
+patient23	URO	3	4	1	52	1.0
+patient24	URO	3	6	1	100	1.0
+patient25	URO	3	3	1	141	1.0
+patient26	URO	4	4	3	46	1.2;1.0;0.8
+patient27	URO	4	4	3	100	1.2;1.0;0.8
+patient28	URO	4	5	2	115	1.2;0.8
+patient29	URO	4	5	2	24	1.2;0.8
+patient30	URO	4	5	2	284	1.2;0.8
+patient31	URO	4	4	3	79	1.2;1.0;0.8
+patient32	URO	5	5	2	116	1.2;0.8
+patient33	URO	5	6	1	85	1.0
+patient34	URO	5	5	2	87	1.2;0.8
+patient35	URO	5	5	2	133	1.2;0.8
+patient36	URO	5	5	2	178	1.2;0.8
+patient37	URO	5	5	2	65	1.2;0.8
+patient38	URO	5	5	2	70	1.2;0.8
+patient39	URO	5	5	1	40	1.0
+patient40	URO	5	6	1	257	1.0
+patient41	URO	6	6	1	108	1.0
+patient42	URO	6	6	1	83	1.0
+patient43	URO	6	6	1	85	1.0
+patient44	URO	6	6	1	352	1.0
+patient45	URO	6	6	1	87	1.0
+patient46	URO	6	6	1	123	1.0
+patient47	URO	6	6	1	129	1.0
+patient48	URO	6	6	1	141	1.0
+patient49	ORT	1	1	6	146	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient50	ORT	1	1	6	287	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient51	ORT	1	1	6	147	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient52	ORT	1	1	6	196	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient53	ORT	4	4	3	86	1.2;1.0;0.8
+patient54	ORT	4	4	3	165	1.2;1.0;0.8
+patient55	ORT	4	4	3	231	1.2;1.0;0.8
+patient56	ORT	4	4	3	234	1.2;1.0;0.8
+patient57	ORT	4	6	1	270	1.0
+patient58	ORT	5	5	2	200	1.2;0.8
+patient59	ORT	5	5	2	729	1.2;0.8
+patient60	ORT	5	5	2	426	1.2;0.8
+patient61	ORT	5	5	2	75	1.2;0.8
+patient62	ORT	6	6	1	163	1.0
+patient63	VAT	0	2	1	84	1.0
+patient64	VAT	0	2	1	165	1.0
+patient65	VAT	0	3	1	85	1.0
+patient66	VAT	1	1	4	113	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient67	VAT	2	2	1	50	1.0
+patient68	VAT	2	6	1	95	1.0
+patient69	VAT	3	6	1	133	1.0
+patient70	VAT	3	3	4	135	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient71	VAT	3	3	4	156	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient72	VAT	4	4	3	115	1.2;1.0;0.8
+patient73	VAT	4	6	1	418	1.0
+patient74	VAT	4	4	1	245	1.0
+patient75	VAT	4	6	1	43	1.0
+patient76	VAT	5	5	2	94	1.2;0.8
+patient77	VAT	6	6	1	105	1.0
+patient78	VAT	6	6	1	235	1.0
+patient79	VAT	6	6	1	40	1.0
+patient80	GYN	0	0	1	147	1.0
+patient81	GYN	0	6	1	244	1.0
+patient82	GYN	0	3	1	148	1.0
+patient83	GYN	1	5	2	183	1.2;0.8
+patient84	GYN	2	6	1	98	1.0
+patient85	GYN	2	2	2	161	1.2;0.8
+patient86	GYN	2	4	2	207	1.2;0.8
+patient87	GYN	2	4	3	209	1.2;1.0;0.8
+patient88	GYN	2	4	3	233	1.2;1.0;0.8
+patient89	GYN	3	4	2	186	1.2;0.8
+patient90	GYN	3	3	1	492	1.0
+patient91	GYN	3	3	1	329	1.0
+patient92	GYN	3	3	3	89	1.2;1.0;0.8
+patient93	GYN	5	5	2	159	1.2;0.8
+patient94	GYN	5	6	1	173	1.0
+patient95	GYN	5	5	2	319	1.2;0.8
+patient96	GYN	6	6	1	83	1.0

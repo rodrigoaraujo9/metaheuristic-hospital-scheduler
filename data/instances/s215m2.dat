@@ -1,0 +1,119 @@
+Seed: 215
+M: 2
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+ABD	1.08	552;647;346;702;612;138;118
+MKA	1.05	241;301;462;336;261;173;88
+NKO	1.06	340;345;300;345;400;104;73
+NCH	1.12	338;657;406;607;778;170;194
+Wards: 4
+ABD	38	38.0	ABD	MKA;NKO	9;6;5;5;3;3;3	9.0;6.0;5.0;5.0;3.0;3.0;3.0
+MKA	11	11.0	MKA	NKO;ABD	1;1;1;1;0;0;0	1.0;1.0;1.0;1.0;0.0;0.0;0.0
+NKO	15	15.0	NKO	ABD;NCH	2;1;1;1;1;1;1	2.0;1.0;1.0;1.0;1.0;1.0;1.0
+NCH	37	37.0	NCH	MKA;ABD	14;12;8;7;5;3;2	14.0;12.0;8.0;7.0;5.0;3.0;2.0
+Patients: 102
+patient0	ABD	0	3	4	126	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient1	ABD	0	0	5	98	1.2;1.1;1.0;0.9;0.8
+patient2	ABD	0	0	1	111	1.0
+patient3	ABD	1	2	5	80	1.2;1.1;1.0;0.9;0.8
+patient4	ABD	1	1	6	72	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient5	ABD	1	1	6	99	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient6	ABD	2	4	3	102	1.2;1.0;0.8
+patient7	ABD	2	2	5	88	1.2;1.1;1.0;0.9;0.8
+patient8	ABD	2	2	2	42	1.2;0.8
+patient9	ABD	2	2	5	20	1.2;1.1;1.0;0.9;0.8
+patient10	ABD	2	2	5	46	1.2;1.1;1.0;0.9;0.8
+patient11	ABD	2	2	5	111	1.2;1.1;1.0;0.9;0.8
+patient12	ABD	2	2	5	42	1.2;1.1;1.0;0.9;0.8
+patient13	ABD	2	2	5	212	1.2;1.1;1.0;0.9;0.8
+patient14	ABD	3	6	1	106	1.0
+patient15	ABD	3	6	1	94	1.0
+patient16	ABD	3	5	2	150	1.2;0.8
+patient17	ABD	3	3	4	256	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient18	ABD	3	6	1	196	1.0
+patient19	ABD	3	3	4	53	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient20	ABD	4	4	3	114	1.2;1.0;0.8
+patient21	ABD	4	4	3	68	1.2;1.0;0.8
+patient22	ABD	4	4	3	57	1.2;1.0;0.8
+patient23	ABD	4	4	1	47	1.0
+patient24	ABD	4	4	3	76	1.2;1.0;0.8
+patient25	ABD	4	4	3	145	1.2;1.0;0.8
+patient26	ABD	4	4	3	112	1.2;1.0;0.8
+patient27	ABD	5	5	2	127	1.2;0.8
+patient28	ABD	5	5	2	35	1.2;0.8
+patient29	ABD	5	5	2	109	1.2;0.8
+patient30	ABD	5	6	1	145	1.0
+patient31	ABD	5	5	2	118	1.2;0.8
+patient32	ABD	5	6	1	159	1.0
+patient33	ABD	5	5	2	70	1.2;0.8
+patient34	ABD	6	6	1	169	1.0
+patient35	ABD	6	6	1	79	1.0
+patient36	ABD	6	6	1	43	1.0
+patient37	MKA	0	4	1	205	1.0
+patient38	MKA	1	5	1	152	1.0
+patient39	MKA	1	5	2	175	1.2;0.8
+patient40	MKA	1	6	1	118	1.0
+patient41	MKA	2	6	1	104	1.0
+patient42	MKA	2	2	1	153	1.0
+patient43	MKA	2	3	1	159	1.0
+patient44	MKA	3	5	2	132	1.2;0.8
+patient45	MKA	3	6	1	55	1.0
+patient46	MKA	3	5	2	22	1.2;0.8
+patient47	MKA	5	6	1	60	1.0
+patient48	MKA	5	5	2	175	1.2;0.8
+patient49	MKA	6	6	1	54	1.0
+patient50	NKO	0	1	2	163	1.2;0.8
+patient51	NKO	0	0	4	129	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient52	NKO	1	3	2	144	1.2;0.8
+patient53	NKO	1	1	1	106	1.0
+patient54	NKO	2	5	2	97	1.2;0.8
+patient55	NKO	2	4	3	130	1.2;1.0;0.8
+patient56	NKO	2	2	1	133	1.0
+patient57	NKO	2	4	3	116	1.2;1.0;0.8
+patient58	NKO	2	4	1	59	1.0
+patient59	NKO	2	4	3	29	1.2;1.0;0.8
+patient60	NKO	2	4	3	63	1.2;1.0;0.8
+patient61	NKO	4	6	1	144	1.0
+patient62	NKO	4	4	1	58	1.0
+patient63	NKO	4	6	1	264	1.0
+patient64	NKO	5	5	2	138	1.2;0.8
+patient65	NKO	5	6	1	123	1.0
+patient66	NKO	5	6	1	191	1.0
+patient67	NKO	5	5	2	316	1.2;0.8
+patient68	NKO	6	6	1	246	1.0
+patient69	NKO	6	6	1	72	1.0
+patient70	NKO	6	6	1	148	1.0
+patient71	NCH	0	0	2	209	1.2;0.8
+patient72	NCH	0	0	1	165	1.0
+patient73	NCH	0	3	1	185	1.0
+patient74	NCH	1	1	6	136	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient75	NCH	1	1	6	124	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient76	NCH	1	2	2	166	1.2;0.8
+patient77	NCH	1	1	6	171	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient78	NCH	1	1	1	149	1.0
+patient79	NCH	1	2	5	75	1.2;1.1;1.0;0.9;0.8
+patient80	NCH	1	6	1	36	1.0
+patient81	NCH	2	3	4	80	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient82	NCH	2	2	5	185	1.2;1.1;1.0;0.9;0.8
+patient83	NCH	2	2	5	74	1.2;1.1;1.0;0.9;0.8
+patient84	NCH	2	4	3	340	1.2;1.0;0.8
+patient85	NCH	3	3	4	177	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient86	NCH	3	3	4	158	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient87	NCH	3	3	2	245	1.2;0.8
+patient88	NCH	4	6	1	406	1.0
+patient89	NCH	4	4	3	316	1.2;1.0;0.8
+patient90	NCH	4	4	3	92	1.2;1.0;0.8
+patient91	NCH	5	5	2	190	1.2;0.8
+patient92	NCH	5	5	1	117	1.0
+patient93	NCH	5	6	1	99	1.0
+patient94	NCH	5	6	1	82	1.0
+patient95	NCH	5	6	1	131	1.0
+patient96	NCH	6	6	1	237	1.0
+patient97	NCH	6	6	1	187	1.0
+patient98	NCH	6	6	1	211	1.0
+patient99	NCH	6	6	1	62	1.0
+patient100	NCH	6	6	1	183	1.0
+patient101	NCH	6	6	1	238	1.0

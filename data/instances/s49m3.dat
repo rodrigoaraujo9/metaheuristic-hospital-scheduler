@@ -1,0 +1,101 @@
+Seed: 49
+M: 3
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+RHK	1.12	643;509;465;211;450;91;99
+GYN	1.09	302;348;219;216;473;343;74
+MKA	1.11	241;301;462;336;261;173;88
+ABD	1.07	552;647;346;702;612;138;118
+Wards: 4
+RHK	28	28.0	RHK	ABD;GYN;MKA	15;11;8;5;3;1;1	15.0;11.0;8.0;5.0;3.0;1.0;1.0
+GYN	11	11.0	GYN	ABD;MKA;RHK	1;1;1;0;0;0;0	1.0;1.0;1.0;0.0;0.0;0.0;0.0
+MKA	11	11.0	MKA	RHK;GYN;ABD	1;1;0;0;0;0;0	1.0;1.0;0.0;0.0;0.0;0.0;0.0
+ABD	38	38.0	ABD	GYN;RHK;MKA	14;11;7;5;4;4;2	14.0;11.0;7.0;5.0;4.0;4.0;2.0
+Patients: 84
+patient0	RHK	0	1	3	122	1.2;1.0;0.8
+patient1	RHK	1	2	5	98	1.2;1.1;1.0;0.9;0.8
+patient2	RHK	1	2	5	151	1.2;1.1;1.0;0.9;0.8
+patient3	RHK	1	2	5	171	1.2;1.1;1.0;0.9;0.8
+patient4	RHK	2	2	1	85	1.0
+patient5	RHK	2	3	4	146	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient6	RHK	2	2	5	80	1.2;1.1;1.0;0.9;0.8
+patient7	RHK	3	3	1	78	1.0
+patient8	RHK	3	5	2	77	1.2;0.8
+patient9	RHK	3	3	4	39	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient10	RHK	4	4	1	133	1.0
+patient11	RHK	4	4	3	65	1.2;1.0;0.8
+patient12	RHK	5	5	2	226	1.2;0.8
+patient13	RHK	5	5	2	159	1.2;0.8
+patient14	RHK	5	5	2	157	1.2;0.8
+patient15	RHK	5	6	1	138	1.0
+patient16	RHK	5	5	2	67	1.2;0.8
+patient17	RHK	6	6	1	37	1.0
+patient18	RHK	6	6	1	151	1.0
+patient19	RHK	6	6	1	65	1.0
+patient20	GYN	0	4	2	144	1.2;0.8
+patient21	GYN	1	1	3	123	1.2;1.0;0.8
+patient22	GYN	1	5	2	167	1.2;0.8
+patient23	GYN	2	2	3	183	1.2;1.0;0.8
+patient24	GYN	2	5	1	112	1.0
+patient25	GYN	2	2	1	164	1.0
+patient26	GYN	3	4	3	106	1.2;1.0;0.8
+patient27	GYN	3	4	1	105	1.0
+patient28	GYN	3	4	2	104	1.2;0.8
+patient29	GYN	3	6	1	65	1.0
+patient30	GYN	4	5	2	153	1.2;0.8
+patient31	GYN	4	5	2	92	1.2;0.8
+patient32	GYN	4	4	3	223	1.2;1.0;0.8
+patient33	GYN	5	5	1	173	1.0
+patient34	GYN	6	6	1	172	1.0
+patient35	GYN	6	6	1	157	1.0
+patient36	GYN	6	6	1	94	1.0
+patient37	GYN	6	6	1	62	1.0
+patient38	MKA	1	1	1	153	1.0
+patient39	MKA	2	4	1	124	1.0
+patient40	MKA	2	3	2	187	1.2;0.8
+patient41	MKA	3	5	1	211	1.0
+patient42	MKA	3	4	1	109	1.0
+patient43	MKA	4	6	1	182	1.0
+patient44	MKA	4	4	1	102	1.0
+patient45	MKA	4	6	1	100	1.0
+patient46	MKA	4	4	2	99	1.2;0.8
+patient47	MKA	5	6	1	52	1.0
+patient48	MKA	5	6	1	166	1.0
+patient49	ABD	0	0	5	99	1.2;1.1;1.0;0.9;0.8
+patient50	ABD	0	1	3	84	1.2;1.0;0.8
+patient51	ABD	1	1	6	117	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient52	ABD	1	4	2	129	1.2;0.8
+patient53	ABD	1	1	6	75	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient54	ABD	2	6	1	115	1.0
+patient55	ABD	2	3	4	71	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient56	ABD	2	2	5	70	1.2;1.1;1.0;0.9;0.8
+patient57	ABD	2	6	1	69	1.0
+patient58	ABD	2	3	4	41	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient59	ABD	3	4	1	106	1.0
+patient60	ABD	3	3	4	60	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient61	ABD	3	4	3	161	1.2;1.0;0.8
+patient62	ABD	3	6	1	122	1.0
+patient63	ABD	3	3	4	121	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient64	ABD	3	3	3	109	1.2;1.0;0.8
+patient65	ABD	4	5	2	61	1.2;0.8
+patient66	ABD	4	4	3	39	1.2;1.0;0.8
+patient67	ABD	4	4	3	117	1.2;1.0;0.8
+patient68	ABD	4	5	1	60	1.0
+patient69	ABD	4	4	3	92	1.2;1.0;0.8
+patient70	ABD	4	4	3	86	1.2;1.0;0.8
+patient71	ABD	5	5	2	256	1.2;0.8
+patient72	ABD	5	5	2	85	1.2;0.8
+patient73	ABD	5	5	2	137	1.2;0.8
+patient74	ABD	5	5	2	350	1.2;0.8
+patient75	ABD	5	5	2	147	1.2;0.8
+patient76	ABD	5	5	2	91	1.2;0.8
+patient77	ABD	5	5	2	41	1.2;0.8
+patient78	ABD	6	6	1	53	1.0
+patient79	ABD	6	6	1	183	1.0
+patient80	ABD	6	6	1	81	1.0
+patient81	ABD	6	6	1	206	1.0
+patient82	ABD	6	6	1	159	1.0
+patient83	ABD	6	6	1	158	1.0

@@ -1,0 +1,118 @@
+Seed: 53
+M: 2
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+URO	1.07	299;269;428;716;298;66;68
+THO	1.11	371;929;731;959;679;271;315
+NCH	1.11	338;657;406;607;778;170;194
+TRA	1.08	372;323;379;352;199;360;397
+Wards: 4
+URO	32	32.0	URO	THO;NCH	11;10;9;6;6;5;4	11.0;10.0;9.0;6.0;6.0;5.0;4.0
+THO	40	40.0	THO	URO;NCH	16;14;14;11;10;9;8	16.0;14.0;14.0;11.0;10.0;9.0;8.0
+NCH	37	37.0	NCH	URO;TRA	11;7;7;7;6;6;5	11.0;7.0;7.0;7.0;6.0;6.0;5.0
+TRA	22	22.0	TRA	THO;URO	6;6;6;6;4;3;3	6.0;6.0;6.0;6.0;4.0;3.0;3.0
+Patients: 101
+patient0	URO	0	0	1	38	1.0
+patient1	URO	0	1	1	152	1.0
+patient2	URO	0	0	1	173	1.0
+patient3	URO	0	1	1	73	1.0
+patient4	URO	1	1	1	162	1.0
+patient5	URO	1	1	6	91	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient6	URO	1	1	3	51	1.2;1.0;0.8
+patient7	URO	1	4	1	63	1.0
+patient8	URO	1	1	5	124	1.2;1.1;1.0;0.9;0.8
+patient9	URO	2	2	1	365	1.0
+patient10	URO	2	2	1	144	1.0
+patient11	URO	2	2	5	187	1.2;1.1;1.0;0.9;0.8
+patient12	URO	2	2	1	34	1.0
+patient13	URO	2	2	5	32	1.2;1.1;1.0;0.9;0.8
+patient14	URO	2	2	1	167	1.0
+patient15	URO	2	6	1	79	1.0
+patient16	URO	2	6	1	125	1.0
+patient17	URO	2	6	1	68	1.0
+patient18	URO	2	2	1	57	1.0
+patient19	URO	2	3	2	332	1.2;0.8
+patient20	URO	2	2	5	105	1.2;1.1;1.0;0.9;0.8
+patient21	URO	2	5	1	56	1.0
+patient22	URO	2	2	4	72	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient23	URO	3	4	3	80	1.2;1.0;0.8
+patient24	URO	3	5	2	187	1.2;0.8
+patient25	URO	3	4	3	92	1.2;1.0;0.8
+patient26	URO	3	5	2	107	1.2;0.8
+patient27	URO	4	4	3	172	1.2;1.0;0.8
+patient28	URO	4	6	1	228	1.0
+patient29	URO	4	6	1	37	1.0
+patient30	URO	4	6	1	62	1.0
+patient31	URO	4	4	3	35	1.2;1.0;0.8
+patient32	URO	4	4	1	99	1.0
+patient33	URO	4	4	3	101	1.2;1.0;0.8
+patient34	URO	4	4	3	92	1.2;1.0;0.8
+patient35	URO	4	5	2	61	1.2;0.8
+patient36	URO	4	4	3	105	1.2;1.0;0.8
+patient37	URO	4	4	3	237	1.2;1.0;0.8
+patient38	URO	4	4	1	34	1.0
+patient39	URO	4	5	2	200	1.2;0.8
+patient40	URO	4	5	2	47	1.2;0.8
+patient41	URO	5	5	2	137	1.2;0.8
+patient42	URO	5	5	2	54	1.2;0.8
+patient43	URO	5	5	2	175	1.2;0.8
+patient44	URO	5	5	2	206	1.2;0.8
+patient45	URO	6	6	1	114	1.0
+patient46	URO	6	6	1	52	1.0
+patient47	URO	6	6	1	105	1.0
+patient48	URO	6	6	1	69	1.0
+patient49	URO	6	6	1	84	1.0
+patient50	URO	6	6	1	115	1.0
+patient51	URO	6	6	1	99	1.0
+patient52	URO	6	6	1	64	1.0
+patient53	URO	6	6	1	41	1.0
+patient54	THO	0	3	2	90	1.2;0.8
+patient55	THO	0	0	1	328	1.0
+patient56	THO	0	4	2	370	1.2;0.8
+patient57	THO	1	1	3	166	1.2;1.0;0.8
+patient58	THO	1	3	1	348	1.0
+patient59	THO	2	3	4	203	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient60	THO	3	3	4	119	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient61	THO	4	6	1	145	1.0
+patient62	THO	4	4	3	270	1.2;1.0;0.8
+patient63	THO	4	4	3	741	1.2;1.0;0.8
+patient64	THO	4	4	3	311	1.2;1.0;0.8
+patient65	THO	4	4	3	397	1.2;1.0;0.8
+patient66	THO	4	6	1	80	1.0
+patient67	THO	4	4	3	76	1.2;1.0;0.8
+patient68	THO	5	5	2	358	1.2;0.8
+patient69	THO	5	5	2	178	1.2;0.8
+patient70	THO	5	5	2	273	1.2;0.8
+patient71	THO	5	5	2	155	1.2;0.8
+patient72	THO	5	5	2	131	1.2;0.8
+patient73	THO	5	5	1	677	1.0
+patient74	THO	6	6	1	231	1.0
+patient75	THO	6	6	1	128	1.0
+patient76	THO	6	6	1	164	1.0
+patient77	NCH	0	5	1	95	1.0
+patient78	NCH	0	5	1	303	1.0
+patient79	NCH	0	0	1	337	1.0
+patient80	NCH	1	1	2	165	1.2;0.8
+patient81	NCH	1	4	3	320	1.2;1.0;0.8
+patient82	NCH	3	4	1	197	1.0
+patient83	NCH	3	3	4	122	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient84	NCH	4	4	3	146	1.2;1.0;0.8
+patient85	NCH	4	4	3	255	1.2;1.0;0.8
+patient86	NCH	5	5	2	629	1.2;0.8
+patient87	NCH	6	6	1	289	1.0
+patient88	NCH	6	6	1	359	1.0
+patient89	NCH	6	6	1	86	1.0
+patient90	TRA	0	0	5	101	1.2;1.1;1.0;0.9;0.8
+patient91	TRA	1	1	6	363	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient92	TRA	2	2	5	409	1.2;1.1;1.0;0.9;0.8
+patient93	TRA	4	4	3	185	1.2;1.0;0.8
+patient94	TRA	4	6	1	385	1.0
+patient95	TRA	5	5	2	225	1.2;0.8
+patient96	TRA	5	5	2	133	1.2;0.8
+patient97	TRA	5	5	2	162	1.2;0.8
+patient98	TRA	6	6	1	300	1.0
+patient99	TRA	6	6	1	813	1.0
+patient100	TRA	6	6	1	345	1.0

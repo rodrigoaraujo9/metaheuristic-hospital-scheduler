@@ -1,0 +1,89 @@
+Seed: 196
+M: 1
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+TRA	1.12	372;323;379;352;199;360;397
+NKO	1.15	340;345;300;345;400;104;73
+ABD	1.08	552;647;346;702;612;138;118
+GYN	1.15	302;348;219;216;473;343;74
+Wards: 4
+TRA	22	22.0	TRA	GYN	6;6;6;6;5;4;3	6.0;6.0;6.0;6.0;5.0;4.0;3.0
+NKO	15	15.0	NKO	TRA	2;2;2;2;1;1;1	2.0;2.0;2.0;2.0;1.0;1.0;1.0
+ABD	38	38.0	ABD	TRA	10;7;5;5;5;3;3	10.0;7.0;5.0;5.0;5.0;3.0;3.0
+GYN	11	11.0	GYN	NKO	7;2;1;0;0;0;0	7.0;2.0;1.0;0.0;0.0;0.0;0.0
+Patients: 72
+patient0	TRA	0	0	7	155	1.2;1.1333333333333333;1.0666666666666667;1.0;0.9333333333333333;0.8666666666666667;0.8
+patient1	TRA	1	1	6	51	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient2	TRA	2	4	3	325	1.2;1.0;0.8
+patient3	TRA	3	5	2	340	1.2;0.8
+patient4	TRA	4	4	3	199	1.2;1.0;0.8
+patient5	TRA	4	5	2	498	1.2;0.8
+patient6	TRA	4	4	3	190	1.2;1.0;0.8
+patient7	NKO	1	5	1	109	1.0
+patient8	NKO	2	2	1	40	1.0
+patient9	NKO	3	4	1	213	1.0
+patient10	NKO	3	6	1	222	1.0
+patient11	NKO	3	3	4	137	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient12	NKO	3	6	1	314	1.0
+patient13	NKO	4	6	1	132	1.0
+patient14	NKO	4	4	1	225	1.0
+patient15	NKO	4	6	1	209	1.0
+patient16	NKO	5	6	1	135	1.0
+patient17	NKO	5	6	1	229	1.0
+patient18	NKO	5	5	2	149	1.2;0.8
+patient19	NKO	5	5	2	340	1.2;0.8
+patient20	NKO	6	6	1	129	1.0
+patient21	ABD	0	1	6	82	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient22	ABD	0	0	3	28	1.2;1.0;0.8
+patient23	ABD	0	1	1	169	1.0
+patient24	ABD	0	1	6	176	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient25	ABD	0	4	3	105	1.2;1.0;0.8
+patient26	ABD	1	1	2	254	1.2;0.8
+patient27	ABD	1	2	1	101	1.0
+patient28	ABD	1	1	2	178	1.2;0.8
+patient29	ABD	1	1	6	164	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient30	ABD	2	4	1	104	1.0
+patient31	ABD	2	5	2	182	1.2;0.8
+patient32	ABD	2	5	1	115	1.0
+patient33	ABD	2	4	1	277	1.0
+patient34	ABD	3	3	1	99	1.0
+patient35	ABD	3	6	1	58	1.0
+patient36	ABD	3	6	1	116	1.0
+patient37	ABD	4	6	1	125	1.0
+patient38	ABD	4	5	2	152	1.2;0.8
+patient39	ABD	4	4	2	69	1.2;0.8
+patient40	ABD	4	4	2	155	1.2;0.8
+patient41	ABD	5	5	2	56	1.2;0.8
+patient42	ABD	5	5	2	234	1.2;0.8
+patient43	ABD	5	5	2	247	1.2;0.8
+patient44	ABD	5	5	1	127	1.0
+patient45	ABD	5	5	2	98	1.2;0.8
+patient46	ABD	5	6	1	68	1.0
+patient47	ABD	6	6	1	273	1.0
+patient48	GYN	0	5	2	122	1.2;0.8
+patient49	GYN	0	2	2	47	1.2;0.8
+patient50	GYN	1	2	2	232	1.2;0.8
+patient51	GYN	1	1	1	241	1.0
+patient52	GYN	1	4	1	151	1.0
+patient53	GYN	2	4	1	335	1.0
+patient54	GYN	2	4	2	146	1.2;0.8
+patient55	GYN	2	6	1	244	1.0
+patient56	GYN	2	4	1	227	1.0
+patient57	GYN	2	2	3	150	1.2;1.0;0.8
+patient58	GYN	3	6	1	248	1.0
+patient59	GYN	3	3	4	164	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient60	GYN	3	6	1	363	1.0
+patient61	GYN	4	4	3	143	1.2;1.0;0.8
+patient62	GYN	4	6	1	90	1.0
+patient63	GYN	4	6	1	165	1.0
+patient64	GYN	4	5	2	177	1.2;0.8
+patient65	GYN	5	5	2	211	1.2;0.8
+patient66	GYN	5	5	1	105	1.0
+patient67	GYN	6	6	1	215	1.0
+patient68	GYN	6	6	1	86	1.0
+patient69	GYN	6	6	1	312	1.0
+patient70	GYN	6	6	1	327	1.0
+patient71	GYN	6	6	1	180	1.0

@@ -1,0 +1,126 @@
+Seed: 245
+M: 2
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+MKA	1.14	241;301;462;336;261;173;88
+THO	1.14	371;929;731;959;679;271;315
+RHK	1.08	643;509;465;211;450;91;99
+ONC	1.15	216;126;409;89;263;70;57
+Wards: 4
+MKA	11	11.0	MKA	THO;ONC	0;0;0;0;0;0;0	0.0;0.0;0.0;0.0;0.0;0.0;0.0
+THO	40	40.0	THO	RHK;ONC	12;8;8;7;7;7;6	12.0;8.0;8.0;7.0;7.0;7.0;6.0
+RHK	28	28.0	RHK	MKA;THO	15;12;10;8;7;5;4	15.0;12.0;10.0;8.0;7.0;5.0;4.0
+ONC	32	32.0	ONC	RHK;MKA	9;9;6;5;4;4;3	9.0;9.0;6.0;5.0;4.0;4.0;3.0
+Patients: 109
+patient0	MKA	0	0	1	47	1.0
+patient1	MKA	0	0	1	264	1.0
+patient2	MKA	1	6	1	67	1.0
+patient3	MKA	1	2	1	345	1.0
+patient4	MKA	1	5	1	147	1.0
+patient5	MKA	2	4	1	137	1.0
+patient6	MKA	2	3	4	244	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient7	MKA	3	6	1	412	1.0
+patient8	MKA	5	5	1	175	1.0
+patient9	MKA	5	5	2	102	1.2;0.8
+patient10	MKA	6	6	1	261	1.0
+patient11	MKA	6	6	1	178	1.0
+patient12	THO	0	3	3	60	1.2;1.0;0.8
+patient13	THO	0	3	4	270	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient14	THO	0	5	1	82	1.0
+patient15	THO	0	1	3	340	1.2;1.0;0.8
+patient16	THO	0	2	1	163	1.0
+patient17	THO	0	1	1	153	1.0
+patient18	THO	0	5	2	252	1.2;0.8
+patient19	THO	0	0	3	397	1.2;1.0;0.8
+patient20	THO	0	0	7	189	1.2;1.1333333333333333;1.0666666666666667;1.0;0.9333333333333333;0.8666666666666667;0.8
+patient21	THO	1	3	1	119	1.0
+patient22	THO	2	6	1	268	1.0
+patient23	THO	2	4	3	192	1.2;1.0;0.8
+patient24	THO	2	2	1	160	1.0
+patient25	THO	2	2	1	374	1.0
+patient26	THO	2	3	1	180	1.0
+patient27	THO	3	5	1	100	1.0
+patient28	THO	3	3	2	207	1.2;0.8
+patient29	THO	3	3	4	201	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient30	THO	4	5	2	91	1.2;0.8
+patient31	THO	4	4	1	444	1.0
+patient32	THO	4	6	1	105	1.0
+patient33	THO	4	4	3	359	1.2;1.0;0.8
+patient34	THO	4	4	3	193	1.2;1.0;0.8
+patient35	THO	4	4	3	208	1.2;1.0;0.8
+patient36	THO	4	4	3	180	1.2;1.0;0.8
+patient37	THO	4	4	3	109	1.2;1.0;0.8
+patient38	THO	4	4	3	164	1.2;1.0;0.8
+patient39	THO	4	5	2	80	1.2;0.8
+patient40	THO	5	5	1	375	1.0
+patient41	THO	5	5	2	121	1.2;0.8
+patient42	THO	6	6	1	157	1.0
+patient43	THO	6	6	1	429	1.0
+patient44	THO	6	6	1	188	1.0
+patient45	RHK	0	6	1	35	1.0
+patient46	RHK	0	0	1	216	1.0
+patient47	RHK	0	5	2	52	1.2;0.8
+patient48	RHK	0	5	2	285	1.2;0.8
+patient49	RHK	1	1	6	117	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient50	RHK	1	1	1	109	1.0
+patient51	RHK	1	1	6	198	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient52	RHK	1	1	1	344	1.0
+patient53	RHK	2	5	1	140	1.0
+patient54	RHK	2	4	1	80	1.0
+patient55	RHK	2	5	1	214	1.0
+patient56	RHK	2	2	5	143	1.2;1.1;1.0;0.9;0.8
+patient57	RHK	3	3	4	115	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient58	RHK	3	5	2	320	1.2;0.8
+patient59	RHK	4	6	1	132	1.0
+patient60	RHK	4	4	3	65	1.2;1.0;0.8
+patient61	RHK	4	4	3	157	1.2;1.0;0.8
+patient62	RHK	4	4	3	151	1.2;1.0;0.8
+patient63	RHK	4	4	3	58	1.2;1.0;0.8
+patient64	RHK	5	5	2	393	1.2;0.8
+patient65	RHK	5	5	2	69	1.2;0.8
+patient66	RHK	5	6	1	304	1.0
+patient67	RHK	5	5	2	144	1.2;0.8
+patient68	RHK	5	5	2	157	1.2;0.8
+patient69	RHK	5	6	1	132	1.0
+patient70	RHK	5	5	2	72	1.2;0.8
+patient71	RHK	6	6	1	118	1.0
+patient72	RHK	6	6	1	50	1.0
+patient73	RHK	6	6	1	321	1.0
+patient74	ONC	0	6	1	21	1.0
+patient75	ONC	0	1	1	118	1.0
+patient76	ONC	0	1	2	31	1.2;0.8
+patient77	ONC	0	1	1	154	1.0
+patient78	ONC	0	0	5	67	1.2;1.1;1.0;0.9;0.8
+patient79	ONC	1	1	1	62	1.0
+patient80	ONC	1	6	1	109	1.0
+patient81	ONC	1	4	1	184	1.0
+patient82	ONC	1	1	1	79	1.0
+patient83	ONC	1	6	1	46	1.0
+patient84	ONC	1	1	6	117	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient85	ONC	1	1	1	80	1.0
+patient86	ONC	2	5	1	65	1.0
+patient87	ONC	2	6	1	172	1.0
+patient88	ONC	2	4	1	75	1.0
+patient89	ONC	2	2	5	38	1.2;1.1;1.0;0.9;0.8
+patient90	ONC	2	3	1	87	1.0
+patient91	ONC	3	3	4	84	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient92	ONC	3	6	1	34	1.0
+patient93	ONC	3	5	2	209	1.2;0.8
+patient94	ONC	3	5	1	40	1.0
+patient95	ONC	4	4	2	164	1.2;0.8
+patient96	ONC	4	5	2	81	1.2;0.8
+patient97	ONC	4	6	1	88	1.0
+patient98	ONC	5	5	2	75	1.2;0.8
+patient99	ONC	5	5	2	42	1.2;0.8
+patient100	ONC	5	5	2	67	1.2;0.8
+patient101	ONC	5	5	2	30	1.2;0.8
+patient102	ONC	6	6	1	172	1.0
+patient103	ONC	6	6	1	47	1.0
+patient104	ONC	6	6	1	64	1.0
+patient105	ONC	6	6	1	201	1.0
+patient106	ONC	6	6	1	79	1.0
+patient107	ONC	6	6	1	89	1.0
+patient108	ONC	6	6	1	36	1.0

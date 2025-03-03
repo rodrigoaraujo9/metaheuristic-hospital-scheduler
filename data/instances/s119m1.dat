@@ -1,0 +1,93 @@
+Seed: 119
+M: 1
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+TRA	1.08	372;323;379;352;199;360;397
+VAT	1.11	391;520;411;498;425;187;208
+MKA	1.12	241;301;462;336;261;173;88
+GYN	1.07	302;348;219;216;473;343;74
+Wards: 4
+TRA	22	22.0	TRA	GYN	7;7;6;5;5;5;5	7.0;7.0;6.0;5.0;5.0;5.0;5.0
+VAT	23	23.0	VAT	MKA	12;10;9;8;7;6;6	12.0;10.0;9.0;8.0;7.0;6.0;6.0
+MKA	11	11.0	MKA	GYN	2;0;0;0;0;0;0	2.0;0.0;0.0;0.0;0.0;0.0;0.0
+GYN	11	11.0	GYN	MKA	10;6;1;0;0;0;0	10.0;6.0;1.0;0.0;0.0;0.0;0.0
+Patients: 76
+patient0	TRA	0	4	1	120	1.0
+patient1	TRA	0	0	4	225	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient2	TRA	0	0	7	233	1.2;1.1333333333333333;1.0666666666666667;1.0;0.9333333333333333;0.8666666666666667;0.8
+patient3	TRA	0	4	2	486	1.2;0.8
+patient4	TRA	2	2	1	228	1.0
+patient5	TRA	2	2	5	219	1.2;1.1;1.0;0.9;0.8
+patient6	TRA	3	3	1	145	1.0
+patient7	TRA	4	4	3	253	1.2;1.0;0.8
+patient8	TRA	5	5	2	284	1.2;0.8
+patient9	TRA	5	5	2	322	1.2;0.8
+patient10	TRA	5	5	2	388	1.2;0.8
+patient11	TRA	5	5	2	445	1.2;0.8
+patient12	TRA	5	5	1	629	1.0
+patient13	TRA	6	6	1	369	1.0
+patient14	VAT	0	3	4	49	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient15	VAT	0	1	3	101	1.2;1.0;0.8
+patient16	VAT	0	6	1	105	1.0
+patient17	VAT	1	1	1	245	1.0
+patient18	VAT	1	6	1	102	1.0
+patient19	VAT	1	3	1	98	1.0
+patient20	VAT	1	1	1	61	1.0
+patient21	VAT	1	4	1	116	1.0
+patient22	VAT	2	2	1	132	1.0
+patient23	VAT	2	2	1	153	1.0
+patient24	VAT	2	5	2	189	1.2;0.8
+patient25	VAT	2	2	1	221	1.0
+patient26	VAT	2	6	1	329	1.0
+patient27	VAT	2	2	1	178	1.0
+patient28	VAT	2	2	4	329	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient29	VAT	3	3	1	93	1.0
+patient30	VAT	3	5	2	302	1.2;0.8
+patient31	VAT	3	3	4	127	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient32	VAT	3	4	3	100	1.2;1.0;0.8
+patient33	VAT	3	3	1	260	1.0
+patient34	VAT	3	5	2	195	1.2;0.8
+patient35	VAT	3	3	1	98	1.0
+patient36	VAT	4	6	1	93	1.0
+patient37	VAT	4	4	3	49	1.2;1.0;0.8
+patient38	VAT	4	4	3	118	1.2;1.0;0.8
+patient39	VAT	4	4	1	54	1.0
+patient40	VAT	5	5	2	130	1.2;0.8
+patient41	VAT	5	5	1	282	1.0
+patient42	VAT	6	6	1	108	1.0
+patient43	VAT	6	6	1	150	1.0
+patient44	VAT	6	6	1	47	1.0
+patient45	VAT	6	6	1	34	1.0
+patient46	VAT	6	6	1	133	1.0
+patient47	VAT	6	6	1	232	1.0
+patient48	MKA	0	4	1	91	1.0
+patient49	MKA	0	1	1	189	1.0
+patient50	MKA	0	0	1	197	1.0
+patient51	MKA	2	3	2	464	1.2;0.8
+patient52	MKA	3	3	1	192	1.0
+patient53	MKA	4	6	1	183	1.0
+patient54	MKA	5	6	1	114	1.0
+patient55	MKA	5	6	1	217	1.0
+patient56	MKA	5	6	1	248	1.0
+patient57	MKA	6	6	1	288	1.0
+patient58	MKA	6	6	1	357	1.0
+patient59	GYN	0	3	1	98	1.0
+patient60	GYN	0	4	2	168	1.2;0.8
+patient61	GYN	1	1	1	174	1.0
+patient62	GYN	1	2	1	328	1.0
+patient63	GYN	2	2	1	170	1.0
+patient64	GYN	3	4	3	164	1.2;1.0;0.8
+patient65	GYN	4	5	2	115	1.2;0.8
+patient66	GYN	4	4	2	187	1.2;0.8
+patient67	GYN	4	4	2	206	1.2;0.8
+patient68	GYN	4	5	2	230	1.2;0.8
+patient69	GYN	4	5	2	270	1.2;0.8
+patient70	GYN	4	4	3	304	1.2;1.0;0.8
+patient71	GYN	4	5	1	410	1.0
+patient72	GYN	4	5	2	258	1.2;0.8
+patient73	GYN	5	5	2	410	1.2;0.8
+patient74	GYN	5	6	1	158	1.0
+patient75	GYN	6	6	1	385	1.0

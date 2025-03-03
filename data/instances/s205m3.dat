@@ -1,0 +1,139 @@
+Seed: 205
+M: 3
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+GYN	1.13	302;348;219;216;473;343;74
+VAT	1.11	391;520;411;498;425;187;208
+RHK	1.14	643;509;465;211;450;91;99
+URO	1.09	299;269;428;716;298;66;68
+Wards: 4
+GYN	11	11.0	GYN	URO;VAT;RHK	0;0;0;0;0;0;0	0.0;0.0;0.0;0.0;0.0;0.0;0.0
+VAT	23	23.0	VAT	GYN;URO;RHK	3;2;1;1;1;1;0	3.0;2.0;1.0;1.0;1.0;1.0;0.0
+RHK	28	28.0	RHK	VAT;URO;GYN	10;6;4;3;3;3;3	10.0;6.0;4.0;3.0;3.0;3.0;3.0
+URO	32	32.0	URO	RHK;GYN;VAT	3;3;2;0;0;0;0	3.0;3.0;2.0;0.0;0.0;0.0;0.0
+Patients: 122
+patient0	GYN	0	5	2	97	1.2;0.8
+patient1	GYN	0	0	2	123	1.2;0.8
+patient2	GYN	0	4	1	116	1.0
+patient3	GYN	2	2	2	85	1.2;0.8
+patient4	GYN	2	3	1	57	1.0
+patient5	GYN	3	4	1	144	1.0
+patient6	GYN	3	3	2	393	1.2;0.8
+patient7	GYN	4	5	2	171	1.2;0.8
+patient8	GYN	4	5	2	229	1.2;0.8
+patient9	GYN	4	4	3	417	1.2;1.0;0.8
+patient10	GYN	5	6	1	234	1.0
+patient11	GYN	5	5	2	310	1.2;0.8
+patient12	GYN	5	5	2	341	1.2;0.8
+patient13	GYN	6	6	1	50	1.0
+patient14	GYN	6	6	1	68	1.0
+patient15	VAT	0	6	1	48	1.0
+patient16	VAT	0	4	1	66	1.0
+patient17	VAT	0	0	7	62	1.2;1.1333333333333333;1.0666666666666667;1.0;0.9333333333333333;0.8666666666666667;0.8
+patient18	VAT	0	2	1	41	1.0
+patient19	VAT	0	0	1	24	1.0
+patient20	VAT	0	3	1	82	1.0
+patient21	VAT	1	2	2	310	1.2;0.8
+patient22	VAT	1	6	1	103	1.0
+patient23	VAT	1	4	1	152	1.0
+patient24	VAT	1	5	1	336	1.0
+patient25	VAT	2	2	1	156	1.0
+patient26	VAT	2	5	1	227	1.0
+patient27	VAT	2	6	1	257	1.0
+patient28	VAT	3	6	1	20	1.0
+patient29	VAT	4	6	1	30	1.0
+patient30	VAT	4	6	1	91	1.0
+patient31	VAT	4	6	1	162	1.0
+patient32	VAT	5	5	1	60	1.0
+patient33	VAT	5	5	2	73	1.2;0.8
+patient34	VAT	6	6	1	102	1.0
+patient35	VAT	6	6	1	85	1.0
+patient36	VAT	6	6	1	27	1.0
+patient37	VAT	6	6	1	270	1.0
+patient38	VAT	6	6	1	307	1.0
+patient39	VAT	6	6	1	30	1.0
+patient40	RHK	0	0	4	70	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient41	RHK	0	0	5	98	1.2;1.1;1.0;0.9;0.8
+patient42	RHK	0	4	3	90	1.2;1.0;0.8
+patient43	RHK	0	3	1	58	1.0
+patient44	RHK	1	2	1	33	1.0
+patient45	RHK	1	4	2	122	1.2;0.8
+patient46	RHK	1	3	2	501	1.2;0.8
+patient47	RHK	1	6	1	155	1.0
+patient48	RHK	2	3	4	234	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient49	RHK	2	2	1	545	1.0
+patient50	RHK	2	3	3	242	1.2;1.0;0.8
+patient51	RHK	2	2	2	359	1.2;0.8
+patient52	RHK	2	3	1	411	1.0
+patient53	RHK	3	3	4	28	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient54	RHK	3	5	1	43	1.0
+patient55	RHK	3	3	4	136	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient56	RHK	3	4	3	252	1.2;1.0;0.8
+patient57	RHK	3	3	2	87	1.2;0.8
+patient58	RHK	4	4	3	108	1.2;1.0;0.8
+patient59	RHK	4	4	2	154	1.2;0.8
+patient60	RHK	4	4	3	126	1.2;1.0;0.8
+patient61	RHK	4	4	3	38	1.2;1.0;0.8
+patient62	RHK	4	4	3	432	1.2;1.0;0.8
+patient63	RHK	5	5	2	496	1.2;0.8
+patient64	RHK	5	5	2	42	1.2;0.8
+patient65	RHK	5	5	2	157	1.2;0.8
+patient66	RHK	5	6	1	424	1.0
+patient67	RHK	5	5	1	109	1.0
+patient68	RHK	5	6	1	21	1.0
+patient69	RHK	6	6	1	172	1.0
+patient70	RHK	6	6	1	318	1.0
+patient71	RHK	6	6	1	39	1.0
+patient72	RHK	6	6	1	67	1.0
+patient73	RHK	6	6	1	58	1.0
+patient74	URO	0	2	2	45	1.2;0.8
+patient75	URO	0	1	2	61	1.2;0.8
+patient76	URO	0	1	1	57	1.0
+patient77	URO	0	4	1	39	1.0
+patient78	URO	1	1	6	24	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient79	URO	1	1	1	74	1.0
+patient80	URO	1	3	1	262	1.0
+patient81	URO	1	3	4	92	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient82	URO	1	1	6	133	1.2;1.1199999999999999;1.04;0.96;0.88;0.8
+patient83	URO	1	4	1	282	1.0
+patient84	URO	1	2	3	137	1.2;1.0;0.8
+patient85	URO	1	1	1	195	1.0
+patient86	URO	1	2	2	219	1.2;0.8
+patient87	URO	1	2	1	20	1.0
+patient88	URO	1	6	1	29	1.0
+patient89	URO	1	1	1	82	1.0
+patient90	URO	1	2	5	142	1.2;1.1;1.0;0.9;0.8
+patient91	URO	1	1	1	55	1.0
+patient92	URO	1	1	1	67	1.0
+patient93	URO	1	1	1	91	1.0
+patient94	URO	2	6	1	77	1.0
+patient95	URO	2	2	1	26	1.0
+patient96	URO	2	4	1	229	1.0
+patient97	URO	2	2	1	259	1.0
+patient98	URO	2	5	1	29	1.0
+patient99	URO	2	2	1	93	1.0
+patient100	URO	2	4	1	225	1.0
+patient101	URO	3	6	1	67	1.0
+patient102	URO	3	5	1	15	1.0
+patient103	URO	3	3	1	101	1.0
+patient104	URO	3	6	1	175	1.0
+patient105	URO	3	3	1	27	1.0
+patient106	URO	3	3	2	43	1.2;0.8
+patient107	URO	3	6	1	39	1.0
+patient108	URO	4	5	1	157	1.0
+patient109	URO	4	6	1	53	1.0
+patient110	URO	4	4	3	84	1.2;1.0;0.8
+patient111	URO	4	6	1	63	1.0
+patient112	URO	5	5	1	20	1.0
+patient113	URO	5	6	1	127	1.0
+patient114	URO	5	6	1	42	1.0
+patient115	URO	5	5	2	267	1.2;0.8
+patient116	URO	6	6	1	87	1.0
+patient117	URO	6	6	1	184	1.0
+patient118	URO	6	6	1	102	1.0
+patient119	URO	6	6	1	66	1.0
+patient120	URO	6	6	1	45	1.0
+patient121	URO	6	6	1	55	1.0

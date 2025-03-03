@@ -1,0 +1,93 @@
+Seed: 199
+M: 1
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+TRA	1.1	372;323;379;352;199;360;397
+NKO	1.12	340;345;300;345;400;104;73
+GYN	1.08	302;348;219;216;473;343;74
+NCH	1.07	338;657;406;607;778;170;194
+Wards: 4
+TRA	22	22.0	TRA	NCH	10;10;9;9;8;8;7	10.0;10.0;9.0;9.0;8.0;8.0;7.0
+NKO	15	15.0	NKO	NCH	0;0;0;0;0;0;0	0.0;0.0;0.0;0.0;0.0;0.0;0.0
+GYN	11	11.0	GYN	NCH	2;1;1;1;0;0;0	2.0;1.0;1.0;1.0;0.0;0.0;0.0
+NCH	37	37.0	NCH	GYN	6;6;4;4;4;3;3	6.0;6.0;4.0;4.0;4.0;3.0;3.0
+Patients: 76
+patient0	TRA	0	0	5	70	1.2;1.1;1.0;0.9;0.8
+patient1	TRA	0	0	7	109	1.2;1.1333333333333333;1.0666666666666667;1.0;0.9333333333333333;0.8666666666666667;0.8
+patient2	TRA	0	1	3	146	1.2;1.0;0.8
+patient3	TRA	0	0	7	295	1.2;1.1333333333333333;1.0666666666666667;1.0;0.9333333333333333;0.8666666666666667;0.8
+patient4	TRA	2	2	5	355	1.2;1.1;1.0;0.9;0.8
+patient5	TRA	3	3	4	722	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient6	TRA	4	4	3	218	1.2;1.0;0.8
+patient7	TRA	4	4	3	421	1.2;1.0;0.8
+patient8	TRA	4	4	3	156	1.2;1.0;0.8
+patient9	TRA	5	6	1	407	1.0
+patient10	TRA	5	5	2	349	1.2;0.8
+patient11	TRA	5	5	1	218	1.0
+patient12	TRA	5	5	2	177	1.2;0.8
+patient13	NKO	0	2	1	53	1.0
+patient14	NKO	1	2	1	80	1.0
+patient15	NKO	1	2	1	104	1.0
+patient16	NKO	1	6	1	196	1.0
+patient17	NKO	1	5	1	231	1.0
+patient18	NKO	1	4	1	439	1.0
+patient19	NKO	1	1	1	149	1.0
+patient20	NKO	1	5	1	269	1.0
+patient21	NKO	2	6	1	110	1.0
+patient22	NKO	3	5	1	262	1.0
+patient23	NKO	4	6	1	227	1.0
+patient24	NKO	4	4	1	149	1.0
+patient25	NKO	5	6	1	123	1.0
+patient26	NKO	6	6	1	77	1.0
+patient27	NKO	6	6	1	84	1.0
+patient28	NKO	6	6	1	90	1.0
+patient29	GYN	0	5	1	61	1.0
+patient30	GYN	0	0	1	90	1.0
+patient31	GYN	1	5	2	116	1.2;0.8
+patient32	GYN	2	6	1	213	1.0
+patient33	GYN	2	5	1	250	1.0
+patient34	GYN	3	4	3	463	1.2;1.0;0.8
+patient35	GYN	4	4	3	164	1.2;1.0;0.8
+patient36	GYN	4	6	1	290	1.0
+patient37	GYN	4	6	1	122	1.0
+patient38	GYN	4	4	3	282	1.2;1.0;0.8
+patient39	GYN	4	4	2	246	1.2;0.8
+patient40	GYN	4	6	1	164	1.0
+patient41	GYN	5	5	2	137	1.2;0.8
+patient42	GYN	5	6	1	88	1.0
+patient43	GYN	5	5	2	94	1.2;0.8
+patient44	GYN	5	5	2	101	1.2;0.8
+patient45	GYN	6	6	1	340	1.0
+patient46	GYN	6	6	1	225	1.0
+patient47	GYN	6	6	1	140	1.0
+patient48	NCH	0	2	1	68	1.0
+patient49	NCH	0	6	1	102	1.0
+patient50	NCH	0	1	1	133	1.0
+patient51	NCH	0	0	7	251	1.2;1.1333333333333333;1.0666666666666667;1.0;0.9333333333333333;0.8666666666666667;0.8
+patient52	NCH	0	0	3	297	1.2;1.0;0.8
+patient53	NCH	1	2	1	565	1.0
+patient54	NCH	2	4	1	191	1.0
+patient55	NCH	2	2	1	346	1.0
+patient56	NCH	2	2	5	141	1.2;1.1;1.0;0.9;0.8
+patient57	NCH	2	3	1	336	1.0
+patient58	NCH	2	2	2	292	1.2;0.8
+patient59	NCH	3	5	2	191	1.2;0.8
+patient60	NCH	3	3	1	158	1.0
+patient61	NCH	3	3	4	99	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient62	NCH	3	6	1	107	1.0
+patient63	NCH	3	4	2	115	1.2;0.8
+patient64	NCH	3	3	2	409	1.2;0.8
+patient65	NCH	4	6	1	266	1.0
+patient66	NCH	4	4	3	162	1.2;1.0;0.8
+patient67	NCH	4	4	1	259	1.0
+patient68	NCH	5	5	1	187	1.0
+patient69	NCH	5	6	1	43	1.0
+patient70	NCH	5	6	1	73	1.0
+patient71	NCH	5	5	2	131	1.2;0.8
+patient72	NCH	5	6	1	267	1.0
+patient73	NCH	6	6	1	95	1.0
+patient74	NCH	6	6	1	119	1.0
+patient75	NCH	6	6	1	267	1.0

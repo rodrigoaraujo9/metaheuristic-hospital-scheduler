@@ -1,0 +1,128 @@
+Seed: 191
+M: 2
+Weight_overtime: 1
+Weight_undertime: 1
+Weight_delay: 1
+Days: 7
+Specialisms: 4
+MKA	1.08	241;301;462;336;261;173;88
+VAT	1.05	391;520;411;498;425;187;208
+TRH	1.12	662;307;497;378;557;160;153
+ABD	1.05	552;647;346;702;612;138;118
+Wards: 4
+MKA	11	11.0	MKA	VAT;ABD	1;1;1;1;0;0;0	1.0;1.0;1.0;1.0;0.0;0.0;0.0
+VAT	23	23.0	VAT	MKA;TRH	10;9;7;5;4;4;4	10.0;9.0;7.0;5.0;4.0;4.0;4.0
+TRH	35	35.0	TRH	MKA;VAT	12;11;10;8;8;7;7	12.0;11.0;10.0;8.0;8.0;7.0;7.0
+ABD	38	38.0	ABD	MKA;TRH	15;11;9;8;5;5;4	15.0;11.0;9.0;8.0;5.0;5.0;4.0
+Patients: 111
+patient0	MKA	0	0	1	110	1.0
+patient1	MKA	0	5	1	238	1.0
+patient2	MKA	0	4	1	531	1.0
+patient3	MKA	1	5	2	113	1.2;0.8
+patient4	MKA	2	2	5	159	1.2;1.1;1.0;0.9;0.8
+patient5	MKA	2	6	1	112	1.0
+patient6	MKA	3	6	1	287	1.0
+patient7	MKA	3	3	1	379	1.0
+patient8	MKA	3	4	3	133	1.2;1.0;0.8
+patient9	MKA	3	5	2	113	1.2;0.8
+patient10	MKA	3	5	1	153	1.0
+patient11	MKA	4	4	3	699	1.2;1.0;0.8
+patient12	MKA	4	6	1	22	1.0
+patient13	MKA	5	6	1	248	1.0
+patient14	MKA	5	6	1	477	1.0
+patient15	MKA	6	6	1	143	1.0
+patient16	VAT	0	0	1	59	1.0
+patient17	VAT	0	0	1	127	1.0
+patient18	VAT	0	3	1	279	1.0
+patient19	VAT	0	2	3	61	1.2;1.0;0.8
+patient20	VAT	0	0	3	85	1.2;1.0;0.8
+patient21	VAT	0	0	1	60	1.0
+patient22	VAT	0	4	1	152	1.0
+patient23	VAT	1	5	2	200	1.2;0.8
+patient24	VAT	2	3	2	71	1.2;0.8
+patient25	VAT	2	2	5	61	1.2;1.1;1.0;0.9;0.8
+patient26	VAT	2	2	5	82	1.2;1.1;1.0;0.9;0.8
+patient27	VAT	2	6	1	366	1.0
+patient28	VAT	2	5	2	12	1.2;0.8
+patient29	VAT	2	2	1	132	1.0
+patient30	VAT	2	3	4	251	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient31	VAT	3	6	1	77	1.0
+patient32	VAT	3	3	4	160	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient33	VAT	3	3	4	37	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient34	VAT	3	3	1	99	1.0
+patient35	VAT	4	6	1	104	1.0
+patient36	VAT	4	4	3	51	1.2;1.0;0.8
+patient37	VAT	4	6	1	46	1.0
+patient38	VAT	5	5	2	140	1.2;0.8
+patient39	VAT	5	6	1	247	1.0
+patient40	VAT	5	5	1	236	1.0
+patient41	VAT	5	5	2	81	1.2;0.8
+patient42	VAT	6	6	1	78	1.0
+patient43	VAT	6	6	1	348	1.0
+patient44	VAT	6	6	1	36	1.0
+patient45	VAT	6	6	1	38	1.0
+patient46	VAT	6	6	1	48	1.0
+patient47	TRH	0	0	1	86	1.0
+patient48	TRH	0	0	7	149	1.2;1.1333333333333333;1.0666666666666667;1.0;0.9333333333333333;0.8666666666666667;0.8
+patient49	TRH	0	5	2	267	1.2;0.8
+patient50	TRH	0	6	1	87	1.0
+patient51	TRH	1	1	2	112	1.2;0.8
+patient52	TRH	1	5	1	87	1.0
+patient53	TRH	1	1	5	171	1.2;1.1;1.0;0.9;0.8
+patient54	TRH	2	6	1	209	1.0
+patient55	TRH	2	6	1	98	1.0
+patient56	TRH	3	3	4	87	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient57	TRH	3	4	2	108	1.2;0.8
+patient58	TRH	3	6	1	326	1.0
+patient59	TRH	3	3	1	27	1.0
+patient60	TRH	3	6	1	154	1.0
+patient61	TRH	3	3	4	247	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient62	TRH	4	4	3	104	1.2;1.0;0.8
+patient63	TRH	4	6	1	178	1.0
+patient64	TRH	4	5	2	61	1.2;0.8
+patient65	TRH	4	6	1	124	1.0
+patient66	TRH	4	4	3	129	1.2;1.0;0.8
+patient67	TRH	4	5	1	77	1.0
+patient68	TRH	4	4	3	71	1.2;1.0;0.8
+patient69	TRH	4	4	3	161	1.2;1.0;0.8
+patient70	TRH	4	4	3	244	1.2;1.0;0.8
+patient71	TRH	5	5	2	236	1.2;0.8
+patient72	TRH	5	5	2	108	1.2;0.8
+patient73	TRH	5	6	1	104	1.0
+patient74	TRH	5	5	2	313	1.2;0.8
+patient75	TRH	5	6	1	59	1.0
+patient76	TRH	5	5	1	62	1.0
+patient77	TRH	5	5	2	73	1.2;0.8
+patient78	ABD	0	0	3	76	1.2;1.0;0.8
+patient79	ABD	0	3	1	143	1.0
+patient80	ABD	0	1	1	277	1.0
+patient81	ABD	1	6	1	77	1.0
+patient82	ABD	1	6	1	102	1.0
+patient83	ABD	1	1	4	76	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient84	ABD	1	1	4	167	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient85	ABD	1	1	4	210	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient86	ABD	1	5	2	88	1.2;0.8
+patient87	ABD	2	3	1	77	1.0
+patient88	ABD	2	2	1	99	1.0
+patient89	ABD	2	2	5	348	1.2;1.1;1.0;0.9;0.8
+patient90	ABD	2	2	5	20	1.2;1.1;1.0;0.9;0.8
+patient91	ABD	2	2	2	148	1.2;0.8
+patient92	ABD	3	4	1	254	1.0
+patient93	ABD	3	4	1	94	1.0
+patient94	ABD	3	3	4	174	1.2;1.0666666666666667;0.9333333333333333;0.8
+patient95	ABD	4	5	1	51	1.0
+patient96	ABD	4	4	3	116	1.2;1.0;0.8
+patient97	ABD	4	4	3	121	1.2;1.0;0.8
+patient98	ABD	4	4	3	67	1.2;1.0;0.8
+patient99	ABD	4	4	3	61	1.2;1.0;0.8
+patient100	ABD	4	5	1	155	1.0
+patient101	ABD	4	4	3	250	1.2;1.0;0.8
+patient102	ABD	5	5	2	241	1.2;0.8
+patient103	ABD	5	5	1	98	1.0
+patient104	ABD	5	5	2	95	1.2;0.8
+patient105	ABD	6	6	1	333	1.0
+patient106	ABD	6	6	1	49	1.0
+patient107	ABD	6	6	1	52	1.0
+patient108	ABD	6	6	1	63	1.0
+patient109	ABD	6	6	1	79	1.0
+patient110	ABD	6	6	1	167	1.0
