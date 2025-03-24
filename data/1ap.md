@@ -15,6 +15,7 @@ Suponha que haja *P* pacientes. Para cada paciente *i*, mantemos os seguintes da
 - *Workload diário:* *Workloadi,1...LOSi*. Vetor descrevendo quanta carga de trabalho o paciente gera em cada dia da internação (ex.: [1.2, 1.13, 1.0, ...]).
 - *(Opcional) Tipo de paciente:* Se é eletivo ou emergencial (pode influenciar a prioridade de alocação, se houver).
 
+
 ### 1.2 Wards
 
 Suponha que existam *W* wards (setores ou alas hospitalares). Cada ward *w* possui:
