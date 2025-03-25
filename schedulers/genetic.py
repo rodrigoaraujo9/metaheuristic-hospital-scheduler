@@ -18,7 +18,7 @@ class GeneticAlgorithmScheduler:
 
     def selection(self):
         """Seleção por torneio: escolhe dois indivíduos aleatórios e retorna o melhor."""
-        a, b = random.sample(self.population, 2)
+        a, b = random.sample(self.population, 2)      
         return a if calculate_cost(self.instance_data, a) < calculate_cost(self.instance_data, b) else b
 
     def crossover(self, parent1, parent2):

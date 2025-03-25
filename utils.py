@@ -23,7 +23,7 @@ def calculate_cost(instance_data, solution):
     """
     cost = 0
     # Penaliza sobrecarga nos wards
-    ward_loads = {ward: 0 for ward in instance_data['wards']}
+    ward_loads = {ward: 0 for ward in instance_data['wards']}               
     for patient, data in solution.items():
         ward_loads[data['ward']] += 1
 
