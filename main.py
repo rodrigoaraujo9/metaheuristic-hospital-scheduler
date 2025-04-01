@@ -94,7 +94,7 @@ def main():
             plt.grid()
             cost_plot_path = os.path.join(instance_image_dir, "cost_evolution.png")
             plt.savefig(cost_plot_path)
-            plt.close()
+            plt.close() 
 
             # Plot da evolução da temperatura (para SA)
             if optimization_method == "sa":

@@ -5,6 +5,12 @@ import math
 def generate_initial_solution(instance_data):
     """
     Gera uma solução inicial aleatória para todos os pacientes.
+    
+    Essa função gera uma solução inicial aleatória. Para cada paciente, 
+    ela escolhe um ward (enfermaria) de forma aleatória e seleciona um 
+    dia de admissão dentro do intervalo permitido (entre earliest_admission e latest_admission). 
+    Essa abordagem garante diversidade na população inicial, o que é fundamental
+    para métodos baseados em busca heurística.
     """
     solution = {}
     wards = list(instance_data['wards'].keys())
@@ -20,6 +26,18 @@ def generate_initial_solution(instance_data):
 def calculate_cost(instance_data, solution):
     """
     Calcula o custo de uma solução, penalizando sobrecarga dos wards e conflitos de agendamento.
+    
+    Sobre carga dos wards: para cada ward, se o número de pacientes
+    atribuídos exceder a capacidade (bed_capacity), o custo aumenta 
+    proporcionalmente à quantidade excedente (multiplicado por 10).
+    
+    
+    Conflitos no agendamento de cirurgias: a função conta quantos pacientes são agendados 
+    para cada dia e, se esse número ultrapassar a quantidade de especializações 
+    disponíveis (len(instance_data['specializations'])), aplica uma penalidade 
+    (multiplicado por 5).
+    Essa função reflete de forma razoável os objetivos de minimizar 
+    sobrecargas e conflitos.
     """
     cost = 0
     # Penaliza sobrecarga nos wards
@@ -29,7 +47,8 @@ def calculate_cost(instance_data, solution):
 
     for ward, load in ward_loads.items():
         if load > instance_data['wards'][ward]['bed_capacity']:
-            cost += (load - instance_data['wards'][ward]['bed_capacity']) * 10
+            # posso alterar isto se quiser que um seja mais grave que o outro (multiplicar por um valor)
+            cost += (load - instance_data['wards'][ward]['bed_capacity'])
 
     # Penaliza conflitos no agendamento de cirurgias
     scheduled_surgeries = {}
@@ -39,9 +58,12 @@ def calculate_cost(instance_data, solution):
 
     for day, count in scheduled_surgeries.items():
         if count > len(instance_data['specializations']):
-            cost += (count - len(instance_data['specializations'])) * 5
+            
+            # posso alterar isto se quiser que um seja mais grave que o outro (multiplicar por um valor)
+            cost += (count - len(instance_data['specializations']))
 
     return cost
+
 
 def make_neighbor_solution(instance_data, current_solution):
     """
