@@ -2,3 +2,4 @@ data/
 images/
 results/
 __pycache__/
+venv/
