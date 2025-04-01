@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 from parser import parse_instance_file
+from utils import calculate_cost
 
 def get_scheduler(algorithm, instance_data):
     """
@@ -21,16 +22,15 @@ def get_scheduler(algorithm, instance_data):
         raise ValueError("Algoritmo desconhecido. Use 'sa', 'tabu' ou 'ga'.")
 
 def main():
-    optimization_method = "sa"  # Altere para "sa", "tabu" ou "ga" conforme desejado
+    optimization_method = "ga"  # Altere para "sa", "tabu" ou "ga" conforme desejado
 
     # Define o diretório base para os resultados
     results_dir = "./results"
-    # Cria um diretório para o algoritmo escolhido, ex: ./results/sa
+    # Cria um diretório para o algoritmo escolhido, ex: ./results/ga
     algorithm_results_dir = os.path.join(results_dir, optimization_method)
     if not os.path.exists(algorithm_results_dir):
         os.makedirs(algorithm_results_dir)
 
-        
     instance_dir = "./data/instances"
     schedule_results = []  # Armazenar DataFrames de resultados
     metrics_list = []      # Armazenar métricas de desempenho
@@ -47,6 +47,9 @@ def main():
 
             scheduler = get_scheduler(optimization_method, instance_data)
             best_schedule = scheduler.run()
+            
+            # Calcula o custo final utilizando a função calculate_cost
+            final_cost = calculate_cost(instance_data, best_schedule)
 
             df_results = pd.DataFrame(best_schedule).T.reset_index()
             df_results.rename(columns={'index': 'patient'}, inplace=True)
@@ -61,7 +64,7 @@ def main():
                 "instance": filename,
                 "iterations_or_generations": getattr(scheduler, "iterations", getattr(scheduler, "generations", "N/A")),
                 "runtime_seconds": getattr(scheduler, "runtime", "N/A"),
-                "final_cost": None,  # Pode-se calcular se desejar utilizando a função calculate_cost
+                "final_cost": final_cost,
                 "pct_allocated": pct_allocated
             }
             metrics_list.append(instance_metrics)
@@ -116,7 +119,28 @@ def main():
     metrics_df = pd.DataFrame(metrics_list)
     metrics_df.to_csv("metrics_results.csv", index=False)
 
-    print("Processamento concluído. Resultados salvos em 'best_schedules.csv', 'metrics_results.csv' e plots na pasta './images'.")
+    # Gráfico agregado: Histograma dos custos finais
+    plt.figure(figsize=(8, 6))
+    plt.hist(metrics_df["final_cost"], bins=20, edgecolor='black')
+    plt.xlabel("Custo Final")
+    plt.ylabel("Frequência")
+    plt.title("Distribuição dos Custos Finais entre as Instâncias")
+    plt.grid()
+    plt.savefig(os.path.join(algorithm_results_dir, "final_cost_histogram.png"))
+    plt.close()
+
+    # Gráfico agregado: Custo Final vs Percentual de Alocação
+    plt.figure(figsize=(8, 6))
+    plt.scatter(metrics_df["pct_allocated"], metrics_df["final_cost"])
+    plt.xlabel("Percentual de Alocação")
+    plt.ylabel("Custo Final")
+    plt.title("Custo Final vs Percentual de Alocação")
+    plt.grid()
+    plt.savefig(os.path.join(algorithm_results_dir, "final_cost_vs_allocation.png"))
+    plt.close()
+
+    print("Processamento concluído. Resultados salvos em 'best_schedules.csv', 'metrics_results.csv',")
+    print("plots individuais na pasta './images' e gráficos agregados em", algorithm_results_dir)
 
 if __name__ == "__main__":
     main()
