@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 from parser import parse_instance_file
+from utils import analyze_solution  # new analysis function
 
 def get_scheduler(algorithm, instance_data):
     """
@@ -23,17 +24,15 @@ def get_scheduler(algorithm, instance_data):
 def main():
     optimization_method = "sa"  # Altere para "sa", "tabu" ou "ga" conforme desejado
 
-    # Define o diretório base para os resultados
+    # Diretório base para os resultados
     results_dir = "./results"
-    # Cria um diretório para o algoritmo escolhido, ex: ./results/sa
     algorithm_results_dir = os.path.join(results_dir, optimization_method)
     if not os.path.exists(algorithm_results_dir):
         os.makedirs(algorithm_results_dir)
 
-        
     instance_dir = "./data/instances"
-    schedule_results = []  # Armazenar DataFrames de resultados
-    metrics_list = []      # Armazenar métricas de desempenho
+    schedule_results = []  # Armazena DataFrames de resultados
+    metrics_list = []      # Armazena métricas de desempenho
     images_base_dir = "./images"
     if not os.path.exists(images_base_dir):
         os.makedirs(images_base_dir)
@@ -57,16 +56,20 @@ def main():
             allocated = sum(1 for patient in best_schedule if best_schedule[patient]['ward'] is not None)
             pct_allocated = (allocated / total_patients) * 100
 
+            # Use analyze_solution for detailed stats
+            stats = analyze_solution(instance_data, best_schedule)
+
             instance_metrics = {
                 "instance": filename,
                 "iterations_or_generations": getattr(scheduler, "iterations", getattr(scheduler, "generations", "N/A")),
                 "runtime_seconds": getattr(scheduler, "runtime", "N/A"),
-                "final_cost": None,  # Pode-se calcular se desejar utilizando a função calculate_cost
-                "pct_allocated": pct_allocated
+                "final_cost": scheduler.final_cost,
+                "pct_allocated": pct_allocated,
+                "cost_breakdown": stats['cost_breakdown']
             }
             metrics_list.append(instance_metrics)
 
-            # Cria diretório para as plots da instância
+            # Cria diretório para salvar plots da instância
             instance_name = os.path.splitext(filename)[0]
             instance_image_dir = os.path.join(images_base_dir, instance_name)
             if not os.path.exists(instance_image_dir):
@@ -107,9 +110,9 @@ def main():
                 plt.close()
 
             print(df_results)
-            print("\n" + "="*50 + "\n")
+            print("\n" + "=" * 50 + "\n")
 
-    # Salva resultados combinados e métricas
+    # Salvar resultados combinados e métricas
     all_schedules_df = pd.concat(schedule_results, ignore_index=True)
     all_schedules_df.to_csv("best_schedules.csv", index=False)
 
