@@ -182,53 +182,7 @@ def calculate_cost(instance_data, solution, use_same_weights=False, return_compo
         }
     
     return total_cost
-    """
-    Função de custo simplificada focada apenas nos dois objetivos principais:
-    1. Minimizar dia de admissão
-    2. Minimizar OT overtime
-    """
-    # Inicializar componentes de custo
-    delay_cost = 0
-    ot_overtime_cost = 0
     
-    # Para utilização de tempo de cirurgia
-    specialization_surgeries = {spec: [0] * instance_data['days'] for spec in instance_data['specializations']}
-    
-    # Calcular ocupação e carga de trabalho
-    for patient, data in solution.items():
-        if data['ward'] is None or data['day'] < 0:
-            continue  # Pular pacientes não alocados
-            
-        admission_day = data['day']
-        patient_data = instance_data['patients'][patient]
-        spec = patient_data['specialization']
-        
-        # Adicionar à utilização de tempo de cirurgia
-        if admission_day < instance_data['days']:
-            surgery_duration = patient_data['surgery_duration']
-            specialization_surgeries[spec][admission_day] += surgery_duration
-        
-        # Calcular atraso na admissão
-        earliest = patient_data['earliest_admission']
-        delay = admission_day - earliest
-        if delay > 0:
-            delay_cost += delay * 10  # Peso maior para day minimization
-    
-    # Calcular penalidades apenas para OT overtime (não undertime)
-    for spec in instance_data['specializations']:
-        for day in range(min(len(instance_data['specializations'][spec]['available_ot']), instance_data['days'])):
-            used_ot = specialization_surgeries[spec][day]
-            available_ot = instance_data['specializations'][spec]['available_ot'][day]
-            
-            # Penalidade por overtime
-            if used_ot > available_ot:
-                ot_overtime_cost += (used_ot - available_ot) * 8  # Peso para overtime
-    
-    # Custo total (apenas os dois componentes solicitados)
-    total_cost = delay_cost + ot_overtime_cost
-    
-    return total_cost
-
 def make_neighbor_solution(instance_data, current_solution, strategy="mixed"):
     """
     Gera uma solução vizinha alterando a atribuição de um paciente.
