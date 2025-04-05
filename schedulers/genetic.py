@@ -13,23 +13,21 @@ class GeneticAlgorithmScheduler:
         self.mutation_rate = mutation_rate
         self.elitism_count = elitism_count
         
-        # Metrics
+        # Métricas para exibição
         self.runtime = 0
         self.best_solution = None
         self.best_cost = float('inf')
         self.cost_history = []
+        self.final_cost = None      # Atributo para exibição no app
+        self.iterations = None      # Atributo para exibição no app (usado se 'iterations' não existir, usa 'generations')
         
-        # População inicial 100% aleatória
         print("Generating initial population...")
         self.population = self.generate_random_population()
-        
-        # Evaluate initial population
         self.evaluate_population()
     
     def generate_random_population(self):
         """Gera população 100% aleatória."""
         population = []
-        
         for _ in range(self.population_size):
             solution = {}
             for patient in self.instance_data['patients']:
@@ -39,9 +37,7 @@ class GeneticAlgorithmScheduler:
                 day = random.randint(earliest, latest)
                 ward = random.choice(list(self.instance_data['wards'].keys()))
                 solution[patient] = {'ward': ward, 'day': day}
-            
             population.append(solution)
-        
         return population
     
     def evaluate_population(self):
@@ -57,7 +53,6 @@ class GeneticAlgorithmScheduler:
         if population_costs:
             min_cost = min(population_costs)
             min_index = population_costs.index(min_cost)
-            
             if min_cost < self.best_cost:
                 self.best_cost = min_cost
                 self.best_solution = copy.deepcopy(self.population[min_index])
@@ -74,38 +69,27 @@ class GeneticAlgorithmScheduler:
     def crossover(self, parent1, parent2):
         """Crossover uniforme simples."""
         child = {}
-        
         for patient in parent1:
-            # 50% chance de cada pai
             if random.random() < 0.5:
                 child[patient] = copy.deepcopy(parent1[patient])
             else:
                 child[patient] = copy.deepcopy(parent2[patient])
-        
         return child
     
     def mutate(self, solution):
-        """Mutação extremamente agressiva focada em early_day."""
+        """Mutação agressiva focada em early_day."""
         for patient in solution:
-            # 40% chance de mutação
             if random.random() < 0.4:
                 patient_data = self.instance_data['patients'].get(patient)
                 if not patient_data:
                     continue
-                
                 earliest = patient_data['earliest_admission']
                 latest = patient_data['latest_admission']
-                
-                # 80% chance de ir para o dia mais inicial possível
                 if random.random() < 0.8:
                     solution[patient]['day'] = earliest
                 else:
-                    # 20% chance de outro dia para exploração
                     solution[patient]['day'] = random.randint(earliest, latest)
-                
-                # Ward completamente aleatório
                 solution[patient]['ward'] = random.choice(list(self.instance_data['wards'].keys()))
-        
         return solution
     
     def create_random_solution(self):
@@ -123,11 +107,8 @@ class GeneticAlgorithmScheduler:
     
     def run(self):
         """Motor do algoritmo genético simplificado."""
-        print(f"Starting simplified genetic algorithm with population size {self.population_size} for {self.generations} generations")
-        
+        print(f"Starting genetic algorithm with population size {self.population_size} for {self.generations} generations")
         start_time = time.time()
-        
-        # Estatísticas para logging
         stagnation_counter = 0
         previous_best = self.best_cost
         
@@ -135,19 +116,15 @@ class GeneticAlgorithmScheduler:
             try:
                 # Avaliar população atual
                 population_costs = self.evaluate_population()
-                
                 if population_costs:
                     gen_best_cost = min(population_costs)
                     self.cost_history.append(gen_best_cost)
                     
-                    # Log progress
                     elapsed = time.time() - start_time
                     improvement = 0
                     if previous_best != float('inf'):
                         improvement = (previous_best - self.best_cost) / previous_best * 100
-                        
-                    print(f"Generation {gen+1}/{self.generations} - Best: {self.best_cost:.2f} - " + 
-                          f"Improvement: {improvement:.4f}% - Time: {elapsed:.2f}s")
+                    print(f"Generation {gen+1}/{self.generations} - Best: {self.best_cost:.2f} - Improvement: {improvement:.4f}% - Time: {elapsed:.2f}s")
                     
                     # Verificar estagnação
                     if abs(previous_best - self.best_cost) < 0.01:
@@ -159,68 +136,53 @@ class GeneticAlgorithmScheduler:
                     # Nova população
                     new_population = []
                     
-                    # Elitismo - manter as 2 melhores soluções
+                    # Elitismo - manter as melhores soluções
                     sorted_indices = sorted(range(len(population_costs)), key=lambda i: population_costs[i])
                     for idx in sorted_indices[:self.elitism_count]:
                         new_population.append(copy.deepcopy(self.population[idx]))
                     
-                    # ESTRATÉGIA RADICAL: Restart parcial a cada 10 gerações ou quando estagnado
+                    # Estratégia de restart parcial
                     if stagnation_counter >= 7 or gen % 10 == 0:
-                        # Manter apenas a melhor solução
                         best_solution = copy.deepcopy(self.population[sorted_indices[0]])
                         new_population = [best_solution]
-                        
-                        # 30% variantes do melhor com forte viés para earliest day
                         for _ in range(self.population_size * 3 // 10):
                             variant = copy.deepcopy(best_solution)
                             for patient in variant:
-                                if random.random() < 0.7:  # 70% chance
+                                if random.random() < 0.7:
                                     patient_data = self.instance_data['patients'].get(patient)
                                     if patient_data:
                                         variant[patient]['day'] = patient_data['earliest_admission']
                             new_population.append(variant)
-                        
-                        # 70% soluções completamente novas
                         while len(new_population) < self.population_size:
                             new_population.append(self.create_random_solution())
-                        
                         stagnation_counter = 0
                         print(f"Generation {gen+1}: Restarting population for better exploration")
-                        
-                        # Atualizar população e continuar
                         self.population = new_population
                         continue
                     
                     # Gerar novos indivíduos
                     while len(new_population) < self.population_size:
-                        # Seleção
                         parent1 = self.selection(population_costs)
                         parent2 = self.selection(population_costs)
-                        
-                        # Crossover
                         if random.random() < self.crossover_rate:
                             child = self.crossover(parent1, parent2)
                         else:
                             child = copy.deepcopy(parent1)
-                        
-                        # Mutação
                         child = self.mutate(child)
-                        
-                        # Adicionar à população
                         new_population.append(child)
                     
                     self.population = new_population
-            
             except Exception as e:
                 print(f"Error in generation {gen+1}: {str(e)}")
                 continue
         
-        # Resultados finais
         self.runtime = time.time() - start_time
+        # Definir atributos para compatibilidade com o app
+        self.final_cost = self.best_cost
+        self.iterations = self.generations
+        
         print(f"Genetic algorithm completed in {self.runtime:.2f} seconds")
         print(f"Best cost found: {self.best_cost:.2f}")
-        
-        # Melhoria total
         initial_best = self.cost_history[0] if self.cost_history else float('inf')
         if initial_best != float('inf') and self.best_cost != float('inf'):
             total_improvement = (initial_best - self.best_cost) / initial_best * 100
