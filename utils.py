@@ -128,45 +128,15 @@ def generate_initial_solution(instance_data):
     
     return solution
 
-def calculate_cost(instance_data, solution, use_same_weights=False):
+def calculate_cost(instance_data, solution, use_same_weights=False, return_components=False):
     """
-    Calcula o custo da solução considerando múltiplos fatores.
-    Retorna apenas o valor total do custo.
-    
-    Parâmetros:
-    - use_same_weights: Se True, usa os pesos definidos na instância para garantir consistência
+    Função de custo simplificada focada apenas nos dois objetivos principais:
+    1. Minimizar dia de admissão
+    2. Minimizar OT overtime
     """
-    # Definir pesos para os diferentes componentes do custo
-    if use_same_weights:
-        # Usar pesos da instância para consistência com analyze_cost_components
-        WEIGHT_BED_OVERLOAD = 10
-        WEIGHT_SURGERY_CONFLICT = 5
-        WEIGHT_SPATIAL_IMBALANCE = 10
-        WEIGHT_TEMPORAL_IMBALANCE = 8
-        WEIGHT_DELAY = instance_data.get('weight_delay', 1)
-        WEIGHT_OT_OVERTIME = instance_data.get('weight_overtime', 1)
-        WEIGHT_OT_UNDERTIME = instance_data.get('weight_undertime', 1)
-    else:
-        # Pesos padrão
-        WEIGHT_BED_OVERLOAD = 10
-        WEIGHT_SURGERY_CONFLICT = 5
-        WEIGHT_SPATIAL_IMBALANCE = 10  # Reduzido de 20 para 10
-        WEIGHT_TEMPORAL_IMBALANCE = 8  # Reduzido de 15 para 8
-        WEIGHT_DELAY = 1               # Peso para atraso na admissão
-        WEIGHT_OT_OVERTIME = 1         # Peso para horas extras (do arquivo)
-        WEIGHT_OT_UNDERTIME = 1        # Peso para tempo ocioso (do arquivo)
-    
     # Inicializar componentes de custo
-    bed_capacity_cost = 0
-    surgery_conflict_cost = 0
     delay_cost = 0
-    ot_cost = 0
-    
-    # Para equilíbrio de carga espacial e temporal
-    ward_workloads = {ward: [0] * instance_data['days'] for ward in instance_data['wards']}
-    
-    # Para ocupação de camas
-    ward_patients_per_day = {ward: [0] * instance_data['days'] for ward in instance_data['wards']}
+    ot_overtime_cost = 0
     
     # Para utilização de tempo de cirurgia
     specialization_surgeries = {spec: [0] * instance_data['days'] for spec in instance_data['specializations']}
@@ -176,10 +146,8 @@ def calculate_cost(instance_data, solution, use_same_weights=False):
         if data['ward'] is None or data['day'] < 0:
             continue  # Pular pacientes não alocados
             
-        ward = data['ward']
         admission_day = data['day']
         patient_data = instance_data['patients'][patient]
-        length_of_stay = patient_data['length_of_stay']
         spec = patient_data['specialization']
         
         # Adicionar à utilização de tempo de cirurgia
@@ -191,52 +159,9 @@ def calculate_cost(instance_data, solution, use_same_weights=False):
         earliest = patient_data['earliest_admission']
         delay = admission_day - earliest
         if delay > 0:
-            delay_cost += delay * WEIGHT_DELAY
-        
-        # Adicionar ocupação de cama e carga de trabalho para cada dia de permanência
-        for day_offset in range(length_of_stay):
-            day = admission_day + day_offset
-            if day < instance_data['days']:
-                # Ocupação de cama
-                ward_patients_per_day[ward][day] += 1
-                
-                # Carga de trabalho
-                if day_offset < len(patient_data['workload']):
-                    workload_value = patient_data['workload'][day_offset]
-                    # Aplicar fator de escala se for especialização secundária
-                    if spec != instance_data['wards'][ward]['major_specialization']:
-                        if spec in instance_data['specializations']:
-                            scaling_factor = instance_data['specializations'][spec]['scaling_factor']
-                            workload_value *= scaling_factor
-                    ward_workloads[ward][day] += workload_value
+            delay_cost += delay * 10  # Peso maior para day minimization
     
-    # Adicionar carryover patients e workload
-    for ward in instance_data['wards']:
-        if 'carryover_patients' in instance_data['wards'][ward]:
-            for day, count in enumerate(instance_data['wards'][ward]['carryover_patients']):
-                if day < instance_data['days']:
-                    ward_patients_per_day[ward][day] += count
-        
-        if 'carryover_workload' in instance_data['wards'][ward]:
-            for day, workload in enumerate(instance_data['wards'][ward]['carryover_workload']):
-                if day < instance_data['days']:
-                    ward_workloads[ward][day] += workload
-    
-    # Calcular penalidades por sobrecarga de camas
-    for ward, capacity in {w: instance_data['wards'][w]['bed_capacity'] for w in instance_data['wards']}.items():
-        for day, count in enumerate(ward_patients_per_day[ward]):
-            if count > capacity:
-                bed_capacity_cost += (count - capacity) * WEIGHT_BED_OVERLOAD
-    
-    # Calcular penalidades por conflitos de cirurgias
-    for day in range(instance_data['days']):
-        count = sum(1 for patient, data in solution.items() 
-                    if data['ward'] is not None and data['day'] == day)
-        
-        if count > len(instance_data['specializations']):
-            surgery_conflict_cost += (count - len(instance_data['specializations'])) * WEIGHT_SURGERY_CONFLICT
-    
-    # Calcular penalidades para utilização de tempo de cirurgia (OT)
+    # Calcular penalidades apenas para OT overtime (não undertime)
     for spec in instance_data['specializations']:
         for day in range(min(len(instance_data['specializations'][spec]['available_ot']), instance_data['days'])):
             used_ot = specialization_surgeries[spec][day]
@@ -244,54 +169,63 @@ def calculate_cost(instance_data, solution, use_same_weights=False):
             
             # Penalidade por overtime
             if used_ot > available_ot:
-                ot_cost += (used_ot - available_ot) * WEIGHT_OT_OVERTIME
-            # Penalidade por undertime (recurso não utilizado)
-            else:
-                ot_cost += (available_ot - used_ot) * WEIGHT_OT_UNDERTIME * 0.5  # Reduzido para dar menos peso ao tempo ocioso
+                ot_overtime_cost += (used_ot - available_ot) * 8  # Peso para overtime
     
-    # Calcular equilíbrio de carga espacial (entre wards)
-    spatial_imbalance = 0
-    for day in range(instance_data['days']):
-        workloads = []
-        capacities = []
-        
-        for ward in instance_data['wards']:
-            workloads.append(ward_workloads[ward][day])
-            capacities.append(instance_data['wards'][ward]['workload_capacity'])
-        
-        # Calcular workload relativo (normalizado por capacidade)
-        if sum(capacities) > 0:
-            rel_workloads = [w / c if c > 0 else 0 for w, c in zip(workloads, capacities)]
-            if rel_workloads:
-                avg_rel_workload = sum(rel_workloads) / len(rel_workloads)
-                # Usar variância como medida de desequilíbrio
-                variance = sum((w - avg_rel_workload) ** 2 for w in rel_workloads) / len(rel_workloads)
-                spatial_imbalance += variance * WEIGHT_SPATIAL_IMBALANCE
+    # Custo total (apenas os dois componentes solicitados)
+    total_cost = delay_cost + ot_overtime_cost
     
-    # Calcular equilíbrio de carga temporal (entre dias)
-    temporal_imbalance = 0
-    for ward in instance_data['wards']:
-        workloads = ward_workloads[ward]
-        capacity = instance_data['wards'][ward]['workload_capacity']
-        
-        # Normalizar por capacidade
-        rel_workloads = [w / capacity if capacity > 0 else 0 for w in workloads]
-        
-        if rel_workloads:
-            avg_rel_workload = sum(rel_workloads) / len(rel_workloads)
-            # Usar variância como medida de desequilíbrio
-            variance = sum((w - avg_rel_workload) ** 2 for w in rel_workloads) / len(rel_workloads)
-            temporal_imbalance += variance * WEIGHT_TEMPORAL_IMBALANCE
+    if return_components:
+        return {
+            'total': total_cost,
+            'delay': delay_cost,
+            'ot_overtime': ot_overtime_cost
+        }
     
-    # Custo total
-    total_cost = (
-        bed_capacity_cost + 
-        surgery_conflict_cost + 
-        spatial_imbalance + 
-        temporal_imbalance + 
-        delay_cost + 
-        ot_cost
-    )
+    return total_cost
+    """
+    Função de custo simplificada focada apenas nos dois objetivos principais:
+    1. Minimizar dia de admissão
+    2. Minimizar OT overtime
+    """
+    # Inicializar componentes de custo
+    delay_cost = 0
+    ot_overtime_cost = 0
+    
+    # Para utilização de tempo de cirurgia
+    specialization_surgeries = {spec: [0] * instance_data['days'] for spec in instance_data['specializations']}
+    
+    # Calcular ocupação e carga de trabalho
+    for patient, data in solution.items():
+        if data['ward'] is None or data['day'] < 0:
+            continue  # Pular pacientes não alocados
+            
+        admission_day = data['day']
+        patient_data = instance_data['patients'][patient]
+        spec = patient_data['specialization']
+        
+        # Adicionar à utilização de tempo de cirurgia
+        if admission_day < instance_data['days']:
+            surgery_duration = patient_data['surgery_duration']
+            specialization_surgeries[spec][admission_day] += surgery_duration
+        
+        # Calcular atraso na admissão
+        earliest = patient_data['earliest_admission']
+        delay = admission_day - earliest
+        if delay > 0:
+            delay_cost += delay * 10  # Peso maior para day minimization
+    
+    # Calcular penalidades apenas para OT overtime (não undertime)
+    for spec in instance_data['specializations']:
+        for day in range(min(len(instance_data['specializations'][spec]['available_ot']), instance_data['days'])):
+            used_ot = specialization_surgeries[spec][day]
+            available_ot = instance_data['specializations'][spec]['available_ot'][day]
+            
+            # Penalidade por overtime
+            if used_ot > available_ot:
+                ot_overtime_cost += (used_ot - available_ot) * 8  # Peso para overtime
+    
+    # Custo total (apenas os dois componentes solicitados)
+    total_cost = delay_cost + ot_overtime_cost
     
     return total_cost
 
