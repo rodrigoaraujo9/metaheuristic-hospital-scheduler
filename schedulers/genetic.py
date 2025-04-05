@@ -22,21 +22,20 @@ class GeneticAlgorithmScheduler:
         self.best_cost = float('inf')
         self.cost_history = []
         self.diversity_history = []
-        self.best_cost_history = []  # Para rastrear melhoras ao longo do tempo
+        self.mutation_rate_history = []
         
         # Parâmetros adaptativos avançados
         self.adaptive_mutation = True
         self.min_mutation_rate = 0.05
         self.max_mutation_rate = 0.5
-        self.mutation_rate_history = []
         
         # Controle de diversidade e estagnação
         self.iterations_without_improvement = 0
-        self.reset_threshold = 30  # Reiniciar parcialmente após N iterações sem melhora
-        self.diversity_target = 0.6  # Nível desejado de diversidade
+        self.reset_threshold = 25  # Reiniciar parcialmente após N iterações sem melhora
+        self.diversity_target = 0.65  # Nível desejado de diversidade
         
         # Métodos de crossover disponíveis
-        self.crossover_methods = ["uniform", "one_point", "two_point", "position_based"]
+        self.crossover_methods = ["uniform", "one_point", "two_point", "ward_based"]
         self.active_crossover_method = "uniform"
         
         print("Gerando população inicial...")
@@ -44,11 +43,22 @@ class GeneticAlgorithmScheduler:
         
         # Gerar população inicial mais diversificada
         self.population = []
-        for _ in range(population_size // 2):  # Metade com geração inteligente
+        
+        # Método 1: Geração inteligente (30%)
+        for _ in range(population_size // 3):
             solution = generate_initial_solution(instance_data)
             self.population.append(solution)
         
-        for _ in range(population_size - len(self.population)):  # Metade com perturbações aleatórias
+        # Método 2: Variações da geração inteligente (30%)
+        for _ in range(population_size // 3):
+            base_solution = copy.deepcopy(self.population[random.randint(0, len(self.population)-1)])
+            # Aplicar algumas perturbações focadas em OT
+            for _ in range(random.randint(3, 8)):
+                base_solution = make_neighbor_solution(instance_data, base_solution, strategy="ot_balancing")
+            self.population.append(base_solution)
+        
+        # Método 3: Variações aleatórias (40% restante)
+        for _ in range(population_size - len(self.population)):
             base_solution = copy.deepcopy(self.population[random.randint(0, len(self.population)-1)])
             for _ in range(random.randint(5, 15)):  # Aplicar 5-15 perturbações aleatórias
                 base_solution = make_neighbor_solution(instance_data, base_solution)
@@ -105,8 +115,8 @@ class GeneticAlgorithmScheduler:
             return self._one_point_crossover(parent1, parent2)
         elif method == "two_point":
             return self._two_point_crossover(parent1, parent2)
-        elif method == "position_based":
-            return self._position_based_crossover(parent1, parent2)
+        elif method == "ward_based":
+            return self._ward_based_crossover(parent1, parent2)
         else:
             return self._uniform_crossover(parent1, parent2)  # Padrão
     
@@ -168,47 +178,46 @@ class GeneticAlgorithmScheduler:
         self.repair_solution(child2)
         return child1, child2
     
-    def _position_based_crossover(self, parent1, parent2):
+    def _ward_based_crossover(self, parent1, parent2):
         """
-        Crossover baseado em posição, que mapeia as atribuições dos pacientes
-        com base na sua "posição" (ward e dia) na solução.
+        Novo método de crossover que mantém pacientes agrupados por especialização.
+        Isso ajuda a preservar boas atribuições de ward para pacientes com a mesma especialização.
         """
-        # Agrupar pacientes por ward
-        ward_mapping = {}
-        for patient, data in parent1.items():
-            ward = data['ward']
-            if ward not in ward_mapping:
-                ward_mapping[ward] = []
-            ward_mapping[ward].append(patient)
+        # Agrupar pacientes por especialização
+        spec_patients = {}
+        for patient in parent1:
+            spec = self.instance_data['patients'][patient]['specialization']
+            if spec not in spec_patients:
+                spec_patients[spec] = []
+            spec_patients[spec].append(patient)
         
         # Criar filhos
         child1, child2 = {}, {}
         
-        # Para cada ward, aplicar crossover
-        for ward in ward_mapping:
-            patients_in_ward = ward_mapping[ward]
-            if not patients_in_ward:
-                continue
-                
-            # Decidir se troca atribuições para este ward
-            if random.random() < 0.5:
-                for patient in patients_in_ward:
+        # Para cada especialização, herdar atribuições em bloco
+        for spec, patients in spec_patients.items():
+            # Decidir de qual pai herdar atribuições para esta especialização
+            use_parent1 = random.random() < 0.5
+            
+            for patient in patients:
+                if use_parent1:
                     child1[patient] = copy.deepcopy(parent1[patient])
+                    # Herdar ward do parent1, mas possivelmente dia do parent2
+                    if random.random() < 0.3:  # 30% de chance de misturar dia
+                        child1[patient]['day'] = parent2[patient]['day']
+                    
                     child2[patient] = copy.deepcopy(parent2[patient])
-            else:
-                for patient in patients_in_ward:
-                    child1[patient] = copy.deepcopy(parent2[patient])
-                    child2[patient] = copy.deepcopy(parent1[patient])
-        
-        # Adicionar pacientes que não estão em nenhum ward
-        for patient in parent1:
-            if patient not in child1:
-                if random.random() < 0.5:
-                    child1[patient] = copy.deepcopy(parent1[patient])
-                    child2[patient] = copy.deepcopy(parent2[patient])
+                    # Mesma lógica para child2
+                    if random.random() < 0.3:
+                        child2[patient]['day'] = parent1[patient]['day']
                 else:
                     child1[patient] = copy.deepcopy(parent2[patient])
+                    if random.random() < 0.3:
+                        child1[patient]['day'] = parent1[patient]['day']
+                    
                     child2[patient] = copy.deepcopy(parent1[patient])
+                    if random.random() < 0.3:
+                        child2[patient]['day'] = parent2[patient]['day']
         
         self.repair_solution(child1)
         self.repair_solution(child2)
@@ -244,19 +253,70 @@ class GeneticAlgorithmScheduler:
                 mutated = True
                 
                 # Decidir tipo de mutação com base na estagnação
-                if self.iterations_without_improvement > 10:
+                if self.iterations_without_improvement > 15:
                     # Se estagnado, aplicar mutações mais agressivas
-                    strategy = random.choice(["both", "smart"])
+                    strategy = random.choice(["both", "smart", "ot_balancing"])
+                elif self.iterations_without_improvement > 8:
+                    # Estagnação moderada
+                    strategy = random.choice(["ward", "day", "smart", "ot_balancing"])
                 else:
-                    # Caso contrário, mutações mais suaves
+                    # Sem estagnação, mutações mais suaves
                     strategy = random.choice(["ward", "day", "smart"])
                 
                 # Aplicar mutação
                 patient_data = self.instance_data['patients'].get(patient)
                 if not patient_data:
                     continue
+                
+                if strategy == "ot_balancing":
+                    # Estratégia focada em balancear o tempo operatório
+                    spec = patient_data['specialization']
+                    surgery_duration = patient_data['surgery_duration']
                     
-                if strategy == "ward" or strategy == "both":
+                    # Calcular uso atual de OT por dia
+                    ot_usage = {day: 0 for day in range(self.instance_data['days'])}
+                    ot_available = {day: 0 for day in range(self.instance_data['days'])}
+                    
+                    # Calcular uso atual
+                    for p, d in solution.items():
+                        if p != patient and d['ward'] is not None and d['day'] >= 0:
+                            p_spec = self.instance_data['patients'][p]['specialization']
+                            if p_spec == spec:
+                                p_duration = self.instance_data['patients'][p]['surgery_duration']
+                                if d['day'] < self.instance_data['days']:
+                                    ot_usage[d['day']] += p_duration
+                    
+                    # Obter OT disponível
+                    for day in range(min(len(self.instance_data['specializations'][spec]['available_ot']), 
+                                        self.instance_data['days'])):
+                        ot_available[day] = self.instance_data['specializations'][spec]['available_ot'][day]
+                    
+                    # Calcular melhores dias para este paciente
+                    earliest = patient_data['earliest_admission']
+                    latest = patient_data['latest_admission']
+                    best_days = []
+                    best_imbalance = float('inf')
+                    
+                    for day in range(earliest, latest + 1):
+                        if day < self.instance_data['days']:
+                            current_imbalance = abs(ot_available.get(day, 0) - ot_usage.get(day, 0))
+                            future_imbalance = abs(ot_available.get(day, 0) - (ot_usage.get(day, 0) + surgery_duration))
+                            
+                            # Se melhora o equilíbrio ou é quase tão bom
+                            if future_imbalance <= current_imbalance * 1.1:  # Permite 10% de piora
+                                if future_imbalance < best_imbalance:
+                                    best_days = [day]
+                                    best_imbalance = future_imbalance
+                                elif future_imbalance == best_imbalance:
+                                    best_days.append(day)
+                    
+                    if best_days:
+                        solution[patient]['day'] = random.choice(best_days)
+                    else:
+                        # Se não encontrou dias que melhoram o equilíbrio
+                        solution[patient]['day'] = random.randint(earliest, latest)
+                    
+                elif strategy == "ward" or strategy == "both":
                     # Tentar atribuir a wards compatíveis preferencialmente
                     spec = patient_data['specialization']
                     compatible_wards = []
@@ -301,17 +361,25 @@ class GeneticAlgorithmScheduler:
                         if p != patient and d['ward'] is not None:
                             ward_stats[d['ward']]['count'] += 1
                     
-                    # Encontrar wards menos ocupados
-                    available_wards = []
-                    for ward, stats in ward_stats.items():
-                        if stats['count'] < stats['capacity'] * 0.9:  # Menos de 90% ocupado
-                            available_wards.append(ward)
+                    # Encontrar wards menos ocupados que são compatíveis
+                    spec = patient_data['specialization']
+                    compatible_wards = []
                     
-                    if available_wards:
-                        solution[patient]['ward'] = random.choice(available_wards)
+                    for ward, stats in ward_stats.items():
+                        ward_data = self.instance_data['wards'][ward]
+                        
+                        # Verificar compatibilidade
+                        is_compatible = spec == ward_data['major_specialization'] or spec in ward_data['minor_specializations']
+                        
+                        # Se compatível e com ocupação baixa
+                        if is_compatible and stats['count'] < stats['capacity'] * 0.8:
+                            compatible_wards.append(ward)
+                    
+                    if compatible_wards:
+                        solution[patient]['ward'] = random.choice(compatible_wards)
                     
                     # Ajustar dia para reduzir conflitos de cirurgia
-                    surgery_days = [d['day'] for p, d in solution.items() if p != patient]
+                    surgery_days = [d['day'] for p, d in solution.items() if p != patient and d['day'] >= 0]
                     day_counts = {}
                     for day in surgery_days:
                         day_counts[day] = day_counts.get(day, 0) + 1
@@ -338,7 +406,7 @@ class GeneticAlgorithmScheduler:
         
         improved = True
         iterations = 0
-        strategies = ["ward", "day", "both", "smart"]
+        strategies = ["ward", "day", "both", "smart", "ot_balancing"]
         
         # Se estagnado, aumentar a intensidade da busca
         if self.iterations_without_improvement > 20:
@@ -478,7 +546,7 @@ class GeneticAlgorithmScheduler:
                     modified = copy.deepcopy(elite_solutions[i])
                     # Aplicar várias mutações
                     for _ in range(random.randint(5, 15)):
-                        modified = make_neighbor_solution(self.instance_data, modified, strategy="smart")
+                        modified = make_neighbor_solution(self.instance_data, modified, strategy="ot_balancing")
                     new_population.append(modified)
         
         # Preencher o restante com soluções aleatórias
@@ -505,7 +573,6 @@ class GeneticAlgorithmScheduler:
                     gen_best_idx = population_costs.index(gen_best_cost)
                     
                     self.cost_history.append(gen_best_cost)
-                    self.best_cost_history.append(self.best_cost)
                     
                     # Medir diversidade
                     diversity = self.measure_diversity()
@@ -594,7 +661,7 @@ class GeneticAlgorithmScheduler:
         
         while improved and iterations < max_iterations:
             improved = False
-            strategies = ["ward", "day", "both", "smart"]
+            strategies = ["ward", "day", "both", "smart", "ot_balancing"]
             
             for strategy in strategies:
                 try:

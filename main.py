@@ -30,93 +30,8 @@ def analyze_cost_components(instance_data, solution):
     Analisa e decompõe o custo total em seus componentes.
     Retorna um dicionário com os valores de cada componente.
     """
-    # Componentes do custo
-    bed_capacity_cost = 0
-    surgery_conflict_cost = 0
-    delay_cost = 0
-    ot_cost = 0
-    
-    # 1. Penalidade por sobrecarga de camas
-    ward_loads = {ward: 0 for ward in instance_data['wards']}
-    for patient, data in solution.items():
-        if data['ward'] is not None:
-            ward_loads[data['ward']] += 1
-    
-    for ward, load in ward_loads.items():
-        if load > instance_data['wards'][ward]['bed_capacity']:
-            bed_capacity_cost += (load - instance_data['wards'][ward]['bed_capacity']) * 10
-    
-    # 2. Penalidade por conflitos de cirurgia
-    surgery_days = {}
-    for patient, data in solution.items():
-        if data['ward'] is not None and data['day'] >= 0:
-            day = data['day']
-            surgery_days[day] = surgery_days.get(day, 0) + 1
-    
-    for day, count in surgery_days.items():
-        if count > len(instance_data['specializations']):
-            surgery_conflict_cost += (count - len(instance_data['specializations'])) * 5
-    
-    # 3. Penalidade por atraso na admissão
-    for patient, data in solution.items():
-        if data['ward'] is not None and data['day'] >= 0:
-            earliest = instance_data['patients'][patient]['earliest_admission']
-            actual = data['day']
-            delay = actual - earliest
-            if delay > 0:
-                delay_cost += delay * instance_data.get('weight_delay', 1)
-    
-    # 4. Penalidade por uso de OT (operating time)
-    try:
-        spec_ot_usage = {spec: [0] * instance_data['days'] for spec in instance_data['specializations']}
-        
-        for patient, data in solution.items():
-            if data['ward'] is None or data['day'] < 0:
-                continue
-                
-            spec = instance_data['patients'][patient]['specialization']
-            day = data['day']
-            
-            if day < instance_data['days'] and spec in spec_ot_usage:
-                surgery_duration = instance_data['patients'][patient]['surgery_duration']
-                spec_ot_usage[spec][day] += surgery_duration
-        
-        for spec in instance_data['specializations']:
-            for day in range(min(len(instance_data['specializations'][spec]['available_ot']), instance_data['days'])):
-                used_ot = spec_ot_usage[spec][day]
-                available_ot = instance_data['specializations'][spec]['available_ot'][day]
-                
-                # Overtime
-                if used_ot > available_ot:
-                    ot_cost += (used_ot - available_ot) * instance_data.get('weight_overtime', 1)
-                # Undertime
-                else:
-                    ot_cost += (available_ot - used_ot) * instance_data.get('weight_undertime', 1)
-    except Exception as e:
-        print(f"Erro no cálculo do custo de OT: {str(e)}")
-    
-    # Total e percentuais
-    total_cost = bed_capacity_cost + surgery_conflict_cost + delay_cost + ot_cost
-    
-    if total_cost > 0:
-        pct_bed = bed_capacity_cost / total_cost * 100
-        pct_surgery = surgery_conflict_cost / total_cost * 100
-        pct_delay = delay_cost / total_cost * 100
-        pct_ot = ot_cost / total_cost * 100
-    else:
-        pct_bed = pct_surgery = pct_delay = pct_ot = 0
-    
-    return {
-        'bed_capacity_cost': bed_capacity_cost,
-        'surgery_conflict_cost': surgery_conflict_cost,
-        'delay_cost': delay_cost,
-        'ot_cost': ot_cost,
-        'total_cost': total_cost,
-        'pct_bed': pct_bed,
-        'pct_surgery': pct_surgery,
-        'pct_delay': pct_delay,
-        'pct_ot': pct_ot
-    }
+    # Simplesmente chama a função unificada
+    return calculate_cost(instance_data, solution, use_same_weights=True, return_components=True)
 
 def generate_ga_visualizations(scheduler, instance_name, instance_data, output_dir):
     """
@@ -143,6 +58,9 @@ def generate_ga_visualizations(scheduler, instance_name, instance_data, output_d
     
     # 5. Visualização adicional: Melhorias por geração
     generate_improvements_visualization(scheduler, instance_name, output_dir)
+    
+    # 6. Nova visualização: Utilização de OT
+    generate_ot_utilization_visualization(scheduler, instance_name, instance_data, output_dir)
 
 def generate_convergence_visualization(scheduler, instance_name, output_dir):
     """Gera visualização combinada mostrando convergência."""
@@ -266,6 +184,16 @@ def generate_cost_breakdown_visualization(cost_components, instance_name, output
         cost_components['ot_cost']
     ]
     
+    # Verificar a consistência dos valores totais
+    total = sum(values)
+    reported_total = cost_components['total_cost']
+    
+    if abs(total - reported_total) > 0.1:
+        print(f"AVISO: Discrepância no custo total. Visualização: {total}, Relatado: {reported_total}")
+        # Ajustar os valores para corresponder ao custo total reportado
+        scaling_factor = reported_total / total if total > 0 else 1
+        values = [v * scaling_factor for v in values]
+    
     # Remover componentes com valor zero
     non_zero_labels = []
     non_zero_values = []
@@ -309,9 +237,8 @@ def generate_cost_breakdown_visualization(cost_components, instance_name, output
     
     # Adicionar legenda com valores absolutos
     legend_labels = []
-    for label, value in zip(labels, values):
-        if value > 0:
-            legend_labels.append(f'{label}: {value:.1f}')
+    for label, value in zip(non_zero_labels, non_zero_values):
+        legend_labels.append(f'{label}: {value:.1f}')
     
     if legend_labels:
         plt.legend(wedges, legend_labels, title="Componentes do Custo", 
@@ -402,6 +329,117 @@ def generate_improvements_visualization(scheduler, instance_name, output_dir):
         plt.savefig(os.path.join(output_dir, 'improvements.png'), dpi=300)
         plt.close()
 
+def generate_ot_utilization_visualization(scheduler, instance_name, instance_data, output_dir):
+    """Gera visualização da utilização de tempo operatório (OT)."""
+    days = instance_data['days']
+    specs = list(instance_data['specializations'].keys())
+    
+    # Calcular utilização de OT por dia e especialização
+    ot_usage = {spec: [0] * days for spec in specs}
+    ot_available = {spec: [0] * days for spec in specs}
+    
+    for patient, data in scheduler.best_solution.items():
+        if data['ward'] is None or data['day'] < 0:
+            continue
+            
+        spec = instance_data['patients'][patient]['specialization']
+        day = data['day']
+        
+        if day < days and spec in ot_usage:
+            surgery_duration = instance_data['patients'][patient]['surgery_duration']
+            ot_usage[spec][day] += surgery_duration
+    
+    # Obter OT disponível
+    for spec in specs:
+        for day in range(min(len(instance_data['specializations'][spec]['available_ot']), days)):
+            ot_available[spec][day] = instance_data['specializations'][spec]['available_ot'][day]
+    
+    # Criar visualização agregada de utilização de OT
+    plt.figure(figsize=(12, 6))
+    
+    # Calcular taxa de utilização por dia
+    utilization_rates = []
+    
+    for day in range(days):
+        day_usage = sum(ot_usage[spec][day] for spec in specs)
+        day_available = sum(ot_available[spec][day] for spec in specs if day < len(ot_available[spec]))
+        
+        if day_available > 0:
+            utilization_rates.append(day_usage / day_available * 100)
+        else:
+            utilization_rates.append(0)
+    
+    # Criar barras
+    bars = plt.bar(range(1, days+1), utilization_rates, color='skyblue')
+    
+    # Adicionar linha de 100%
+    plt.axhline(y=100, color='red', linestyle='--', label='Utilização Ideal')
+    
+    # Colorir barras baseado na taxa
+    for i, rate in enumerate(utilization_rates):
+        if rate > 110:  # Overtime significativo
+            bars[i].set_color('crimson')
+        elif rate > 95:  # Próximo do ideal
+            bars[i].set_color('limegreen')
+        elif rate < 70:  # Undertime significativo
+            bars[i].set_color('orange')
+    
+    plt.xlabel('Dia')
+    plt.ylabel('Taxa de Utilização (%)')
+    plt.title(f'Utilização de Tempo Operatório por Dia - {instance_name}', fontsize=14)
+    plt.xticks(range(1, days+1))
+    plt.grid(axis='y', alpha=0.3)
+    
+    # Adicionar rótulos
+    for i, rate in enumerate(utilization_rates):
+        plt.text(i+1, rate+2, f"{rate:.1f}%", ha='center')
+    
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, 'ot_utilization_rate.png'), dpi=300)
+    plt.close()
+    
+    # Criar visualizações individuais por especialização
+    for spec in specs:
+        plt.figure(figsize=(10, 6))
+        
+        # Preparar dados para as barras
+        days_range = range(1, min(days+1, len(ot_available[spec])+1))
+        usage_values = [ot_usage[spec][d-1] for d in days_range]
+        available_values = [ot_available[spec][d-1] for d in days_range]
+        
+        # Calcular taxa de utilização
+        util_rates = [usage/avail*100 if avail > 0 else 0 for usage, avail in zip(usage_values, available_values)]
+        
+        # Plotar barras de utilização vs disponibilidade
+        x = np.arange(len(days_range))
+        width = 0.35
+        
+        plt.bar(x - width/2, usage_values, width, label='OT Utilizado', color='skyblue')
+        plt.bar(x + width/2, available_values, width, label='OT Disponível', color='lightgray')
+        
+        # Adicionar linha de taxas de utilização
+        ax2 = plt.twinx()
+        ax2.plot(x, util_rates, 'r-', label='Taxa de Utilização', linewidth=2)
+        ax2.set_ylim(0, max(max(util_rates)*1.1, 110))
+        ax2.set_ylabel('Taxa de Utilização (%)')
+        
+        # Configurar eixos e labels
+        plt.xlabel('Dia')
+        plt.ylabel('Tempo Operatório (minutos)')
+        plt.title(f'Utilização de OT - {spec} - {instance_name}', fontsize=14)
+        plt.xticks(x, days_range)
+        
+        # Adicionar segunda legenda
+        lines, labels = plt.gca().get_legend_handles_labels()
+        lines2, labels2 = ax2.get_legend_handles_labels()
+        ax2.legend(lines + lines2, labels + labels2, loc='upper right')
+        
+        plt.grid(axis='y', alpha=0.3)
+        plt.tight_layout()
+        plt.savefig(os.path.join(output_dir, f'ot_utilization_{spec}.png'), dpi=300)
+        plt.close()
+
 def main():
     optimization_method = "ga"  # Altere para "sa", "tabu" ou "ga" conforme desejado
 
@@ -430,7 +468,8 @@ def main():
             best_schedule = scheduler.run()
             
             # Calcula o custo final utilizando a função calculate_cost
-            final_cost = calculate_cost(instance_data, best_schedule)
+            # Usar use_same_weights=True para garantir consistência com analyze_cost_components
+            final_cost = calculate_cost(instance_data, best_schedule, use_same_weights=True)
 
             df_results = pd.DataFrame(best_schedule).T.reset_index()
             df_results.rename(columns={'index': 'patient'}, inplace=True)
