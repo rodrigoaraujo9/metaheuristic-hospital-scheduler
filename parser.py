@@ -37,7 +37,8 @@ def parse_instance_file(filepath):
         available_ot = [float(t) for t in parts[2].split(';')]
         specializations[spec_id] = {
             'scaling_factor': scaling_factor,
-            'available_ot': available_ot
+            'available_ot': available_ot,
+            'total_available_ot': sum(available_ot)  # Novo: soma total de OT disponível
         }
         current_line += 1
     instance_data['specializations'] = specializations
@@ -70,6 +71,11 @@ def parse_instance_file(filepath):
     patient_count = int(lines[current_line].split(":")[1].strip())
     current_line += 1
     patients = {}
+    
+    # Pré-processamento para estatísticas
+    spec_patient_counts = {spec: 0 for spec in specializations}
+    total_surgery_duration = 0
+    
     for _ in range(patient_count):
         parts = lines[current_line].split()
         patient_id = parts[0]
@@ -79,6 +85,12 @@ def parse_instance_file(filepath):
         length_of_stay = int(parts[4])
         surgery_duration = int(parts[5])
         workload = [float(x) for x in parts[6].split(';')]
+        
+        # Atualizar estatísticas
+        if spec in spec_patient_counts:
+            spec_patient_counts[spec] += 1
+        total_surgery_duration += surgery_duration
+        
         patients[patient_id] = {
             'specialization': spec,
             'earliest_admission': earliest,
@@ -88,6 +100,41 @@ def parse_instance_file(filepath):
             'workload': workload
         }
         current_line += 1
+    
     instance_data['patients'] = patients
-
+    
+    # Calcular e adicionar estatísticas (novidade)
+    # Estatísticas de utilização de OT
+    total_available_ot = 0
+    for spec, data in specializations.items():
+        total_available_ot += data['total_available_ot']
+    
+    # Se OT disponível for zero, evitar divisão por zero
+    if total_available_ot > 0:
+        ot_utilization = total_surgery_duration / total_available_ot
+    else:
+        ot_utilization = 0
+    
+    # Adicionar à instância
+    instance_data['total_surgery_duration'] = total_surgery_duration
+    instance_data['total_available_ot'] = total_available_ot
+    instance_data['ot_utilization'] = ot_utilization
+    instance_data['patients_per_specialization'] = spec_patient_counts
+    
+    # Ajustar pesos com base nas características da instância
+    if ot_utilization < 0.8:
+        # Se há muita capacidade ociosa, reduzir peso do undertime
+        instance_data['weight_undertime'] *= 0.8
+    elif ot_utilization > 1.1:
+        # Se há sobrecarga de capacidade, aumentar peso do overtime
+        instance_data['weight_overtime'] *= 1.2
+    
+    # Informações de debug
+    print(f"Instância carregada: {filepath}")
+    print(f"  Pacientes: {patient_count}")
+    print(f"  Especializações: {len(specializations)}")
+    print(f"  Enfermarias: {len(wards)}")
+    print(f"  Dias de planejamento: {instance_data['days']}")
+    print(f"  Taxa de utilização de OT potencial: {ot_utilization:.2f}")
+    
     return instance_data
