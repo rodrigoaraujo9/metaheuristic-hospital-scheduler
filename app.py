@@ -3,6 +3,8 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import numpy as np  # For percentile calculations
+
 from parser import parse_instance_file
 from utils import analyze_solution, calculate_cost
 
@@ -23,6 +25,29 @@ def compute_average_occupancy(stats):
             total_rate += rate
             count += 1
     return total_rate / count if count > 0 else 0
+
+def compute_outlier_percentage(stats):
+    """
+    Computes the percentage of outliers in occupancy rates using the IQR method.
+    Outliers are defined as occupancy rates that fall outside [Q1 - 1.5*IQR, Q3 + 1.5*IQR].
+    Returns the percentage (0 to 100) of occupancy values that are considered outliers.
+    """
+    rates = []
+    for ward, occupancy in stats['ward_occupancy'].items():
+        capacity = occupancy['capacity']
+        for occ in occupancy['daily_occupancy']:
+            rate = occ / capacity if capacity > 0 else 0
+            rates.append(rate)
+    if not rates:
+        return 0
+    total = len(rates)
+    q1 = np.percentile(rates, 25)
+    q3 = np.percentile(rates, 75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+    outliers = [r for r in rates if r < lower_bound or r > upper_bound]
+    return (len(outliers) / total) * 100
 
 def get_scheduler(algorithm, instance_data, params=None):
     """
@@ -129,12 +154,18 @@ if page == "Single Algorithms":
                     iteracoes = getattr(scheduler, "iterations", "N/A")
                     iteracoes_label = "Iterations"
                 
+                # Compute average occupancy and percentage of outliers.
+                avg_occupancy = compute_average_occupancy(stats) * 100
+                outlier_percent = compute_outlier_percentage(stats)
+                
                 st.markdown("### General Statistics")
                 st.write({
                     iteracoes_label: iteracoes,
                     "Time (s)": round(tempo, 2) if isinstance(tempo, (int, float)) else tempo,
                     "% Allocated": round(pct_alocados, 2),
-                    "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo
+                    "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo,
+                    "Avg Occupancy (%)": round(avg_occupancy, 2),
+                    "Outlier (%)": round(outlier_percent, 2)
                 })
                 
                 st.markdown("### Solution Analysis")
@@ -210,7 +241,9 @@ if page == "Single Algorithms":
                     iteracoes_label: iteracoes,
                     "Time (s)": round(tempo, 2) if isinstance(tempo, (int, float)) else tempo,
                     "% Allocated": round(pct_alocados, 2),
-                    "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo
+                    "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo,
+                    "Avg Occupancy (%)": round(avg_occupancy, 2),
+                    "Outlier (%)": round(outlier_percent, 2)
                 })
         
         st.markdown("## Summary Statistics")
@@ -235,6 +268,24 @@ if page == "Single Algorithms":
             ax.set_xlabel('Instance')
             ax.set_ylabel('Time (seconds)')
             ax.set_title('Runtime Comparison Across Instances')
+            plt.xticks(rotation=45, ha='right')
+            st.pyplot(fig)
+            
+            # Average Occupancy Comparison
+            fig, ax = plt.subplots(figsize=(10, 6))
+            ax.bar(df_results['Instance'], df_results['Avg Occupancy (%)'])
+            ax.set_xlabel('Instance')
+            ax.set_ylabel('Average Occupancy (%)')
+            ax.set_title('Average Occupancy Comparison Across Instances')
+            plt.xticks(rotation=45, ha='right')
+            st.pyplot(fig)
+            
+            # Outlier Percentage Comparison
+            fig, ax = plt.subplots(figsize=(10, 6))
+            ax.bar(df_results['Instance'], df_results['Outlier (%)'])
+            ax.set_xlabel('Instance')
+            ax.set_ylabel('Outlier (%)')
+            ax.set_title('Outlier Percentage Comparison Across Instances')
             plt.xticks(rotation=45, ha='right')
             st.pyplot(fig)
 
@@ -313,8 +364,9 @@ elif page == "Compare Algorithms":
                         iteracoes = getattr(scheduler, "iterations", "N/A")
                         iteracoes_label = "Iterations"
                     
-                    # Compute average occupancy (as a percentage)
+                    # Compute average occupancy and percentage of outliers.
                     avg_occupancy = compute_average_occupancy(stats) * 100
+                    outlier_percent = compute_outlier_percentage(stats)
                     
                     st.markdown("#### General Statistics")
                     st.write({
@@ -322,7 +374,8 @@ elif page == "Compare Algorithms":
                         "Time (s)": round(tempo, 2) if isinstance(tempo, (int, float)) else tempo,
                         "% Allocated": round(pct_alocados, 2),
                         "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo,
-                        "Avg Occupancy (%)": round(avg_occupancy, 2)
+                        "Avg Occupancy (%)": round(avg_occupancy, 2),
+                        "Outlier (%)": round(outlier_percent, 2)
                     })
                     
                     # Cost Breakdown Pie Chart.
@@ -398,7 +451,8 @@ elif page == "Compare Algorithms":
                         "Time (s)": round(tempo, 2) if isinstance(tempo, (int, float)) else tempo,
                         "% Allocated": round(pct_alocados, 2),
                         "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo,
-                        "Avg Occupancy (%)": round(avg_occupancy, 2)
+                        "Avg Occupancy (%)": round(avg_occupancy, 2),
+                        "Outlier (%)": round(outlier_percent, 2)
                     })
         
         st.markdown("## Overall Summary Statistics")
@@ -437,4 +491,12 @@ elif page == "Compare Algorithms":
             occupancy_pivot.plot(kind="bar", ax=ax)
             ax.set_ylabel("Avg Occupancy (%)")
             ax.set_title("Average Occupancy Across Instances and Algorithms")
+            st.pyplot(fig)
+            
+            st.markdown("### Outlier Percentage Comparison")
+            outlier_pivot = df_results.pivot(index="Instance", columns="Algorithm", values="Outlier (%)")
+            fig, ax = plt.subplots(figsize=(10, 6))
+            outlier_pivot.plot(kind="bar", ax=ax)
+            ax.set_ylabel("Outlier (%)")
+            ax.set_title("Outlier Percentage Across Instances and Algorithms")
             st.pyplot(fig)
