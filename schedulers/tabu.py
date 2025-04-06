@@ -19,16 +19,19 @@ class TabuSearchScheduler:
         self.cost_history = []
         self.tabu_list = []
 
-    def run(self):
+    def run(self, max_time=None):
         start_time = time.time()
         for _ in range(self.max_iterations):
+            if max_time is not None and time.time() - start_time > max_time:
+                print(f"Timeout reached at iteration {self.iterations}.")
+                break
+
             self.iterations += 1
             current_cost = calculate_cost(self.instance_data, self.current_solution)
             self.cost_history.append(current_cost)
 
-            # Gera um conjunto de vizinhos
             neighbors = [make_neighbor_solution(self.instance_data, self.current_solution)
-                         for _ in range(self.neighbor_count)]
+                        for _ in range(self.neighbor_count)]
             valid_neighbors = []
             for neighbor in neighbors:
                 sol_repr = tuple(sorted((p, d['ward'], d['day']) for p, d in neighbor.items()))
@@ -46,7 +49,8 @@ class TabuSearchScheduler:
             self.current_solution = best_neighbor
             if best_neighbor_cost < calculate_cost(self.instance_data, self.best_solution):
                 self.best_solution = copy.deepcopy(best_neighbor)
-
+        
         self.runtime = time.time() - start_time
         self.final_cost = calculate_cost(self.instance_data, self.best_solution)
         return self.best_solution
+

@@ -105,42 +105,47 @@ class GeneticAlgorithmScheduler:
             }
         return solution
     
-    def run(self):
+    def run(self, max_time=None):
         """Motor do algoritmo genético simplificado."""
         print(f"Starting genetic algorithm with population size {self.population_size} for {self.generations} generations")
         start_time = time.time()
         stagnation_counter = 0
         previous_best = self.best_cost
-        
+
         for gen in range(self.generations):
+            # Check for timeout
+            if max_time is not None and time.time() - start_time > max_time:
+                print(f"Timeout reached at generation {gen+1}.")
+                break
+
             try:
                 # Avaliar população atual
                 population_costs = self.evaluate_population()
                 if population_costs:
                     gen_best_cost = min(population_costs)
                     self.cost_history.append(gen_best_cost)
-                    
+
                     elapsed = time.time() - start_time
                     improvement = 0
                     if previous_best != float('inf'):
                         improvement = (previous_best - self.best_cost) / previous_best * 100
                     print(f"Generation {gen+1}/{self.generations} - Best: {self.best_cost:.2f} - Improvement: {improvement:.4f}% - Time: {elapsed:.2f}s")
-                    
+
                     # Verificar estagnação
                     if abs(previous_best - self.best_cost) < 0.01:
                         stagnation_counter += 1
                     else:
                         stagnation_counter = 0
                         previous_best = self.best_cost
-                    
+
                     # Nova população
                     new_population = []
-                    
+
                     # Elitismo - manter as melhores soluções
                     sorted_indices = sorted(range(len(population_costs)), key=lambda i: population_costs[i])
                     for idx in sorted_indices[:self.elitism_count]:
                         new_population.append(copy.deepcopy(self.population[idx]))
-                    
+
                     # Estratégia de restart parcial
                     if stagnation_counter >= 7 or gen % 10 == 0:
                         best_solution = copy.deepcopy(self.population[sorted_indices[0]])
@@ -159,7 +164,7 @@ class GeneticAlgorithmScheduler:
                         print(f"Generation {gen+1}: Restarting population for better exploration")
                         self.population = new_population
                         continue
-                    
+
                     # Gerar novos indivíduos
                     while len(new_population) < self.population_size:
                         parent1 = self.selection(population_costs)
@@ -170,22 +175,15 @@ class GeneticAlgorithmScheduler:
                             child = copy.deepcopy(parent1)
                         child = self.mutate(child)
                         new_population.append(child)
-                    
+
                     self.population = new_population
             except Exception as e:
                 print(f"Error in generation {gen+1}: {str(e)}")
                 continue
-        
+
         self.runtime = time.time() - start_time
-        # Definir atributos para compatibilidade com o app
         self.final_cost = self.best_cost
         self.iterations = self.generations
-        
         print(f"Genetic algorithm completed in {self.runtime:.2f} seconds")
         print(f"Best cost found: {self.best_cost:.2f}")
-        initial_best = self.cost_history[0] if self.cost_history else float('inf')
-        if initial_best != float('inf') and self.best_cost != float('inf'):
-            total_improvement = (initial_best - self.best_cost) / initial_best * 100
-            print(f"Total improvement: {total_improvement:.2f}%")
-        
         return self.best_solution

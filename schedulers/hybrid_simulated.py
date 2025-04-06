@@ -40,25 +40,26 @@ class HybridSimulatedAnnealingScheduler:
                 best_cost = candidate_cost
         return best_sol
 
-    def run(self):
+    def run(self, max_time=None):
         start_time = time.time()
         while self.temperature > self.min_temp:
-            # Registro para análise
+            # Check for timeout
+            if max_time is not None and time.time() - start_time > max_time:
+                print(f"Timeout reached at iteration {self.iterations}.")
+                break
+
             self.temperature_history.append(self.temperature)
             current_cost = calculate_cost(self.instance_data, self.current_solution)
             self.cost_history.append(current_cost)
 
-            # Gerar vizinho e avaliar
             new_solution = make_neighbor_solution(self.instance_data, self.current_solution)
             new_cost = calculate_cost(self.instance_data, new_solution)
 
-            # Critério de aceitação do Simulated Annealing
             if new_cost < current_cost or random.uniform(0, 1) < math.exp((current_cost - new_cost) / self.temperature):
                 self.current_solution = new_solution
                 if new_cost < calculate_cost(self.instance_data, self.best_solution):
                     self.best_solution = copy.deepcopy(new_solution)
 
-            # Fase híbrida: aplicar busca local a cada 'local_search_interval' iterações
             if self.iterations % self.local_search_interval == 0:
                 improved_solution = self.local_search(self.current_solution)
                 improved_cost = calculate_cost(self.instance_data, improved_solution)
@@ -67,7 +68,6 @@ class HybridSimulatedAnnealingScheduler:
                     if improved_cost < calculate_cost(self.instance_data, self.best_solution):
                         self.best_solution = copy.deepcopy(improved_solution)
 
-            # Resfriamento
             self.temperature *= self.cooling_rate
             self.iterations += 1
 
