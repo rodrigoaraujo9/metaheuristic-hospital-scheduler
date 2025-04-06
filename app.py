@@ -7,13 +7,27 @@ from parser import parse_instance_file
 from utils import analyze_solution, calculate_cost
 
 st.set_page_config(page_title="Hospital Scheduling", layout="wide")
-page = st.sidebar.selectbox("Choose an Option:", ["Single Algorithms", "Compare Algorithms"])
 
-def get_scheduler_compare(algorithm, instance_data, params):
+def compute_average_occupancy(stats):
     """
-    Returns the scheduler instance based on the chosen algorithm and provided parameters.
-    Available algorithms: 'sa' (Simulated Annealing), 'hybrid_sa' (Hybrid SA), 
-    'tabu' (Tabu Search), 'ga' (Genetic Algorithm), 'hc' (Hill Climbing), 'rw' (Random Walk).
+    Computes the average occupancy rate (as a fraction) across all wards and days.
+    stats['ward_occupancy'] is expected to be a dictionary:
+       ward -> { 'capacity': X, 'daily_occupancy': [occ1, occ2, ...] }
+    """
+    total_rate = 0
+    count = 0
+    for ward, occupancy in stats['ward_occupancy'].items():
+        capacity = occupancy['capacity']
+        for occ in occupancy['daily_occupancy']:
+            rate = occ / capacity if capacity > 0 else 0
+            total_rate += rate
+            count += 1
+    return total_rate / count if count > 0 else 0
+
+def get_scheduler(algorithm, instance_data, params=None):
+    """
+    Returns the scheduler instance based on the chosen algorithm and optional parameters.
+    Available algorithms: 'sa', 'hybrid_sa', 'tabu', 'ga', 'hc', 'rw'.
     """
     if algorithm == "sa":
         from schedulers.simulated import SimulatedAnnealingScheduler
@@ -27,25 +41,41 @@ def get_scheduler_compare(algorithm, instance_data, params):
     elif algorithm == "ga":
         from schedulers.genetic import GeneticAlgorithmScheduler
         if params:
-            return GeneticAlgorithmScheduler(instance_data, 
-                                             population_size=params.get("population_size"),
-                                             generations=params.get("generations"))
+            return GeneticAlgorithmScheduler(
+                instance_data,
+                population_size=params.get("population_size", 150),
+                generations=params.get("generations", 100)
+            )
         else:
             return GeneticAlgorithmScheduler(instance_data)
     elif algorithm == "hc":
         from schedulers.hill_climbing import HillClimbingScheduler
-        return HillClimbingScheduler(instance_data, 
-                                     iterations=params.get("iterations", 1000),
-                                     restart_after=params.get("restart_after", 100))
+        if params:
+            return HillClimbingScheduler(
+                instance_data,
+                iterations=params.get("iterations", 1000),
+                restart_after=params.get("restart_after", 100)
+            )
+        else:
+            return HillClimbingScheduler(instance_data)
     elif algorithm == "rw":
         from schedulers.random_walk import RandomWalkScheduler
-        return RandomWalkScheduler(instance_data, 
-                                   iterations=params.get("iterations", 2000))
+        if params:
+            return RandomWalkScheduler(
+                instance_data,
+                iterations=params.get("iterations", 2000)
+            )
+        else:
+            return RandomWalkScheduler(instance_data)
     else:
-        raise ValueError("Unknown algorithm.")
+        raise ValueError("Unknown algorithm. Use 'sa', 'hybrid_sa', 'tabu', 'ga', 'hc', or 'rw'.")
 
+page = st.sidebar.selectbox("Choose an Option:", ["Single Algorithms", "Compare Algorithms"])
+
+# --------------------------------------------------------------------------
+# Single Algorithms Page
+# --------------------------------------------------------------------------
 if page == "Single Algorithms":
-    # (The code for Single Algorithms remains unchanged.)
     st.sidebar.title("Configuration")
     algoritmo = st.sidebar.selectbox("Choose algorithm", ["sa", "hybrid_sa", "tabu", "ga", "hc", "rw"])
     
@@ -55,76 +85,35 @@ if page == "Single Algorithms":
     usar_todas = st.sidebar.checkbox("Use all instances", value=False)
     instancias_escolhidas = arquivos if usar_todas else st.sidebar.multiselect("Select instances", arquivos)
     
-    # Algorithm-specific parameters
+    # Algorithm-specific parameters for the single algorithm page.
+    algo_params = {}
     if algoritmo == "hc":
-        iterations = st.sidebar.slider("Iterations", 500, 5000, 1000, 100)
-        restart_after = st.sidebar.slider("Restart after (iterations)", 50, 500, 100, 10)
+        algo_params["iterations"] = st.sidebar.slider("Iterations", 500, 5000, 1000, 100)
+        algo_params["restart_after"] = st.sidebar.slider("Restart after (iterations)", 50, 500, 100, 10)
     elif algoritmo == "rw":
-        iterations = st.sidebar.slider("Iterations", 500, 10000, 2000, 100)
+        algo_params["iterations"] = st.sidebar.slider("Iterations", 500, 10000, 2000, 100)
     elif algoritmo == "ga":
-        population_size = st.sidebar.slider("Population size", 50, 300, 150, 10)
-        generations = st.sidebar.slider("Generations", 50, 500, 100, 10)
-        
-    def get_scheduler(algorithm, instance_data):
-        """
-        Returns the scheduler instance for the given algorithm.
-        """
-        if algorithm == "sa":
-            from schedulers.simulated import SimulatedAnnealingScheduler
-            return SimulatedAnnealingScheduler(instance_data)
-        elif algorithm == "hybrid_sa":
-            from schedulers.hybrid_simulated import HybridSimulatedAnnealingScheduler
-            return HybridSimulatedAnnealingScheduler(instance_data)
-        elif algorithm == "tabu":
-            from schedulers.tabu import TabuSearchScheduler
-            return TabuSearchScheduler(instance_data)
-        elif algorithm == "ga":
-            from schedulers.genetic import GeneticAlgorithmScheduler
-            if 'population_size' in st.session_state and 'generations' in st.session_state:
-                return GeneticAlgorithmScheduler(
-                    instance_data, 
-                    population_size=st.session_state.population_size,
-                    generations=st.session_state.generations
-                )
-            else:
-                return GeneticAlgorithmScheduler(instance_data)
-        elif algorithm == "hc":
-            from schedulers.hill_climbing import HillClimbingScheduler
-            return HillClimbingScheduler(
-                instance_data,
-                iterations=iterations,
-                restart_after=restart_after
-            )
-        elif algorithm == "rw":
-            from schedulers.random_walk import RandomWalkScheduler
-            return RandomWalkScheduler(
-                instance_data,
-                iterations=iterations
-            )
-        else:
-            raise ValueError("Unknown algorithm. Use 'sa', 'hybrid_sa', 'tabu', 'ga', 'hc', or 'rw'.")
+        algo_params["population_size"] = st.sidebar.slider("Population size", 50, 300, 150, 10)
+        algo_params["generations"] = st.sidebar.slider("Generations", 50, 500, 100, 10)
     
     if st.sidebar.button("Run"):
-        if algoritmo == "ga":
-            st.session_state.population_size = population_size
-            st.session_state.generations = generations
-        
-        resultados = []
+        results_summary = []
         for filename in instancias_escolhidas:
             instance_name = os.path.splitext(filename)[0]
             with st.expander(f"Instance: {instance_name}", expanded=True):
                 filepath = os.path.join(instancias_path, filename)
                 dados = parse_instance_file(filepath)
-                scheduler = get_scheduler(algoritmo, dados)
+                scheduler = get_scheduler(algoritmo, dados, algo_params)
                 solucao = scheduler.run()
                 
-                # Process solution and display results
+                # Convert solution (a dict) into a DataFrame.
                 solution_df = pd.DataFrame.from_dict(solucao, orient="index").reset_index()
                 solution_df.rename(columns={"index": "Patient"}, inplace=True)
                 solution_df = solution_df[["Patient", "ward", "day"]]
-                
                 st.write("#### Final Solution")
                 st.dataframe(solution_df)
+                
+                # Analyze the solution.
                 stats = analyze_solution(dados, solucao)
                 total_pacientes = stats['total_patients']
                 alocados = stats['allocated_patients']
@@ -133,7 +122,6 @@ if page == "Single Algorithms":
                 if custo is None:
                     custo = calculate_cost(dados, solucao)
                 tempo = getattr(scheduler, "runtime", "N/A")
-                
                 if algoritmo == "ga":
                     iteracoes = getattr(scheduler, "generations", "N/A")
                     iteracoes_label = "Generations"
@@ -150,31 +138,30 @@ if page == "Single Algorithms":
                 })
                 
                 st.markdown("### Solution Analysis")
-                col1, col2 = st.columns(2)
-                
-                with col1:
-                    st.write("**Cost Breakdown:**")
-                    cost_data = stats['cost_breakdown']
-                    if cost_data:
-                        fig, ax = plt.subplots(figsize=(8, 6))
-                        labels = list(cost_data.keys())
-                        if 'total_estimate' in labels:
-                            labels.remove('total_estimate')
-                        values = [cost_data[k] for k in labels]
-                        ax.pie(values, labels=labels, autopct='%1.1f%%', startangle=90)
-                        ax.axis('equal')
-                        st.pyplot(fig)
-                
-                with col2:
-                    st.write("**Surgery Distribution:**")
+                # Cost Breakdown
+                st.markdown("#### Cost Breakdown")
+                cost_data = stats['cost_breakdown']
+                if cost_data:
                     fig, ax = plt.subplots(figsize=(8, 6))
-                    ax.bar(range(1, len(stats['surgery_per_day'])+1), stats['surgery_per_day'])
-                    ax.set_xlabel('Day')
-                    ax.set_ylabel('Number of Surgeries')
-                    ax.set_title('Surgeries per Day')
+                    labels = list(cost_data.keys())
+                    if 'total_estimate' in labels:
+                        labels.remove('total_estimate')
+                    values = [cost_data[k] for k in labels]
+                    ax.pie(values, labels=labels, autopct='%1.1f%%', startangle=90)
+                    ax.axis('equal')
                     st.pyplot(fig)
                 
-                st.write("**Ward Occupancy:**")
+                # Surgery Distribution
+                st.markdown("#### Surgery Distribution")
+                fig, ax = plt.subplots(figsize=(8, 6))
+                ax.bar(range(1, len(stats['surgery_per_day'])+1), stats['surgery_per_day'])
+                ax.set_xlabel('Day')
+                ax.set_ylabel('Number of Surgeries')
+                ax.set_title('Surgeries per Day')
+                st.pyplot(fig)
+                
+                # Ward Occupancy Heatmap
+                st.markdown("#### Ward Occupancy")
                 ward_data = []
                 for ward, occupancy in stats['ward_occupancy'].items():
                     capacity = occupancy['capacity']
@@ -186,17 +173,15 @@ if page == "Single Algorithms":
                             'Capacity': capacity,
                             'Rate': occ/capacity if capacity > 0 else 0
                         })
-                
                 if ward_data:
                     df_ward = pd.DataFrame(ward_data)
                     pivot = df_ward.pivot(index='Ward', columns='Day', values='Rate')
-                    
                     fig, ax = plt.subplots(figsize=(12, 4))
-                    sns.heatmap(pivot, annot=True, fmt='.0%', cmap='YlGnBu', 
-                                linewidths=0.5, vmin=0, vmax=1.2, center=0.6)
+                    sns.heatmap(pivot, annot=True, fmt='.0%', cmap='YlGnBu', linewidths=0.5, vmin=0, vmax=1.2, center=0.6)
                     plt.title('Ward Occupancy Rate')
                     st.pyplot(fig)
                 
+                # Algorithm Performance: Cost Evolution.
                 st.markdown("### Algorithm Performance")
                 fig, ax = plt.subplots(figsize=(10, 6))
                 ax.plot(scheduler.cost_history, label="Cost")
@@ -207,7 +192,9 @@ if page == "Single Algorithms":
                 ax.legend()
                 st.pyplot(fig)
                 
+                # Temperature Evolution (for Simulated Annealing)
                 if algoritmo == "sa" and hasattr(scheduler, "temperature_history"):
+                    st.markdown("#### Temperature Evolution")
                     fig, ax = plt.subplots(figsize=(10, 6))
                     ax.plot(scheduler.temperature_history, label="Temperature", color="orange")
                     ax.set_title("Temperature Evolution")
@@ -217,7 +204,7 @@ if page == "Single Algorithms":
                     ax.legend()
                     st.pyplot(fig)
                 
-                resultados.append({
+                results_summary.append({
                     "Instance": filename,
                     "Algorithm": algoritmo,
                     iteracoes_label: iteracoes,
@@ -225,45 +212,51 @@ if page == "Single Algorithms":
                     "% Allocated": round(pct_alocados, 2),
                     "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo
                 })
-
-        st.markdown("## Summary Statistics")
-        df_resultados = pd.DataFrame(resultados)
-        st.dataframe(df_resultados)
         
-        if len(resultados) > 1:
+        st.markdown("## Summary Statistics")
+        df_results = pd.DataFrame(results_summary)
+        st.dataframe(df_results)
+        
+        # Comparison charts across instances (if more than one)
+        if len(results_summary) > 1:
             st.markdown("## Instance Comparisons")
-            # For simplicity, create bar charts per metric aggregated across instances.
-            # Cost Comparison
-            cost_pivot = df_resultados.pivot(index="Instance", columns="Algorithm", values="Final Cost")
+            # Final Cost Comparison
             fig, ax = plt.subplots(figsize=(10, 6))
-            cost_pivot.plot(kind="bar", ax=ax)
-            ax.set_ylabel("Final Cost")
-            ax.set_title("Cost Comparison Across Instances and Algorithms")
+            ax.bar(df_results['Instance'], df_results['Final Cost'])
+            ax.set_xlabel('Instance')
+            ax.set_ylabel('Final Cost')
+            ax.set_title('Cost Comparison Across Instances')
+            plt.xticks(rotation=45, ha='right')
             st.pyplot(fig)
             
             # Runtime Comparison
-            time_pivot = df_resultados.pivot(index="Instance", columns="Algorithm", values="Time (s)")
             fig, ax = plt.subplots(figsize=(10, 6))
-            time_pivot.plot(kind="bar", ax=ax)
-            ax.set_ylabel("Time (s)")
-            ax.set_title("Runtime Comparison Across Instances and Algorithms")
+            ax.bar(df_results['Instance'], df_results['Time (s)'])
+            ax.set_xlabel('Instance')
+            ax.set_ylabel('Time (seconds)')
+            ax.set_title('Runtime Comparison Across Instances')
+            plt.xticks(rotation=45, ha='right')
             st.pyplot(fig)
 
+# --------------------------------------------------------------------------
+# Compare Algorithms Page
+# --------------------------------------------------------------------------
 elif page == "Compare Algorithms":
     st.sidebar.title("Comparison Configuration")
     # Allow user to select multiple algorithms.
     selected_algorithms = st.sidebar.multiselect(
-        "Select Algorithms", 
+        "Select Algorithms",
         options=["sa", "hybrid_sa", "tabu", "ga", "hc", "rw"],
         default=["sa", "ga"]
     )
     
+    # Instance selection.
     instancias_path = "./data/instances"
     arquivos = [f for f in os.listdir(instancias_path) if f.endswith(".dat")]
     usar_todas = st.sidebar.checkbox("Use all instances", value=False, key="compare_use_all")
     instancias_escolhidas = arquivos if usar_todas else st.sidebar.multiselect("Select instances", arquivos, key="compare_instances")
     
-    # Prepare a dictionary to hold algorithm-specific parameters.
+    # Prepare algorithm-specific parameters.
     algo_params = {}
     if "hc" in selected_algorithms:
         with st.sidebar.expander("Hill Climbing (hc) Parameters"):
@@ -281,30 +274,30 @@ elif page == "Compare Algorithms":
             algo_params["ga"] = {"population_size": ga_population_size, "generations": ga_generations}
     
     if st.sidebar.button("Run Comparisons"):
-        results_summary = []
-        # Loop over each selected instance.
+        results_summary = []  # Overall summary across instances and algorithms.
         for filename in instancias_escolhidas:
             instance_name = os.path.splitext(filename)[0]
             filepath = os.path.join(instancias_path, filename)
             dados = parse_instance_file(filepath)
             
             st.markdown(f"## Instance: {instance_name}")
-            # Create a tab for each selected algorithm
+            # Create a tab for each selected algorithm.
             tabs = st.tabs(selected_algorithms)
             for i, algorithm in enumerate(selected_algorithms):
                 with tabs[i]:
                     st.markdown(f"### Algorithm: {algorithm}")
                     params = algo_params.get(algorithm, {})
-                    scheduler = get_scheduler_compare(algorithm, dados, params)
+                    scheduler = get_scheduler(algorithm, dados, params)
                     solucao = scheduler.run()
                     
-                    # Convert solution to DataFrame and display.
+                    # Final solution DataFrame.
                     solution_df = pd.DataFrame.from_dict(solucao, orient="index").reset_index()
                     solution_df.rename(columns={"index": "Patient"}, inplace=True)
                     solution_df = solution_df[["Patient", "ward", "day"]]
                     st.write("#### Final Solution")
                     st.dataframe(solution_df)
                     
+                    # Analyze solution.
                     stats = analyze_solution(dados, solucao)
                     total_pacientes = stats['total_patients']
                     alocados = stats['allocated_patients']
@@ -313,7 +306,6 @@ elif page == "Compare Algorithms":
                     if custo is None:
                         custo = calculate_cost(dados, solucao)
                     tempo = getattr(scheduler, "runtime", "N/A")
-                    
                     if algorithm == "ga":
                         iteracoes = getattr(scheduler, "generations", "N/A")
                         iteracoes_label = "Generations"
@@ -321,14 +313,62 @@ elif page == "Compare Algorithms":
                         iteracoes = getattr(scheduler, "iterations", "N/A")
                         iteracoes_label = "Iterations"
                     
+                    # Compute average occupancy (as a percentage)
+                    avg_occupancy = compute_average_occupancy(stats) * 100
+                    
                     st.markdown("#### General Statistics")
                     st.write({
                         iteracoes_label: iteracoes,
                         "Time (s)": round(tempo, 2) if isinstance(tempo, (int, float)) else tempo,
                         "% Allocated": round(pct_alocados, 2),
-                        "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo
+                        "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo,
+                        "Avg Occupancy (%)": round(avg_occupancy, 2)
                     })
                     
+                    # Cost Breakdown Pie Chart.
+                    st.markdown("#### Cost Breakdown")
+                    cost_data = stats['cost_breakdown']
+                    if cost_data:
+                        fig, ax = plt.subplots(figsize=(8, 6))
+                        labels = list(cost_data.keys())
+                        if 'total_estimate' in labels:
+                            labels.remove('total_estimate')
+                        values = [cost_data[k] for k in labels]
+                        ax.pie(values, labels=labels, autopct='%1.1f%%', startangle=90)
+                        ax.axis('equal')
+                        st.pyplot(fig)
+                    
+                    # Surgery Distribution Bar Chart.
+                    st.markdown("#### Surgery Distribution")
+                    fig, ax = plt.subplots(figsize=(8, 6))
+                    ax.bar(range(1, len(stats['surgery_per_day'])+1), stats['surgery_per_day'])
+                    ax.set_xlabel('Day')
+                    ax.set_ylabel('Number of Surgeries')
+                    ax.set_title('Surgeries per Day')
+                    st.pyplot(fig)
+                    
+                    # Ward Occupancy Heatmap.
+                    st.markdown("#### Ward Occupancy")
+                    ward_data = []
+                    for ward, occupancy in stats['ward_occupancy'].items():
+                        capacity = occupancy['capacity']
+                        for day, occ in enumerate(occupancy['daily_occupancy']):
+                            ward_data.append({
+                                'Ward': ward,
+                                'Day': f'Day {day+1}',
+                                'Occupancy': occ,
+                                'Capacity': capacity,
+                                'Rate': occ/capacity if capacity > 0 else 0
+                            })
+                    if ward_data:
+                        df_ward = pd.DataFrame(ward_data)
+                        pivot = df_ward.pivot(index='Ward', columns='Day', values='Rate')
+                        fig, ax = plt.subplots(figsize=(12, 4))
+                        sns.heatmap(pivot, annot=True, fmt='.0%', cmap='YlGnBu', linewidths=0.5, vmin=0, vmax=1.2, center=0.6)
+                        plt.title('Ward Occupancy Rate')
+                        st.pyplot(fig)
+                    
+                    # Algorithm Performance: Cost Evolution.
                     st.markdown("#### Algorithm Performance")
                     fig, ax = plt.subplots(figsize=(10, 6))
                     ax.plot(scheduler.cost_history, label="Cost")
@@ -339,7 +379,9 @@ elif page == "Compare Algorithms":
                     ax.legend()
                     st.pyplot(fig)
                     
+                    # Temperature Evolution (for SA)
                     if algorithm == "sa" and hasattr(scheduler, "temperature_history"):
+                        st.markdown("#### Temperature Evolution")
                         fig, ax = plt.subplots(figsize=(10, 6))
                         ax.plot(scheduler.temperature_history, label="Temperature", color="orange")
                         ax.set_title("Temperature Evolution")
@@ -355,16 +397,17 @@ elif page == "Compare Algorithms":
                         iteracoes_label: iteracoes,
                         "Time (s)": round(tempo, 2) if isinstance(tempo, (int, float)) else tempo,
                         "% Allocated": round(pct_alocados, 2),
-                        "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo
+                        "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo,
+                        "Avg Occupancy (%)": round(avg_occupancy, 2)
                     })
         
-        st.markdown("## Summary Statistics Across Algorithms")
+        st.markdown("## Overall Summary Statistics")
         df_results = pd.DataFrame(results_summary)
         st.dataframe(df_results)
         
-        # Generate grouped bar charts for overall cost and runtime comparison.
+        # Multi-level grouped comparison charts.
         if not df_results.empty:
-            st.markdown("### Cost Comparison")
+            st.markdown("### Final Cost Comparison")
             cost_pivot = df_results.pivot(index="Instance", columns="Algorithm", values="Final Cost")
             fig, ax = plt.subplots(figsize=(10, 6))
             cost_pivot.plot(kind="bar", ax=ax)
@@ -378,4 +421,20 @@ elif page == "Compare Algorithms":
             time_pivot.plot(kind="bar", ax=ax)
             ax.set_ylabel("Time (s)")
             ax.set_title("Runtime Comparison Across Instances and Algorithms")
+            st.pyplot(fig)
+            
+            st.markdown("### Percentage of Allocated Patients")
+            alloc_pivot = df_results.pivot(index="Instance", columns="Algorithm", values="% Allocated")
+            fig, ax = plt.subplots(figsize=(10, 6))
+            alloc_pivot.plot(kind="bar", ax=ax)
+            ax.set_ylabel("% Allocated")
+            ax.set_title("Patient Allocation Across Instances and Algorithms")
+            st.pyplot(fig)
+            
+            st.markdown("### Average Occupancy Comparison")
+            occupancy_pivot = df_results.pivot(index="Instance", columns="Algorithm", values="Avg Occupancy (%)")
+            fig, ax = plt.subplots(figsize=(10, 6))
+            occupancy_pivot.plot(kind="bar", ax=ax)
+            ax.set_ylabel("Avg Occupancy (%)")
+            ax.set_title("Average Occupancy Across Instances and Algorithms")
             st.pyplot(fig)
