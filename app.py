@@ -95,6 +95,201 @@ def get_scheduler(algorithm, instance_data, params=None):
     else:
         raise ValueError("Unknown algorithm. Use 'sa', 'hybrid_sa', 'tabu', 'ga', 'hc', or 'rw'.")
 
+def save_visualizations_to_folder(scheduler, instance_data, output_folder, instance_name, algorithm):
+    """
+    Saves visualization images to a 'visualizations' subfolder within the algorithm folder.
+    
+    Structure:
+    tests/
+    ├── s0m3/
+    │   ├── ga/
+    │   │   ├── final_solution.csv
+    │   │   ├── metrics.csv
+    │   │   └── visualizations/
+    │   │       └── [images]
+    │   └── ...
+    """
+    import os
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    import pandas as pd
+    import numpy as np
+    
+    # Create visualizations subfolder
+    viz_folder = os.path.join(output_folder, "visualizations")
+    if not os.path.exists(viz_folder):
+        os.makedirs(viz_folder)
+    
+    # 1. Cost evolution visualization
+    plt.figure(figsize=(10, 6))
+    plt.plot(scheduler.cost_history, color='tab:blue', linewidth=2)
+    
+    if algorithm == "ga":
+        x_label = 'Generation'
+    else:
+        x_label = 'Iteration'
+        
+    plt.xlabel(x_label)
+    plt.ylabel('Cost')
+    plt.title(f'Cost Evolution - {algorithm.upper()} - {instance_name}', fontsize=14)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(os.path.join(viz_folder, f'cost_evolution.png'), dpi=300)
+    plt.close()
+    
+    # 2. Temperature Evolution (for SA)
+    if algorithm == "sa" and hasattr(scheduler, 'temperature_history'):
+        plt.figure(figsize=(10, 6))
+        plt.plot(scheduler.temperature_history, color='tab:orange', linewidth=2)
+        plt.xlabel('Iteration')
+        plt.ylabel('Temperature')
+        plt.title(f'Temperature Evolution - SA - {instance_name}', fontsize=14)
+        plt.grid(True, alpha=0.3)
+        plt.tight_layout()
+        plt.savefig(os.path.join(viz_folder, 'temperature_evolution.png'), dpi=300)
+        plt.close()
+    
+    # 3. Ward occupancy heatmap
+    # Get stats for visualization
+    from utils import analyze_solution
+    stats = analyze_solution(instance_data, scheduler.best_solution)
+    
+    # Ward occupancy visualization
+    ward_data = []
+    for ward, occupancy in stats['ward_occupancy'].items():
+        capacity = occupancy['capacity']
+        for day, occ in enumerate(occupancy['daily_occupancy']):
+            ward_data.append({
+                'Ward': ward,
+                'Day': f'Day {day+1}',
+                'Occupancy': occ,
+                'Capacity': capacity,
+                'Rate': occ/capacity if capacity > 0 else 0
+            })
+            
+    if ward_data:
+        df_ward = pd.DataFrame(ward_data)
+        
+        # Absolute occupancy
+        pivot_abs = df_ward.pivot(index='Ward', columns='Day', values='Occupancy')
+        plt.figure(figsize=(12, 6))
+        sns.heatmap(pivot_abs, annot=True, fmt='.0f', cmap='YlGnBu', linewidths=0.5)
+        plt.title(f'Ward Occupancy - {instance_name}', fontsize=14)
+        plt.tight_layout()
+        plt.savefig(os.path.join(viz_folder, 'ward_occupancy.png'), dpi=300)
+        plt.close()
+        
+        # Occupancy rate
+        pivot_rate = df_ward.pivot(index='Ward', columns='Day', values='Rate')
+        plt.figure(figsize=(12, 6))
+        cmap = sns.diverging_palette(10, 133, as_cmap=True)
+        sns.heatmap(pivot_rate, annot=True, fmt='.0%', cmap=cmap, 
+                   linewidths=0.5, vmin=0, vmax=1.2, center=0.6)
+        plt.title(f'Ward Occupancy Rate - {instance_name}', fontsize=14)
+        plt.tight_layout()
+        plt.savefig(os.path.join(viz_folder, 'ward_occupancy_rate.png'), dpi=300)
+        plt.close()
+    
+    # 4. Surgery distribution
+    plt.figure(figsize=(10, 6))
+    plt.bar(range(1, len(stats['surgery_per_day'])+1), stats['surgery_per_day'])
+    plt.axhline(y=len(instance_data['specializations']), color='red', linestyle='--', 
+                label=f'Capacity ({len(instance_data["specializations"])})')
+    plt.xlabel('Day')
+    plt.ylabel('Number of Surgeries')
+    plt.title(f'Surgeries Scheduled by Day - {instance_name}', fontsize=14)
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.savefig(os.path.join(viz_folder, 'surgeries_by_day.png'), dpi=300)
+    plt.close()
+    
+    # 5. Cost breakdown
+    cost_data = stats['cost_breakdown']
+    if cost_data:
+        # Remove total from pie chart
+        labels = list(cost_data.keys())
+        if 'total_estimate' in labels:
+            labels.remove('total_estimate')
+        values = [cost_data[k] for k in labels]
+        
+        if values:
+            plt.figure(figsize=(10, 6))
+            wedges, texts, autotexts = plt.pie(values, labels=labels, autopct='%1.1f%%', startangle=90)
+            plt.axis('equal')
+            plt.title(f'Cost Breakdown - {instance_name}', fontsize=14)
+            plt.tight_layout()
+            plt.savefig(os.path.join(viz_folder, 'cost_breakdown.png'), dpi=300)
+            plt.close()
+            
+    # 6. OT utilization visualization
+    days = instance_data['days']
+    specs = list(instance_data['specializations'].keys())
+    
+    # Calculate OT usage by day and specialization
+    ot_usage = {spec: [0] * days for spec in specs}
+    ot_available = {spec: [0] * days for spec in specs}
+    
+    for patient, data in scheduler.best_solution.items():
+        if data['ward'] is None or data['day'] < 0:
+            continue
+            
+        spec = instance_data['patients'][patient]['specialization']
+        day = data['day']
+        
+        if day < days and spec in ot_usage:
+            surgery_duration = instance_data['patients'][patient]['surgery_duration']
+            ot_usage[spec][day] += surgery_duration
+    
+    # Get available OT
+    for spec in specs:
+        for day in range(min(len(instance_data['specializations'][spec]['available_ot']), days)):
+            ot_available[spec][day] = instance_data['specializations'][spec]['available_ot'][day]
+    
+    # Create aggregate OT utilization visualization
+    plt.figure(figsize=(12, 6))
+    
+    # Calculate utilization rate by day
+    utilization_rates = []
+    
+    for day in range(days):
+        day_usage = sum(ot_usage[spec][day] for spec in specs)
+        day_available = sum(ot_available[spec][day] for spec in specs if day < len(ot_available[spec]))
+        
+        if day_available > 0:
+            utilization_rates.append(day_usage / day_available * 100)
+        else:
+            utilization_rates.append(0)
+    
+    # Create bars
+    bars = plt.bar(range(1, days+1), utilization_rates, color='skyblue')
+    
+    # Add 100% line
+    plt.axhline(y=100, color='red', linestyle='--', label='Ideal Utilization')
+    
+    # Color bars based on rate
+    for i, rate in enumerate(utilization_rates):
+        if rate > 110:  # Significant overtime
+            bars[i].set_color('crimson')
+        elif rate > 95:  # Near ideal
+            bars[i].set_color('limegreen')
+        elif rate < 70:  # Significant undertime
+            bars[i].set_color('orange')
+    
+    plt.xlabel('Day')
+    plt.ylabel('Utilization Rate (%)')
+    plt.title(f'Operating Time Utilization by Day - {instance_name}', fontsize=14)
+    plt.xticks(range(1, days+1))
+    plt.grid(axis='y', alpha=0.3)
+    
+    # Add labels
+    for i, rate in enumerate(utilization_rates):
+        plt.text(i+1, rate+2, f"{rate:.1f}%", ha='center')
+    
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(viz_folder, 'ot_utilization_rate.png'), dpi=300)
+    plt.close()
+
 page = st.sidebar.selectbox("Choose an Option:", ["Single Algorithms", "Compare Algorithms"])
 
 # --------------------------------------------------------------------------
@@ -254,6 +449,9 @@ if page == "Single Algorithms":
                 # Salvar a solução e as métricas na pasta do algoritmo.
                 save_solution_csv(solucao, metrics, output_folder)
                 st.success(f"Results saved in: {output_folder}")
+                
+                # Save visualizations to the output folder
+                save_visualizations_to_folder(scheduler, dados, output_folder, instance_name, algoritmo)
                 
                 results_summary.append({
                     "Instance": filename,
@@ -480,15 +678,19 @@ elif page == "Compare Algorithms":
                     
                     # Salva a solução e as métricas na pasta do algoritmo.
                     output_folder = folder_structure[instance_name][algorithm]
-                    save_solution_csv(solucao, {
+                    metrics_to_save = {
                         iteracoes_label: iteracoes,
                         "Time (s)": round(tempo, 2) if isinstance(tempo, (int, float)) else tempo,
                         "% Allocated": round(pct_alocados, 2),
                         "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo,
                         "Avg Occupancy (%)": round(avg_occupancy, 2),
                         "Outlier (%)": round(outlier_percent, 2)
-                    }, output_folder)
+                    }
+                    save_solution_csv(solucao, metrics_to_save, output_folder)
                     st.success(f"Results saved in: {output_folder}")
+                    
+                    # Save visualizations to the output folder
+                    save_visualizations_to_folder(scheduler, dados, output_folder, instance_name, algorithm)
                     
                     results_summary.append({
                         "Instance": instance_name,

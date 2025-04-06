@@ -1,45 +1,54 @@
 import os
 import pandas as pd
 
-def create_test_directory_structure(instances, algorithms, base_dir="."):
+def create_test_directory_structure(instances, algorithms):
     """
-    Cria a estrutura de pastas para salvar os resultados.
+    Creates a directory structure for saving test results.
     
-    Parâmetros:
-      instances: lista de nomes de instâncias (ex.: ["instancia1", "instancia2"])
-      algorithms: lista com os nomes dos algoritmos (ex.: ["sa", "ga", "hc", "rw", "hybrid_sa", "tabu"])
-      base_dir: diretório base onde procurar/criar os testes (padrão é o diretório atual)
-      
-    Retorna:
-      test_folder: caminho da pasta do teste (ex.: "./teste_3")
-      structure: dicionário com a estrutura criada, onde structure[instancia][algoritmo] é o caminho da pasta para aquele algoritmo.
+    Structure:
+    tests/
+    ├── s0m3/
+    │   ├── ga/
+    │   │   ├── solution.csv
+    │   │   ├── metrics.csv
+    │   │   └── visualizations/
+    │   │       └── [images]
+    │   └── ...
+    └── ...
+    
+    Parameters:
+    - instances: List of instance names (without extension)
+    - algorithms: List of algorithm names
+    
+    Returns:
+    - test_folder: Path to the test folder
+    - folder_structure: Dictionary mapping instance names to algorithm folders
     """
-    # Procura pastas que começam com "teste_" no diretório base
-    test_dirs = [d for d in os.listdir(base_dir)
-                 if os.path.isdir(os.path.join(base_dir, d)) and d.startswith("teste_")]
-    max_n = 0
-    for d in test_dirs:
-        try:
-            n = int(d.split("_")[1])
-            if n > max_n:
-                max_n = n
-        except:
-            continue
-    next_test = max_n + 1
-    test_folder = os.path.join(base_dir, f"teste_{next_test}")
-    os.makedirs(test_folder, exist_ok=True)
+    import os
     
-    structure = {}
-    for inst in instances:
-        instance_folder = os.path.join(test_folder, inst)
-        os.makedirs(instance_folder, exist_ok=True)
-        structure[inst] = {}
-        for alg in algorithms:
-            alg_folder = os.path.join(instance_folder, alg)
-            os.makedirs(alg_folder, exist_ok=True)
-            structure[inst][alg] = alg_folder
+    # Always use a fixed 'tests' folder instead of timestamp-based folders
+    test_folder = "./tests"
+    
+    if not os.path.exists(test_folder):
+        os.makedirs(test_folder)
+    
+    folder_structure = {}
+    
+    for instance in instances:
+        instance_folder = os.path.join(test_folder, instance)
+        if not os.path.exists(instance_folder):
+            os.makedirs(instance_folder)
+        
+        folder_structure[instance] = {}
+        
+        for algorithm in algorithms:
+            algorithm_folder = os.path.join(instance_folder, algorithm)
+            if not os.path.exists(algorithm_folder):
+                os.makedirs(algorithm_folder)
             
-    return test_folder, structure
+            folder_structure[instance][algorithm] = algorithm_folder
+    
+    return test_folder, folder_structure
 
 def save_solution_csv(solution, metrics, output_folder):
     """
