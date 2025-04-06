@@ -122,23 +122,38 @@ if page == "Single Algorithms":
         algo_params["generations"] = st.sidebar.slider("Generations", 50, 500, 100, 10)
     
     if st.sidebar.button("Run"):
+        from results_manager import create_test_directory_structure, save_solution_csv
+        
         results_summary = []
+        # Define a lista de instâncias (sem extensão) para criar a estrutura de pastas.
+        if usar_todas:
+            instances = [os.path.splitext(f)[0] for f in arquivos]
+        else:
+            instances = [os.path.splitext(f)[0] for f in instancias_escolhidas]
+        # Em Single Algorithms, há apenas um algoritmo selecionado.
+        algorithms = [algoritmo]
+        test_folder, folder_structure = create_test_directory_structure(instances, algorithms)
+        st.markdown(f"### Results will be saved in: {test_folder}")
+        
         for filename in instancias_escolhidas:
             instance_name = os.path.splitext(filename)[0]
+            # Obtém a pasta de saída para esta instância e algoritmo.
+            output_folder = folder_structure[instance_name][algoritmo]
+            
             with st.expander(f"Instance: {instance_name}", expanded=True):
                 filepath = os.path.join(instancias_path, filename)
                 dados = parse_instance_file(filepath)
                 scheduler = get_scheduler(algoritmo, dados, algo_params)
                 solucao = scheduler.run()
                 
-                # Convert solution (a dict) into a DataFrame.
+                # Converter solução para DataFrame e exibir.
                 solution_df = pd.DataFrame.from_dict(solucao, orient="index").reset_index()
                 solution_df.rename(columns={"index": "Patient"}, inplace=True)
                 solution_df = solution_df[["Patient", "ward", "day"]]
                 st.write("#### Final Solution")
                 st.dataframe(solution_df)
                 
-                # Analyze the solution.
+                # Analisar a solução.
                 stats = analyze_solution(dados, solucao)
                 total_pacientes = stats['total_patients']
                 alocados = stats['allocated_patients']
@@ -159,14 +174,15 @@ if page == "Single Algorithms":
                 outlier_percent = compute_outlier_percentage(stats)
                 
                 st.markdown("### General Statistics")
-                st.write({
+                metrics = {
                     iteracoes_label: iteracoes,
                     "Time (s)": round(tempo, 2) if isinstance(tempo, (int, float)) else tempo,
                     "% Allocated": round(pct_alocados, 2),
                     "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo,
                     "Avg Occupancy (%)": round(avg_occupancy, 2),
                     "Outlier (%)": round(outlier_percent, 2)
-                })
+                }
+                st.write(metrics)
                 
                 st.markdown("### Solution Analysis")
                 # Cost Breakdown
@@ -235,6 +251,10 @@ if page == "Single Algorithms":
                     ax.legend()
                     st.pyplot(fig)
                 
+                # Salvar a solução e as métricas na pasta do algoritmo.
+                save_solution_csv(solucao, metrics, output_folder)
+                st.success(f"Results saved in: {output_folder}")
+                
                 results_summary.append({
                     "Instance": filename,
                     "Algorithm": algoritmo,
@@ -292,6 +312,9 @@ if page == "Single Algorithms":
 # --------------------------------------------------------------------------
 # Compare Algorithms Page
 # --------------------------------------------------------------------------
+# --------------------------------------------------------------------------
+# Compare Algorithms Page
+# --------------------------------------------------------------------------
 elif page == "Compare Algorithms":
     st.sidebar.title("Comparison Configuration")
     # Allow user to select multiple algorithms.
@@ -325,7 +348,18 @@ elif page == "Compare Algorithms":
             algo_params["ga"] = {"population_size": ga_population_size, "generations": ga_generations}
     
     if st.sidebar.button("Run Comparisons"):
+        from results_manager import create_test_directory_structure, save_solution_csv
+        
         results_summary = []  # Overall summary across instances and algorithms.
+        
+        # Cria a estrutura de pastas para todas as instâncias selecionadas e para todos os algoritmos escolhidos.
+        if usar_todas:
+            instances = [os.path.splitext(f)[0] for f in arquivos]
+        else:
+            instances = [os.path.splitext(f)[0] for f in instancias_escolhidas]
+        test_folder, folder_structure = create_test_directory_structure(instances, selected_algorithms)
+        st.markdown(f"### Results will be saved in: {test_folder}")
+        
         for filename in instancias_escolhidas:
             instance_name = os.path.splitext(filename)[0]
             filepath = os.path.join(instancias_path, filename)
@@ -443,6 +477,18 @@ elif page == "Compare Algorithms":
                         ax.grid(True)
                         ax.legend()
                         st.pyplot(fig)
+                    
+                    # Salva a solução e as métricas na pasta do algoritmo.
+                    output_folder = folder_structure[instance_name][algorithm]
+                    save_solution_csv(solucao, {
+                        iteracoes_label: iteracoes,
+                        "Time (s)": round(tempo, 2) if isinstance(tempo, (int, float)) else tempo,
+                        "% Allocated": round(pct_alocados, 2),
+                        "Final Cost": round(custo, 2) if isinstance(custo, (int, float)) else custo,
+                        "Avg Occupancy (%)": round(avg_occupancy, 2),
+                        "Outlier (%)": round(outlier_percent, 2)
+                    }, output_folder)
+                    st.success(f"Results saved in: {output_folder}")
                     
                     results_summary.append({
                         "Instance": instance_name,
