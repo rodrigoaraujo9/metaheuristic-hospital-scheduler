@@ -1,8 +1,9 @@
 import streamlit as st
 import os
-import pandas as pd
 import time
+import pandas as pd
 from parser import parse_instance_file
+from utils import calculate_cost
 
 # Map algorithm names to their scheduler constructors.
 algorithm_constructors = {
@@ -14,11 +15,11 @@ algorithm_constructors = {
     "rw": lambda instance_data: __import__("schedulers.random_walk", fromlist=["RandomWalkScheduler"]).RandomWalkScheduler(instance_data)
 }
 
+st.set_page_config(page_title="Algorithm Comparison", layout="wide")
 st.title("Algorithm Comparison")
-
 st.sidebar.header("Comparison Settings")
 
-# Use unique keys for sidebar widgets to avoid state conflicts.
+# Sidebar: Select algorithms (limit to 3)
 selected_algs = st.sidebar.multiselect(
     "Select up to 3 algorithms to compare:",
     options=list(algorithm_constructors.keys()),
@@ -28,6 +29,7 @@ selected_algs = st.sidebar.multiselect(
 if len(selected_algs) > 3:
     st.sidebar.error("Select at most 3 algorithms.")
 
+# Sidebar: Execution time configuration per algorithm
 same_time = st.sidebar.checkbox(
     "Use the same maximum execution time for all algorithms", 
     value=True,
@@ -50,6 +52,7 @@ else:
             key=f"compare_time_{alg}"
         )
 
+# Sidebar: Instance selection
 instances_path = "./data/instances"
 instance_files = [f for f in os.listdir(instances_path) if f.endswith(".dat")]
 use_all_instances = st.sidebar.checkbox(
@@ -66,39 +69,64 @@ else:
         key="compare_instance_files"
     )
 
-# Use a session state flag to persist that the compare button was pressed.
-if st.sidebar.button("Compare", key="compare_button"):
-    st.session_state.compare = True
+# Use the button's return value to trigger the comparison.
+compare_pressed = st.sidebar.button("Compare", key="compare_button")
 
-if "compare" in st.session_state and st.session_state.compare:
+if compare_pressed:
     st.write("## Comparison Results")
     results = []
+    # Loop over selected instances
     for instance_file in selected_instances:
         instance_name = os.path.splitext(instance_file)[0]
         filepath = os.path.join(instances_path, instance_file)
         instance_data = parse_instance_file(filepath)
         st.write(f"### Instance: {instance_name}")
+        total_patients = len(instance_data['patients'])
+        # Loop over each selected algorithm
         for alg in selected_algs:
             st.write(f"**Algorithm: {alg}**")
             scheduler = algorithm_constructors[alg](instance_data)
-            start_time = time.time()
-            # Try running with max_time; if not supported, fall back to run() without the parameter.
+            t0 = time.time()
             try:
                 solution = scheduler.run(max_time=execution_times[alg])
             except TypeError:
                 solution = scheduler.run()
-            elapsed = time.time() - start_time
+            elapsed = time.time() - t0
+
+            # Get iterations or generations if available.
+            iterations = getattr(scheduler, "iterations", None) or getattr(scheduler, "generations", None)
+            # Get final cost (or calculate it if not available).
             cost = getattr(scheduler, "final_cost", None)
-            iterations = getattr(scheduler, "iterations", None)
-            st.write(f"Time: {elapsed:.2f} s, Iterations: {iterations}, Final Cost: {cost:.2f}")
+            if cost is None:
+                cost = calculate_cost(instance_data, solution)
+            # Compute allocation percentage.
+            allocated = sum(1 for d in solution.values() if d['ward'] is not None)
+            allocation_pct = allocated / total_patients * 100 if total_patients > 0 else 0
+
+            st.write(f"Time: {elapsed:.2f} s, Iterations: {iterations}, Final Cost: {cost:.2f}, Allocation: {allocation_pct:.2f}%")
             results.append({
                 "Instance": instance_name,
                 "Algorithm": alg,
                 "Time (s)": round(elapsed, 2),
                 "Iterations": iterations,
-                "Final Cost": cost
+                "Final Cost": round(cost, 2) if isinstance(cost, (int, float)) else cost,
+                "Allocation (%)": round(allocation_pct, 2)
             })
+    
     if results:
         df_results = pd.DataFrame(results)
         st.write("### Comparison Table")
         st.dataframe(df_results)
+
+        # Aggregated metrics: Average Final Cost, Runtime, and Allocation per Algorithm.
+        st.write("### Aggregated Metrics")
+        avg_cost = df_results.groupby("Algorithm")["Final Cost"].mean()
+        avg_time = df_results.groupby("Algorithm")["Time (s)"].mean()
+        avg_alloc = df_results.groupby("Algorithm")["Allocation (%)"].mean()
+
+        st.write("Average Final Cost per Algorithm")
+        st.bar_chart(avg_cost)
+        st.write("Average Runtime (s) per Algorithm")
+        st.bar_chart(avg_time)
+        st.write("Average Allocation (%) per Algorithm")
+        st.bar_chart(avg_alloc)
