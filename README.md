@@ -185,7 +185,7 @@ Simply add `.dat` files to `data/instances/` following the existing format.
 
 - **[Rodrigo Miranda](https://github.com/h0leee)** - up202204916
 - **[Eduardo Cunha](https://github.com/educunhA04)** - up202207126  
-- **Rodrigo Araújo** - [GitHub Profile](https://github.com/rodrigoaraujo-up) - up202205515
+- **[Rodrigo Araújo](https://github.com/rodrigoaraujo9) - up202205515
 
 ## License
 
