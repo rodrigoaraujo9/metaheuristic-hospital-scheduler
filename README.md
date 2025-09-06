@@ -1,217 +1,197 @@
-# Hospital Patient Admission Scheduling Optimization
+# Hospital Scheduling Optimizer
 
-This project implements and compares different metaheuristic algorithms for patient admission scheduling in hospitals, focusing on efficient resource utilization, cost minimization, and workload balancing across hospital wards.
+> AI-powered patient admission scheduling using advanced metaheuristic algorithms
+
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Web%20App-red.svg)](https://streamlit.io/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Academic Excellence](https://img.shields.io/badge/FEUP%20AI%20Course-20%2F20-green.svg)](https://sigarra.up.pt/feup/)
+
+A comprehensive optimization suite that tackles the complex challenge of hospital patient admission scheduling through cutting-edge metaheuristic algorithms. This project demonstrates how AI can revolutionize healthcare operations by efficiently balancing resource utilization, minimizing costs, and optimizing patient care delivery.
+
+## Key Features
+
+- **Six Advanced Algorithms**: Genetic Algorithm, Simulated Annealing, Tabu Search, Hill Climbing, Random Walk, and Hybrid approaches
+- **Interactive Web Interface**: Real-time visualization and parameter tuning via Streamlit
+- **Multi-Objective Optimization**: Balances patient delays, resource utilization, and operational costs
+- **Comprehensive Analytics**: Rich visualizations including cost evolution, ward occupancy heatmaps, and performance metrics
+- **Extensible Architecture**: Easy to add new algorithms and problem instances
 
 ## Problem Overview
 
-Hospital scheduling involves balancing multiple competing objectives:
-- Minimizing patient admission delays
-- Optimizing operating theater (OT) utilization
-- Respecting bed capacity constraints
-- Balancing workload across wards and over time
-- Matching patients with appropriate wards based on specialization
+Healthcare scheduling is a complex optimization challenge that involves:
 
-Each patient has:
-- An admission time window (earliest to latest day)
-- A surgical specialty requirement
-- A length of stay (LOS) that occupies bed capacity
-- A surgery duration (in minutes)
-- A workload vector representing required nursing attention
+| Challenge | Solution Approach |
+|-----------|------------------|
+| **Patient Scheduling** | Minimize admission delays while respecting time windows |
+| **Resource Management** | Optimize operating theater utilization and bed capacity |
+| **Workload Balancing** | Distribute nursing workload across wards and time |
+| **Specialty Matching** | Align patients with appropriate ward specializations |
 
-Each ward has:
-- A major specialization and optional minor specializations
-- A fixed bed capacity
-- Potential carryover patients already present
-- Workload capacity limitations
+### Patient Attributes
+- **Admission Windows**: Earliest to latest possible admission days
+- **Specialty Requirements**: Surgical specialty needed
+- **Length of Stay**: Duration affecting bed capacity
+- **Surgery Duration**: Operating theater time requirements
+- **Workload Vector**: Nursing attention requirements
 
-## Requirements
+### Ward Constraints
+- **Specializations**: Major and minor medical specialties
+- **Bed Capacity**: Fixed maximum patient capacity
+- **Carryover Patients**: Existing patients affecting availability
+- **Workload Limits**: Nursing capacity constraints
 
-- Python 3.8 or higher
-- Required packages:
-  - streamlit
-  - matplotlib
-  - seaborn
-  - pandas
-  - numpy
-  - (All detailed in `requirements.txt`)
+## Quick Start
 
-## Installation
-
-1. Clone this repository or unzip the provided files
-2. Install the required dependencies:
+### Prerequisites
 
 ```bash
+Python 3.8+
 pip install -r requirements.txt
 ```
 
-## Project Structure
-
-- `main.py`: Entry point for command-line execution with visualization generation
-- `app.py`: Interactive Streamlit web application
-- `parser.py`: Functions for parsing instance data files (.dat format)
-- `utils.py`: Utility functions for solution generation, evaluation, and neighborhood creation
-- `schedulers/`: Folder containing all optimization algorithms:
-  - `genetic.py`: Genetic Algorithm implementation
-  - `hill_climbing.py`: Hill Climbing with restart mechanism
-  - `random_walk.py`: Random Walk with occasional guided moves
-  - `simulated.py`: Simulated Annealing implementation
-  - `hybrid_simulated.py`: Enhanced SA with local search intensification
-  - `tabu.py`: Tabu Search implementation
-- `data/instances/`: Folder containing problem instances
-- `results/`: Folder where algorithm results are saved
-- `images/`: Folder where visualization images are saved
-
-## Running the Program
-
-### Command-Line Interface
-
-To run the optimization with default settings:
+### Installation
 
 ```bash
-python main.py
+git clone https://github.com/yourusername/hospital-scheduling-optimizer.git
+cd hospital-scheduling-optimizer
+pip install -r requirements.txt
 ```
 
-By default, this will use the Genetic Algorithm. To change the algorithm, modify the `optimization_method` variable in `main.py`.
-
-The command-line interface will:
-1. Process all instance files in the `data/instances` directory
-2. Generate visualizations in the `images` directory
-3. Save results to CSV files in the `results` directory
-4. Display summary statistics in the console
-
-### Interactive Web Application
-
-To run the interactive Streamlit application:
+### Run the Web Application
 
 ```bash
 streamlit run app.py
 ```
 
-This will open a web browser with the application interface where you can:
-1. Select the optimization algorithm
-2. Choose which problem instances to solve
-3. Set algorithm-specific parameters
-4. Visualize and analyze the results in real-time
+### Command Line Execution
 
-## Implemented Algorithms
+```bash
+python main.py
+```
 
-### Hill Climbing (HC)
-- **Approach**: Greedy local search that only accepts improving moves
-- **Key Features**: Fast execution, restart mechanism to escape local optima
-- **Parameters**: Iterations, restart threshold
-- **Best For**: Quick solutions, simple instances, initial exploration
-
-### Random Walk (RW)
-- **Approach**: Exploration through random neighbor selection
-- **Key Features**: Diverse solution space coverage, occasional guided moves
-- **Parameters**: Iterations
-- **Best For**: Solution space exploration, finding unexpected solutions
-
-### Simulated Annealing (SA)
-- **Approach**: Temperature-based probabilistic acceptance of moves
-- **Key Features**: Balances exploration and exploitation, can escape local optima
-- **Parameters**: Initial temperature, cooling rate, minimum temperature
-- **Best For**: Medium complexity problems, balanced exploration-exploitation
-
-### Hybrid Simulated Annealing (Hybrid SA)
-- **Approach**: Combines SA with periodic local search intensification
-- **Key Features**: Enhanced exploitation of promising regions while maintaining exploration
-- **Parameters**: SA parameters plus local search interval and iterations
-- **Best For**: Complex instances with many local optima
-
-### Tabu Search (TS)
-- **Approach**: Memory-based search preventing revisits to recent solutions
-- **Key Features**: Avoids cycling, efficient navigation of complex spaces
-- **Parameters**: Max iterations, tabu list size, number of neighbors
-- **Best For**: Problems with many similar local optima
+## Optimization Algorithms
 
 ### Genetic Algorithm (GA)
-- **Approach**: Population-based evolutionary search
-- **Key Features**: Parallel exploration, solution recombination, diversity management
-- **Parameters**: Population size, generations, crossover rate, mutation rate
-- **Best For**: Large, complex problems requiring wide exploration
+**Best for**: Large, complex problems requiring diverse exploration
+- Population-based evolutionary search
+- Solution crossover and mutation
+- Diversity management and elitism
 
-## Using the Application
+### Simulated Annealing (SA)
+**Best for**: Medium complexity with balanced exploration
+- Temperature-controlled probabilistic acceptance
+- Gradual cooling schedule
+- Escape from local optima
 
-1. In the sidebar, select your preferred algorithm:
-   - `ga`: Genetic Algorithm
-   - `hc`: Hill Climbing
-   - `rw`: Random Walk
-   - `sa`: Simulated Annealing
-   - `hybrid_sa`: Hybrid Simulated Annealing
-   - `tabu`: Tabu Search
+### Tabu Search (TS)
+**Best for**: Problems with many similar local optima
+- Memory-based search with forbidden moves
+- Aspiration criteria and intensification
+- Efficient navigation of solution space
 
-2. Select one or more problem instances to solve, or check "Use all instances"
+### Hill Climbing (HC)
+**Best for**: Quick solutions and initial exploration
+- Greedy local search with restarts
+- Fast execution and simple implementation
+- Multiple restart mechanism
 
-3. Adjust algorithm-specific parameters (if available):
-   - For Genetic Algorithm: population size, generations
-   - For Hill Climbing: iterations, restart threshold
-   - For Random Walk: iterations
-   - For SA/Hybrid SA: temperature parameters appear in code (not in UI)
-   - For Tabu Search: parameters appear in code (not in UI)
+### Random Walk (RW)
+**Best for**: Solution space exploration
+- Stochastic neighbor selection
+- Occasional guided moves
+- Diverse coverage of search space
 
-4. Click the "Run" button to start the optimization
+### Hybrid Simulated Annealing
+**Best for**: Complex instances with multiple optima
+- Combines SA with local search intensification
+- Enhanced exploitation of promising regions
+- Maintains exploration capability
 
-5. View results:
-   - General statistics (runtime, iterations, allocation percentage, final cost)
-   - Cost breakdown pie chart
-   - Surgery distribution by day
-   - Ward occupancy heatmap
-   - Cost evolution chart
-   - Algorithm-specific visualizations (e.g., temperature for SA)
+## Project Structure
 
-## Understanding the Cost Function
+```
+hospital-scheduling-optimizer/
+├── app.py                      # Interactive Streamlit web app
+├── main.py                     # Command-line interface
+├── parser.py                   # Instance data parser
+├── utils.py                    # Core utilities and evaluation
+├── schedulers/                 # Algorithm implementations
+│   ├── genetic.py
+│   ├── simulated.py
+│   ├── tabu.py
+│   ├── hill_climbing.py
+│   ├── random_walk.py
+│   └── hybrid_simulated.py
+├── data/instances/             # Problem instances
+├── results/                    # Algorithm outputs
+├── images/                     # Generated visualizations
+└── requirements.txt
+```
 
-Solutions are evaluated based on multiple criteria:
+## Using the Interactive Application
 
-- **Delay Cost**: Penalty for each day a patient is admitted after their earliest possible day
-- **OT Overtime Cost**: Penalty when surgeries exceed available operating theater time
-- **Bed Capacity Cost**: Penalty for exceeding ward capacity
-- **Surgery Conflict Cost**: Penalty for too many surgeries in a single day
+1. **Algorithm Selection**: Choose from six different optimization methods
+2. **Instance Selection**: Pick specific problems or run all instances
+3. **Parameter Tuning**: Adjust algorithm-specific parameters
+4. **Execution**: Click run and watch real-time progress
+5. **Analysis**: Explore comprehensive results and visualizations
 
-Lower total cost values indicate better solutions.
+## Visualization Suite
 
-## Visualization Capabilities
+| Visualization | Purpose |
+|---------------|---------|
+| **Cost Evolution** | Track optimization progress over time |
+| **Cost Breakdown** | Analyze different penalty components |
+| **Ward Occupancy Heatmap** | Visualize resource utilization |
+| **Surgery Distribution** | Balance surgical scheduling |
+| **OT Utilization** | Monitor operating theater efficiency |
+| **Algorithm Metrics** | Temperature curves, diversity measures |
 
-The application generates several visualizations to help analyze solutions:
+## Understanding Results
 
-1. **Cost Evolution**: Line chart showing how solution cost changes over iterations
-2. **Cost Breakdown**: Pie chart of different cost components
-3. **Ward Occupancy**: Heatmap showing bed utilization by ward and day
-4. **Surgery Distribution**: Bar chart of surgeries scheduled per day
-5. **OT Utilization**: Charts showing operating theater utilization rates
-6. **Algorithm-Specific**: Temperature cooling for SA, diversity for GA, etc.
+### Key Performance Indicators
+- **Allocation Percentage**: Successfully scheduled patients
+- **Final Cost**: Overall solution quality (lower is better)
+- **Ward Occupancy**: Resource utilization efficiency
+- **Surgery Balance**: Workload distribution across days
+- **OT Utilization**: Operating theater efficiency
 
-## Example Results Interpretation
+### Cost Components
+- **Delay Penalties**: Patient admission delays
+- **OT Overtime**: Surgical time overruns
+- **Capacity Violations**: Bed limit breaches
+- **Surgery Conflicts**: Day overloading penalties
 
-- **High Allocation Percentage**: More patients successfully scheduled
-- **Low Final Cost**: Better overall solution quality
-- **Ward Occupancy Near Capacity**: Efficient resource utilization
-- **Balanced Surgery Distribution**: Avoids overloading specific days
-- **OT Utilization Near 100%**: Optimal use of operating theater time
+## Extending the Framework
 
-## Extending the Project
+### Adding New Algorithms
 
-To add a new algorithm:
-1. Create a new file in the `schedulers/` directory
-2. Implement a class with at least `__init__` and `run()` methods
-3. Ensure the class tracks metrics like `runtime`, `best_solution`, and `cost_history`
-4. Update the `get_scheduler()` function in `main.py` and `app.py`
+```python
+# Create schedulers/your_algorithm.py
+class YourAlgorithm:
+    def __init__(self, instance):
+        self.instance = instance
+        
+    def run(self):
+        # Your optimization logic
+        return best_solution
+```
 
-To add new problem instances:
-1. Create a .dat file in the `data/instances/` directory following the format of existing instances
-2. The parser will automatically handle loading the new instance
+### Adding Problem Instances
+Simply add `.dat` files to `data/instances/` following the existing format.
 
-## Authors
+## Contributors
 
-- Rodrigo Miranda - up202204916
-- Eduardo Cunha - up202207126
-- Rodrigo Araújo - up202205515
+- **[Rodrigo Miranda](https://github.com/h0leee)** - up202204916
+- **[Eduardo Cunha](https://github.com/educunhA04)** - up202207126  
+- **Rodrigo Araújo** - [GitHub Profile](https://github.com/rodrigoaraujo-up) - up202205515
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 
+```
 MIT License
 
 Copyright (c) 2024 Rodrigo Miranda, Eduardo Cunha, Rodrigo Araújo
@@ -233,9 +213,25 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
+
+## Academic Excellence
+
+This project achieved a **perfect score of 20/20** in the Artificial Intelligence course at [FEUP](https://sigarra.up.pt/feup/) (Faculdade de Engenharia da Universidade do Porto), demonstrating excellence in:
+- Algorithm implementation and optimization
+- Problem modeling and constraint handling  
+- Software engineering and user experience
+- Comprehensive analysis and visualization
 
 ## Acknowledgments
 
-- Based on the hospital patient scheduling optimization problem in healthcare operations research
-- Implements various metaheuristic algorithms for combinatorial optimization
-- This project received a perfect score of 20/20 in the Artificial Intelligence course at FEUP (Faculdade de Engenharia da Universidade do Porto)
+- Inspired by real-world healthcare operations research challenges
+- Implements state-of-the-art metaheuristic optimization techniques
+- Built upon established principles in combinatorial optimization
+- Developed as part of advanced AI coursework at FEUP
+
+---
+
+**If this project helped you, please give it a star!**
+
+[Report Bug](../../issues) • [Request Feature](../../issues) • [Documentation](../../wiki)
