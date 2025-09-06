@@ -238,3 +238,4 @@ SOFTWARE.
 
 - Based on the hospital patient scheduling optimization problem in healthcare operations research
 - Implements various metaheuristic algorithms for combinatorial optimization
+- This project received a perfect score of 20/20 in the Artificial Intelligence course at FEUP (Faculdade de Engenharia da Universidade do Porto)
